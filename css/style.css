@@ -312,11 +312,12 @@
     width:46px;height:46px;
     border-radius:12px;
     background:var(--beam-soft);
+    color:var(--beam-bright);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:22px;
   }
+  .trust-icon svg{display:block;}
   .trust-card h3{
     font-size:16px;
     color:var(--text);
@@ -348,11 +349,12 @@
     width:44px;height:44px;
     border-radius:11px;
     background:var(--screen-dim);
+    color:var(--beam-bright);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:21px;
   }
+  .product-emoji svg{display:block;}
   .product-card h3{
     font-size:16px;
     color:var(--on-screen);
@@ -379,9 +381,10 @@
     text-align:center;
   }
   .audience-emoji{
-    font-size:26px;
+    color:var(--beam-bright);
     margin-bottom:10px;
   }
+  .audience-emoji svg{display:block;}
   .audience-card h3{
     font-size:14.5px;
     color:var(--text);
@@ -447,11 +450,12 @@
     width:38px;height:38px;
     border-radius:10px;
     background:var(--beam-soft);
+    color:var(--beam-bright);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:17px;
   }
+  .contact-icon svg{display:block;}
   .contact-row h3{
     font-family:'Plus Jakarta Sans', sans-serif;
     font-weight:700;
@@ -464,6 +468,10 @@
   .contact-row p, .contact-row a.contact-link{
     font-size:14.5px;
     color:var(--text);
+  }
+  .contact-link svg{
+    vertical-align:-2px;
+    margin-left:2px;
   }
   .contact-link{
     display:inline-block;
@@ -569,12 +577,13 @@
     width:34px;height:34px;
     border-radius:50%;
     background:linear-gradient(135deg, var(--beam-bright), var(--beam));
+    color:var(--bg-void);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:16px;
     box-shadow:0 8px 16px -4px rgba(0,0,0,0.55);
   }
+  .cert-badge svg{display:block;}
   .cert-thumb-wrap{
     background:#fff;
     border-radius:10px;
@@ -723,8 +732,10 @@
   }
   .store-photo-icon{
     flex:none;
-    font-size:17px;
+    color:var(--beam-bright);
+    display:inline-flex;
   }
+  .store-photo-icon svg{display:block;}
 
   /* ============================================================
      MEREK YANG KAMI SEDIAKAN

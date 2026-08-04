@@ -1,0 +1,809 @@
+/* ============================================================
+     TOKEN DESAIN — semua warna & jarak diatur dari sini
+     ============================================================ */
+  :root{
+    --bg-void: #10121a;
+    --bg-void-2: #171a25;
+    --bg-surface: #1b1f2c;
+    --line-soft: rgba(241,239,233,0.08);
+
+    --screen: #f5f1e6;
+    --screen-dim: #ece6d6;
+    --on-screen: #201c14;
+    --on-screen-muted: #5c5646;
+
+    --beam: #f5a94c;
+    --beam-bright: #ffc871;
+    --beam-soft: rgba(245,169,76,0.16);
+
+    --text: #f1efe9;
+    --text-muted: #9aa0b4;
+
+    --wa: #25d366;
+    --wa-dark: #1ea952;
+
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+
+    --max-w: 460px;
+    --gutter: 22px;
+
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg-void);
+    color:var(--text);
+    font-family:'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:'Space Grotesk', system-ui, sans-serif;
+    font-weight:700;
+    line-height:1.12;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  p{margin:0;}
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  button{font-family:inherit;}
+
+  a:focus-visible,
+  button:focus-visible{
+    outline:2px solid var(--beam-bright);
+    outline-offset:3px;
+    border-radius:6px;
+  }
+
+  .wrap{
+    max-width:var(--max-w);
+    margin:0 auto;
+    padding-left:var(--gutter);
+    padding-right:var(--gutter);
+  }
+
+  /* ============================================================
+     BACKGROUND BEAM DECORATION (elemen tanda tangan desain)
+     ============================================================ */
+  .beam-glow{
+    position:absolute;
+    pointer-events:none;
+    filter:blur(60px);
+    opacity:0.55;
+    z-index:0;
+  }
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  .site-header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(16,18,26,0.86);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:14px;
+    padding-bottom:14px;
+    gap:12px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    min-width:0;
+  }
+  .brand-logo{
+    height:26px;
+    width:auto;
+    flex:none;
+  }
+  .brand-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    color:var(--text);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .btn-wa-mini{
+    flex:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--wa);
+    color:#0c2415;
+    font-weight:700;
+    font-size:13px;
+    padding:9px 14px;
+    border-radius:999px;
+    white-space:nowrap;
+    transition:background .2s var(--ease), transform .2s var(--ease);
+  }
+  .btn-wa-mini svg{width:15px;height:15px;flex:none;}
+  .btn-wa-mini:active{transform:scale(0.96);}
+  @media(hover:hover){
+    .btn-wa-mini:hover{background:var(--wa-dark);}
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{
+    position:relative;
+    padding-top:44px;
+    padding-bottom:40px;
+    overflow:hidden;
+  }
+  .hero .beam-glow{
+    width:340px;height:340px;
+    background:radial-gradient(circle, var(--beam) 0%, transparent 70%);
+    top:-120px;
+    right:-120px;
+  }
+  .eyebrow{
+    position:relative;
+    z-index:1;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--beam-bright);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;
+    border-radius:50%;
+    background:var(--beam-bright);
+    box-shadow:0 0 10px 2px var(--beam-soft);
+  }
+
+  /* the "projection screen" card — signature element */
+  .screen-panel{
+    position:relative;
+    z-index:1;
+    background:var(--screen);
+    border-radius:var(--radius-lg);
+    padding:26px 22px 24px;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.03),
+      0 30px 60px -20px rgba(0,0,0,0.55),
+      0 0 90px -10px var(--beam-soft);
+  }
+  .screen-panel::before{
+    content:"";
+    position:absolute;
+    top:-46px;
+    left:28px;
+    width:0;height:0;
+    border-left:16px solid transparent;
+    border-right:16px solid transparent;
+    border-bottom:46px solid var(--beam-soft);
+    opacity:0.9;
+  }
+  .hero h1{
+    color:var(--on-screen);
+    font-size:29px;
+    margin-bottom:12px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg, var(--beam) 0%, #d97d1f 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero-sub{
+    color:var(--on-screen-muted);
+    font-size:15px;
+    line-height:1.6;
+  }
+
+  .hero-cta-zone{
+    position:relative;
+    z-index:1;
+    margin-top:22px;
+  }
+
+  .btn-wa-lg{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    background:var(--wa);
+    color:#0c2415;
+    font-weight:700;
+    font-size:16.5px;
+    padding:17px 20px;
+    border-radius:999px;
+    box-shadow:0 14px 30px -8px rgba(37,211,102,0.45);
+    transition:transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+  }
+  .btn-wa-lg svg{width:22px;height:22px;flex:none;}
+  .btn-wa-lg:active{transform:scale(0.97);}
+  @media(hover:hover){
+    .btn-wa-lg:hover{background:var(--wa-dark);box-shadow:0 18px 34px -8px rgba(37,211,102,0.55);}
+  }
+  .cta-microcopy{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin-top:12px;
+  }
+
+  /* ============================================================
+     SECTION SCAFFOLDING
+     ============================================================ */
+  section{
+    position:relative;
+    padding-top:52px;
+    padding-bottom:52px;
+  }
+  .section-head{
+    margin-bottom:26px;
+  }
+  .section-eyebrow{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--beam);
+    margin-bottom:8px;
+    display:block;
+  }
+  .section-title{
+    font-size:23px;
+    color:var(--text);
+  }
+  .divider{
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--line-soft) 20%, var(--line-soft) 80%, transparent);
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .7s var(--ease), transform .7s var(--ease);
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ============================================================
+     KENAPA PILIH KAMI — trust cards
+     ============================================================ */
+  .trust-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .trust-card{
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-md);
+    padding:20px;
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .trust-icon{
+    flex:none;
+    width:46px;height:46px;
+    border-radius:12px;
+    background:var(--beam-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+  }
+  .trust-card h3{
+    font-size:16px;
+    color:var(--text);
+    margin-bottom:5px;
+  }
+  .trust-card p{
+    font-size:14px;
+    color:var(--text-muted);
+  }
+
+  /* ============================================================
+     PRODUK — light "screen" cards
+     ============================================================ */
+  .product-list{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .product-card{
+    background:var(--screen);
+    border-radius:var(--radius-md);
+    padding:19px 20px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+  .product-emoji{
+    flex:none;
+    width:44px;height:44px;
+    border-radius:11px;
+    background:var(--screen-dim);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+  }
+  .product-card h3{
+    font-size:16px;
+    color:var(--on-screen);
+    margin-bottom:3px;
+  }
+  .product-card p{
+    font-size:13.5px;
+    color:var(--on-screen-muted);
+  }
+
+  /* ============================================================
+     COCOK UNTUK SIAPA — audience grid
+     ============================================================ */
+  .audience-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .audience-card{
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-md);
+    padding:18px 14px;
+    text-align:center;
+  }
+  .audience-emoji{
+    font-size:26px;
+    margin-bottom:10px;
+  }
+  .audience-card h3{
+    font-size:14.5px;
+    color:var(--text);
+    margin-bottom:4px;
+  }
+  .audience-card p{
+    font-size:12.5px;
+    color:var(--text-muted);
+    line-height:1.5;
+  }
+
+  /* ============================================================
+     MID-PAGE CTA BANNER
+     ============================================================ */
+  .cta-banner{
+    position:relative;
+    background:var(--bg-void-2);
+    overflow:hidden;
+  }
+  .cta-banner .beam-glow{
+    width:300px;height:300px;
+    background:radial-gradient(circle, var(--beam) 0%, transparent 70%);
+    left:50%;
+    top:-60px;
+    transform:translateX(-50%);
+    opacity:0.35;
+  }
+  .cta-banner-inner{
+    position:relative;
+    z-index:1;
+    text-align:center;
+  }
+  .cta-banner h2{
+    font-size:24px;
+    margin-bottom:10px;
+  }
+  .cta-banner p{
+    font-size:14.5px;
+    color:var(--text-muted);
+    margin-bottom:24px;
+  }
+
+  /* ============================================================
+     KONTAK
+     ============================================================ */
+  .contact-card{
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-md);
+    padding:22px 20px;
+  }
+  .contact-row{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding:14px 0;
+  }
+  .contact-row + .contact-row{
+    border-top:1px solid var(--line-soft);
+  }
+  .contact-icon{
+    flex:none;
+    width:38px;height:38px;
+    border-radius:10px;
+    background:var(--beam-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+  }
+  .contact-row h3{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--text-muted);
+    margin-bottom:4px;
+  }
+  .contact-row p, .contact-row a.contact-link{
+    font-size:14.5px;
+    color:var(--text);
+  }
+  .contact-link{
+    display:inline-block;
+    margin-top:4px;
+    color:var(--beam-bright);
+    font-weight:600;
+    font-size:13.5px;
+  }
+  .contact-link:active{opacity:0.7;}
+
+  .contact-card .btn-wa-lg{margin-top:20px;}
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{
+    padding-top:32px;
+    padding-bottom:110px;
+    text-align:center;
+  }
+  footer p{
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  .footer-logo{
+    height:30px;
+    width:auto;
+    display:block;
+    margin:0 auto 14px;
+    opacity:0.95;
+  }
+  footer .foot-brand{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    color:var(--text);
+    font-size:14px;
+    margin-bottom:6px;
+  }
+
+  /* ============================================================
+     FLOATING WHATSAPP BUTTON
+     ============================================================ */
+  .fab-wa{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:60;
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:var(--wa);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 24px -6px rgba(37,211,102,0.55);
+    transition:transform .2s var(--ease);
+  }
+  .fab-wa svg{width:28px;height:28px;color:#0c2415;}
+  .fab-wa:active{transform:scale(0.93);}
+  .fab-ring{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    border:2px solid var(--wa);
+    animation:ring-pulse 2.4s var(--ease) infinite;
+  }
+  @keyframes ring-pulse{
+    0%{transform:scale(1);opacity:0.6;}
+    100%{transform:scale(1.7);opacity:0;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    .fab-ring{animation:none;display:none;}
+  }
+
+  /* ============================================================
+     SERTIFIKASI & PENGHARGAAN
+     ============================================================ */
+  .cert-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+  .cert-card{
+    position:relative;
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-md);
+    padding:16px 16px 18px;
+    cursor:pointer;
+    transition:transform .2s var(--ease), border-color .2s var(--ease);
+  }
+  .cert-card:active{transform:scale(0.98);}
+  @media(hover:hover){
+    .cert-card:hover{border-color:var(--beam);}
+  }
+  .cert-badge{
+    position:absolute;
+    top:-12px;
+    left:16px;
+    width:34px;height:34px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--beam-bright), var(--beam));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    box-shadow:0 8px 16px -4px rgba(0,0,0,0.55);
+  }
+  .cert-thumb-wrap{
+    background:#fff;
+    border-radius:10px;
+    padding:5px;
+    margin-bottom:13px;
+    overflow:hidden;
+  }
+  .cert-thumb{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:6px;
+  }
+  .cert-caption h3{
+    font-size:15.5px;
+    color:var(--text);
+    margin-bottom:5px;
+  }
+  .cert-caption p{
+    font-size:13px;
+    color:var(--text-muted);
+    line-height:1.55;
+    margin-bottom:10px;
+  }
+  .cert-zoom-hint{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--beam-bright);
+  }
+
+  /* ============================================================
+     BROSUR PRODUK BEST SELLER — galeri brosur (ketuk untuk zoom)
+     ============================================================ */
+  .brosur-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .brosur-card{
+    position:relative;
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-md);
+    overflow:hidden;
+    cursor:pointer;
+    transition:transform .2s var(--ease), border-color .2s var(--ease);
+  }
+  .brosur-card:active{transform:scale(0.97);}
+  @media(hover:hover){
+    .brosur-card:hover{border-color:var(--beam);}
+  }
+  .brosur-thumb-wrap{
+    background:#fff;
+    overflow:hidden;
+  }
+  .brosur-thumb{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+  .brosur-caption{
+    padding:11px 12px 13px;
+  }
+  .brosur-caption h3{
+    font-size:13px;
+    color:var(--text);
+    line-height:1.3;
+    margin-bottom:3px;
+  }
+  .brosur-caption span{
+    font-size:11px;
+    font-weight:700;
+    color:var(--beam-bright);
+  }
+
+  .lightbox{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:rgba(8,9,13,0.94);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:60px 18px 30px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s var(--ease);
+  }
+  .lightbox.is-open{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .lightbox img{
+    max-width:100%;
+    max-height:100%;
+    border-radius:10px;
+    box-shadow:0 30px 70px -20px rgba(0,0,0,0.75);
+  }
+  .lightbox-close{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:42px;height:42px;
+    border-radius:50%;
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    color:var(--text);
+    font-size:18px;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .lightbox{transition:none;}
+  }
+
+  /* ============================================================
+     FOTO TOKO
+     ============================================================ */
+  .store-photo{
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    margin-bottom:18px;
+    border:1px solid var(--line-soft);
+    box-shadow:0 20px 40px -18px rgba(0,0,0,0.55);
+  }
+  .store-photo-img{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+  .store-photo-caption{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 16px;
+    background:var(--bg-surface);
+    font-size:13px;
+    color:var(--text-muted);
+    line-height:1.5;
+  }
+  .store-photo-icon{
+    flex:none;
+    font-size:17px;
+  }
+
+  /* ============================================================
+     MEREK YANG KAMI SEDIAKAN
+     ============================================================ */
+  .brand-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+  }
+  .brand-chip{
+    background:var(--screen);
+    border-radius:var(--radius-sm);
+    height:58px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:9px;
+  }
+  .brand-chip img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    display:block;
+  }
+
+  @media (min-width:540px){
+    .brand-chip{height:70px;padding:12px;}
+  }
+
+  /* ============================================================
+     TESTIMONI TRANSAKSI (strip geser)
+     ============================================================ */
+  .testi-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding-left:var(--gutter);
+    padding-right:var(--gutter);
+    margin-top:20px;
+  }
+  .testi-scroll::-webkit-scrollbar{display:none;}
+  .testi-track{
+    display:flex;
+    gap:9px;
+    width:max-content;
+  }
+  .testi-item{
+    flex:none;
+    width:112px;
+    height:199px;
+    border-radius:var(--radius-sm);
+    overflow:hidden;
+    border:1px solid var(--line-soft);
+    background:var(--bg-surface);
+    cursor:pointer;
+    padding:0;
+    transition:transform .2s var(--ease);
+  }
+  .testi-item:active{transform:scale(0.96);}
+  .testi-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .testi-hint{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:10px;
+  }
+
+  /* small phones */
+  @media (max-width:340px){
+    .hero h1{font-size:25px;}
+    .audience-grid{grid-template-columns:1fr;}
+  }
+
+  /* let the layout breathe a bit more on wider phones/small tablets */
+  @media (min-width:540px){
+    :root{--max-w:520px;}
+    .hero h1{font-size:33px;}
+  }

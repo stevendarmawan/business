@@ -381,6 +381,8 @@
     text-align:center;
   }
   .audience-emoji{
+    display:flex;
+    justify-content:center;
     color:var(--beam-bright);
     margin-bottom:10px;
   }

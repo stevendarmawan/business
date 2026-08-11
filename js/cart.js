@@ -178,26 +178,33 @@
       var priceNote = p.priceIsEstimate
         ? '<span class="shop-price-note">Estimasi &middot; final dikonfirmasi via WA</span>'
         : "";
+      var thumb = p.image
+        ? '<div class="shop-card-thumb-wrap"><img class="shop-card-thumb" src="' + p.image + '" alt="' + p.name + '" loading="lazy"></div>'
+        : '<div class="shop-card-thumb-wrap shop-card-thumb-fallback">' + iconSvg(p.icon, 30) + '</div>';
       return (
         '<div class="shop-card reveal">' +
-          '<div class="shop-card-icon">' + iconSvg(p.icon, 26) + '</div>' +
-          '<div class="shop-card-body">' +
-            '<span class="shop-card-brand">' + p.brand + '</span>' +
-            '<h3>' + p.name + '</h3>' +
-            '<p class="shop-card-spec">' + p.specLine + '</p>' +
-            '<p class="shop-card-ports">' + p.ports + '</p>' +
+          '<div class="shop-card-top">' +
+            thumb +
+            '<div class="shop-card-body">' +
+              '<span class="shop-card-brand">' + p.brand + '</span>' +
+              '<h3>' + p.name + '</h3>' +
+              '<p class="shop-card-spec">' + p.specLine + '</p>' +
+              '<p class="shop-card-ports">' + p.ports + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="shop-card-pricing">' +
             '<div class="shop-card-price">' + formatRupiah(p.price) + '</div>' +
             priceNote +
-            '<div class="shop-card-actions">' +
-              '<div class="shop-qty">' +
-                '<button type="button" class="shop-qty-btn" data-action="qty-dec" data-id="' + p.id + '" aria-label="Kurangi jumlah">-</button>' +
-                '<span class="shop-qty-val" data-qty-for="' + p.id + '">1</span>' +
-                '<button type="button" class="shop-qty-btn" data-action="qty-inc" data-id="' + p.id + '" aria-label="Tambah jumlah">+</button>' +
-              '</div>' +
-              '<button type="button" class="btn-add-cart" data-action="add" data-id="' + p.id + '">' +
-                iconSvg("cart", 16) + '<span>Tambah</span>' +
-              '</button>' +
+          '</div>' +
+          '<div class="shop-card-actions">' +
+            '<div class="shop-qty">' +
+              '<button type="button" class="shop-qty-btn" data-action="qty-dec" data-id="' + p.id + '" aria-label="Kurangi jumlah">-</button>' +
+              '<span class="shop-qty-val" data-qty-for="' + p.id + '">1</span>' +
+              '<button type="button" class="shop-qty-btn" data-action="qty-inc" data-id="' + p.id + '" aria-label="Tambah jumlah">+</button>' +
             '</div>' +
+            '<button type="button" class="btn-add-cart" data-action="add" data-id="' + p.id + '">' +
+              iconSvg("cart", 16) + '<span>Tambah</span>' +
+            '</button>' +
           '</div>' +
         '</div>'
       );

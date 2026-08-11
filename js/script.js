@@ -27,20 +27,30 @@ const CONFIG = {
   const mapsHref = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.address);
   document.querySelectorAll(".js-maps-link").forEach(function(el){ el.href = mapsHref; });
 
-  // Animasi muncul halus saat elemen kelihatan di layar
+  // Animasi muncul halus saat elemen kelihatan di layar.
+  // Dibikin jadi fungsi yang bisa dipanggil ulang (window.dopObserveReveals)
+  // supaya kartu produk yang dibuat belakangan oleh js/cart.js ikut kebagian
+  // animasi yang sama, tanpa duplikasi logic.
+  var revealObserver = null;
   if ("IntersectionObserver" in window){
-    const obs = new IntersectionObserver(function(entries){
+    revealObserver = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
         if (entry.isIntersecting){
           entry.target.classList.add("is-visible");
-          obs.unobserve(entry.target);
+          revealObserver.unobserve(entry.target);
         }
       });
     }, { threshold: 0.15 });
-    document.querySelectorAll(".reveal").forEach(function(el){ obs.observe(el); });
-  } else {
-    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("is-visible"); });
   }
+  function observeReveals(nodeList){
+    if (revealObserver){
+      nodeList.forEach(function(el){ revealObserver.observe(el); });
+    } else {
+      nodeList.forEach(function(el){ el.classList.add("is-visible"); });
+    }
+  }
+  window.dopObserveReveals = observeReveals;
+  observeReveals(document.querySelectorAll(".reveal"));
 
   // Lightbox untuk sertifikat (ketuk kartu -> gambar tampil penuh layar)
   const lightbox = document.getElementById("certLightbox");

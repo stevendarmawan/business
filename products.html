@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belanja Produk | Agen Projektor Jakarta</title>
+<meta name="description" content="Cari & pesan proyektor Epson, InFocus, dan SPC. Filter berdasarkan kategori dan rentang harga, langsung checkout via WhatsApp.">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+
+<!--
+  ====================================================================
+  CATATAN UNTUK STEVEN
+  ====================================================================
+  Ini halaman belanja produk terpisah dari halaman utama (index.html).
+  Data produk & harga diatur di js/products.js (satu tempat yang sama
+  dipakai index.html juga). Logic keranjang & checkout ada di
+  js/cart.js. Logic search/filter/sort khusus halaman ini ada di
+  js/products-page.js.
+  ====================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/img/logo-agen-projektor-jakarta.png" alt="Logo Agen Projektor Jakarta" class="brand-logo">
+      <span class="brand-name">Agen Projektor Jakarta</span>
+    </a>
+    <div class="header-actions">
+      <button type="button" class="btn-cart" id="cartOpenBtn" aria-label="Buka keranjang belanja">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h2l.4 2M7 13h9l3-8H5.4M7 13 5.4 5M7 13l-1.6 3.2A1 1 0 0 0 6.3 17H17M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <a href="#" class="btn-wa-mini js-wa-link" aria-label="Chat WhatsApp Agen Projektor Jakarta">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.09c-.24.68-1.4 1.33-1.93 1.4-.5.07-1.11.1-1.79-.11-.41-.13-.94-.3-1.62-.6-2.84-1.23-4.7-4.1-4.84-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.08.99-2.36c.26-.28.56-.35.75-.35h.53c.17 0 .4-.03.62.48.24.56.8 1.94.87 2.08.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.18 1.53 1.92 1.05.95 1.94 1.24 2.21 1.38.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.63-.14.26.09 1.63.77 1.91.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
+        <span class="btn-wa-mini-label">Chat WA</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="running-text" aria-label="Keunggulan toko">
+    <div class="running-text-track">
+      <span class="running-text-item">Trusted Seller Sejak 2017</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item">Authorized Master Dealer Epson Indonesia</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item">Garansi Resmi hingga 3 Tahun</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item">Bersertifikat TKDN</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item">Top Performer Award Epson FY17 - FY24</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item">Konsultasi &amp; Layanan Purna Jual Responsif</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item" aria-hidden="true">Trusted Seller Sejak 2017</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item" aria-hidden="true">Authorized Master Dealer Epson Indonesia</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item" aria-hidden="true">Garansi Resmi hingga 3 Tahun</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item" aria-hidden="true">Bersertifikat TKDN</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item" aria-hidden="true">Top Performer Award Epson FY17 - FY24</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+      <span class="running-text-item" aria-hidden="true">Konsultasi &amp; Layanan Purna Jual Responsif</span>
+      <span class="running-text-sep" aria-hidden="true">&bull;</span>
+    </div>
+  </div>
+</header>
+
+<!-- ================= JUDUL HALAMAN ================= -->
+<section class="products-page-head">
+  <div class="wrap">
+    <a href="index.html" class="back-to-home">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      Kembali ke Beranda
+    </a>
+    <span class="section-eyebrow">Katalog Lengkap</span>
+    <h1 class="section-title">Belanja Produk</h1>
+    <p class="section-desc">Cari produk, filter kategori & harga, atur jumlah, langsung checkout via WhatsApp.</p>
+  </div>
+</section>
+
+<!-- ================= SEARCH & FILTER ================= -->
+<section class="products-filter-zone">
+  <div class="wrap">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="productSearch" placeholder="Cari nama produk, contoh: EB-W55, InFocus, XGA..." autocomplete="off">
+      <button type="button" id="productSearchClear" class="search-clear" aria-label="Hapus pencarian" hidden>&times;</button>
+    </div>
+
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-label">Kategori</span>
+        <div class="filter-pills" id="categoryPills" role="group" aria-label="Filter kategori">
+          <button type="button" class="filter-pill is-active" data-category="all">Semua</button>
+          <button type="button" class="filter-pill" data-category="Epson">Epson</button>
+          <button type="button" class="filter-pill" data-category="InFocus">InFocus</button>
+          <button type="button" class="filter-pill" data-category="SPC">SPC</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Rentang Harga</span>
+        <div class="filter-pills" id="pricePills" role="group" aria-label="Filter rentang harga">
+          <button type="button" class="filter-pill is-active" data-min="0" data-max="999999999">Semua Harga</button>
+          <button type="button" class="filter-pill" data-min="0" data-max="5000000">&lt; Rp 5 Juta</button>
+          <button type="button" class="filter-pill" data-min="5000000" data-max="10000000">Rp 5–10 Juta</button>
+          <button type="button" class="filter-pill" data-min="10000000" data-max="25000000">Rp 10–25 Juta</button>
+          <button type="button" class="filter-pill" data-min="25000000" data-max="999999999">&gt; Rp 25 Juta</button>
+        </div>
+      </div>
+
+      <div class="filter-group filter-group-sort">
+        <span class="filter-label">Urutkan</span>
+        <select id="productSort" class="sort-select">
+          <option value="default">Paling Relevan</option>
+          <option value="price-asc">Harga Terendah</option>
+          <option value="price-desc">Harga Tertinggi</option>
+          <option value="name-asc">Nama A-Z</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-status-row">
+      <p class="filter-result-count" id="filterResultCount">Menampilkan 11 dari 11 produk</p>
+      <button type="button" class="filter-reset-btn" id="filterResetBtn" hidden>Reset Filter</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GRID PRODUK ================= -->
+<section class="products-page-grid">
+  <div class="wrap">
+    <div class="shop-grid" id="shopGrid"></div>
+    <div class="filter-empty-state" id="filterEmptyState" hidden>
+      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <h3>Produk tidak ditemukan</h3>
+      <p>Coba kata kunci lain atau reset filter untuk lihat semua produk.</p>
+      <button type="button" class="btn-add-cart" id="filterEmptyResetBtn">Reset Filter</button>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- ================= CTA BANTUAN ================= -->
+<section class="cta-banner">
+  <span class="beam-glow" aria-hidden="true"></span>
+  <div class="wrap cta-banner-inner reveal">
+    <h2>Nggak Nemu yang Cocok?</h2>
+    <p>Ceritakan kebutuhan Anda, tim kami bantu carikan yang paling pas dan sesuai budget.</p>
+    <a href="#" class="btn-wa-lg js-wa-link" aria-label="Chat WhatsApp sekarang">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.09c-.24.68-1.4 1.33-1.93 1.4-.5.07-1.11.1-1.79-.11-.41-.13-.94-.3-1.62-.6-2.84-1.23-4.7-4.1-4.84-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.08.99-2.36c.26-.28.56-.35.75-.35h.53c.17 0 .4-.03.62.48.24.56.8 1.94.87 2.08.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.18 1.53 1.92 1.05.95 1.94 1.24 2.21 1.38.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.63-.14.26.09 1.63.77 1.91.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
+      Chat Sekarang
+    </a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <img src="assets/img/logo-agen-projektor-jakarta.png" alt="Logo Agen Projektor Jakarta" class="footer-logo">
+    <p class="foot-brand">Agen Projektor Jakarta</p>
+    <p>Supplier resmi proyektor, printer & alat kantor sejak 2017.</p>
+    <p style="margin-top:10px;">© 2026 Agen Projektor Jakarta. Semua hak dilindungi.</p>
+  </div>
+</footer>
+
+<!-- ================= KERANJANG BELANJA ================= -->
+<div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+  <div class="cart-panel" role="dialog" aria-label="Keranjang belanja">
+    <div class="cart-panel-head">
+      <h2>Keranjang Belanja</h2>
+      <button type="button" class="modal-close-btn" id="cartCloseBtn" aria-label="Tutup keranjang">&times;</button>
+    </div>
+    <div class="cart-panel-body">
+      <p class="cart-empty" id="cartEmpty">Keranjang masih kosong. Yuk pilih produk dulu.</p>
+      <div class="cart-list" id="cartList"></div>
+    </div>
+    <div class="cart-panel-footer" id="cartFooter">
+      <div class="cart-total-row">
+        <span>Total</span>
+        <span id="cartTotal">Rp 0</span>
+      </div>
+      <button type="button" class="btn-wa-lg" id="cartCheckoutBtn">Lanjut ke Checkout</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CHECKOUT ================= -->
+<div class="modal-overlay" id="checkoutModal" aria-hidden="true">
+  <div class="modal-panel" role="dialog" aria-label="Checkout">
+    <div class="cart-panel-head">
+      <h2>Checkout</h2>
+      <button type="button" class="modal-close-btn" id="checkoutCloseBtn" aria-label="Tutup checkout">&times;</button>
+    </div>
+    <div class="modal-panel-body">
+      <div class="checkout-summary" id="checkoutSummary"></div>
+      <div class="cart-total-row checkout-total-row">
+        <span>Total</span>
+        <span id="checkoutTotal">Rp 0</span>
+      </div>
+
+      <form id="checkoutForm" class="checkout-form">
+        <label class="form-field">
+          <span>Nama Lengkap</span>
+          <input type="text" name="name" required placeholder="Nama Anda">
+        </label>
+        <label class="form-field">
+          <span>Nomor WhatsApp</span>
+          <input type="tel" name="phone" required placeholder="08xxxxxxxxxx">
+        </label>
+        <label class="form-field">
+          <span>Alamat Pengiriman</span>
+          <textarea name="address" required placeholder="Alamat lengkap penerima" rows="3"></textarea>
+        </label>
+        <label class="form-field">
+          <span>Catatan (opsional)</span>
+          <textarea name="note" placeholder="Contoh: warna, waktu pengiriman, dll" rows="2"></textarea>
+        </label>
+        <button type="submit" class="btn-wa-lg">Kirim Pesanan via WhatsApp</button>
+        <p class="cta-microcopy">Setelah dikirim, admin kami akan konfirmasi harga final &amp; ketersediaan lewat WhatsApp.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================= KONFIRMASI ORDER ================= -->
+<div class="modal-overlay" id="orderConfirm" aria-hidden="true">
+  <div class="modal-panel modal-panel-sm" role="dialog" aria-label="Pesanan terkirim">
+    <div class="order-confirm-body">
+      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="order-confirm-icon"><path d="M20 6 9 17l-5-5"/></svg>
+      <h2>Pesanan Terkirim!</h2>
+      <p>Nomor order kamu: <strong data-order-id>-</strong></p>
+      <p>Lanjutkan percakapan di WhatsApp yang baru terbuka untuk konfirmasi harga final &amp; pengiriman.</p>
+      <button type="button" class="btn-wa-lg" id="orderConfirmClose">Selesai</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= FLOATING WHATSAPP BUTTON ================= -->
+<a href="#" class="fab-wa js-wa-link" aria-label="Chat WhatsApp Agen Projektor Jakarta">
+  <span class="fab-ring" aria-hidden="true"></span>
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.09c-.24.68-1.4 1.33-1.93 1.4-.5.07-1.11.1-1.79-.11-.41-.13-.94-.3-1.62-.6-2.84-1.23-4.7-4.1-4.84-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.08.99-2.36c.26-.28.56-.35.75-.35h.53c.17 0 .4-.03.62.48.24.56.8 1.94.87 2.08.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.18 1.53 1.92 1.05.95 1.94 1.24 2.21 1.38.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.63-.14.26.09 1.63.77 1.91.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
+</a>
+
+<script src="js/script.js" defer></script>
+<script src="js/products.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/products-page.js" defer></script>
+
+</body>
+</html>

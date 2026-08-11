@@ -17,6 +17,7 @@
    ==================================================================== */
 const PRODUCTS = [
   {
+    image: "assets/img/produk-epson-eb-e600.jpg",
     id: "eb-e600",
     brand: "Epson",
     name: "Epson EB-E600",
@@ -27,6 +28,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-epson-eb-x600.jpg",
     id: "eb-x600",
     brand: "Epson",
     name: "Epson EB-X600",
@@ -37,6 +39,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-epson-eb-w55.jpg",
     id: "eb-w55",
     brand: "Epson",
     name: "Epson EB-W55",
@@ -47,6 +50,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-epson-eb-x52.jpg",
     id: "eb-x52",
     brand: "Epson",
     name: "Epson EB-X52",
@@ -57,6 +61,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-epson-eb-w53.jpg",
     id: "eb-w53",
     brand: "Epson",
     name: "Epson EB-W53",
@@ -67,6 +72,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-epson-eb-fh54.jpg",
     id: "eb-fh54",
     brand: "Epson",
     name: "Epson EB-FH54",
@@ -77,6 +83,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-infocus-in0004sl.jpg",
     id: "infocus-in0004sl",
     brand: "InFocus",
     name: "InFocus IN0004SL",
@@ -87,6 +94,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-spc-p100.jpg",
     id: "spc-p100",
     brand: "SPC",
     name: "SPC P100",
@@ -97,6 +105,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-epson-eb-2065.jpg",
     id: "eb-2065",
     brand: "Epson",
     name: "Epson EB-2065",
@@ -107,6 +116,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-epson-eb-2155w.jpg",
     id: "eb-2155w",
     brand: "Epson",
     name: "Epson EB-2155W",
@@ -117,6 +127,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
+    image: "assets/img/produk-epson-eb-2265u.jpg",
     id: "eb-2265u",
     brand: "Epson",
     name: "Epson EB-2265U",

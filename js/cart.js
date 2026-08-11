@@ -170,11 +170,12 @@
 
   /* ---------------- render katalog produk dari PRODUCTS ---------------- */
 
-  function renderCatalog() {
+  function renderCatalog(list) {
     var grid = document.getElementById("shopGrid");
     if (!grid || typeof PRODUCTS === "undefined") return;
+    var items = list || PRODUCTS;
 
-    grid.innerHTML = PRODUCTS.map(function (p) {
+    grid.innerHTML = items.map(function (p) {
       var priceNote = p.priceIsEstimate
         ? '<span class="shop-price-note">Estimasi &middot; final dikonfirmasi via WA</span>'
         : "";
@@ -215,6 +216,7 @@
       window.dopObserveReveals(grid.querySelectorAll(".reveal"));
     }
   }
+  window.dopRenderCatalog = renderCatalog;
 
   /* ---------------- keranjang: buka/tutup ---------------- */
 

@@ -81,11 +81,13 @@ const CONFIG = {
       }
     });
   });
-  lightboxClose.addEventListener("click", closeLightbox);
-  lightbox.addEventListener("click", function(e){
-    if (e.target === lightbox) closeLightbox();
-  });
-  document.addEventListener("keydown", function(e){
-    if (e.key === "Escape") closeLightbox();
-  });
+  if (lightbox && lightboxClose){
+    lightboxClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", function(e){
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", function(e){
+      if (e.key === "Escape") closeLightbox();
+    });
+  }
 })();

@@ -135,15 +135,35 @@
     white-space:nowrap;
     transition:background .2s var(--ease), transform .2s var(--ease);
   }
-  .btn-wa-mini svg{width:15px;height:15px;flex:none;}
+  .btn-wa-mini svg{width:18px;height:18px;flex:none;}
   .btn-wa-mini:active{transform:scale(0.96);}
 
   /* di layar sangat sempit, tombol WA di header jadi ikon aja -- kasih ruang
      ke nama brand supaya gak kepotong (bukan cuma di-ellipsis) */
-  @media (max-width:400px){
+  @media (max-width:767px){
     .btn-wa-mini{padding:9px 11px;}
     .btn-wa-mini-label{display:none;}
     .brand-name{font-size:14px;}
+    .btn-shop-nav{padding:0;width:38px;justify-content:center;}
+    .btn-shop-nav-label{display:none;}
+  }
+  @media (max-width:400px){
+    .header-inner{gap:8px;}
+    .brand{gap:6px;}
+    .brand-logo{height:22px;}
+    .header-actions{gap:6px;}
+    .btn-cart{width:35px;height:35px;}
+    .btn-shop-nav{width:35px;height:35px;}
+    .btn-wa-mini{width:35px;height:35px;padding:0;justify-content:center;}
+    .brand-name{font-size:12.5px;}
+  }
+  @media (max-width:375px){
+    .brand-name{
+      white-space:normal;
+      overflow:visible;
+      text-overflow:clip;
+      line-height:1.2;
+    }
   }
 
   .header-actions{
@@ -168,6 +188,25 @@
   @media(hover:hover){
     .btn-cart:hover{background:rgba(245,169,76,0.26);}
   }
+  .btn-shop-nav{
+    flex:none;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--beam);
+    color:var(--bg-void);
+    font-weight:800;
+    font-size:12.5px;
+    padding:9px 14px;
+    border-radius:999px;
+    white-space:nowrap;
+    transition:background .2s var(--ease), transform .2s var(--ease);
+  }
+  .btn-shop-nav:active{transform:scale(0.96);}
+  @media(hover:hover){
+    .btn-shop-nav:hover{background:var(--beam-bright);}
+  }
+
   .cart-badge{
     position:absolute;
     top:-4px;right:-4px;
@@ -335,6 +374,18 @@
   @media(hover:hover){
     .btn-wa-lg:hover{background:var(--wa-dark);box-shadow:0 18px 34px -8px rgba(37,211,102,0.55);}
   }
+
+  /* teaser "lihat semua produk" di homepage -- pakai style tombol besar yang
+     sama, tapi warnanya oranye (brand), bukan hijau WA */
+  .btn-shop-teaser{
+    background:var(--beam);
+    box-shadow:0 14px 30px -8px rgba(245,169,76,0.4);
+  }
+  .btn-shop-teaser:active{background:var(--beam);}
+  @media(hover:hover){
+    .btn-shop-teaser:hover{background:var(--beam-bright);}
+  }
+
   .cta-microcopy{
     text-align:center;
     font-size:12.5px;
@@ -500,6 +551,145 @@
     font-size:13.5px;
     color:var(--on-screen-muted);
   }
+
+  /* ============================================================
+     HALAMAN PRODUK (products.html) — search, filter, sort
+     ============================================================ */
+  .products-page-head{
+    padding:28px 0 8px;
+  }
+  .back-to-home{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--text-muted);
+    margin-bottom:14px;
+  }
+  .back-to-home svg{flex:none;}
+  @media(hover:hover){
+    .back-to-home:hover{color:var(--beam-bright);}
+  }
+
+  .products-filter-zone{padding:8px 0 20px;}
+  .search-box{
+    position:relative;
+    display:flex;
+    align-items:center;
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    border-radius:999px;
+    padding:12px 16px;
+    gap:10px;
+    margin-bottom:18px;
+    color:var(--text-muted);
+  }
+  .search-box input{
+    flex:1;
+    min-width:0;
+    background:none;
+    border:none;
+    outline:none;
+    font-family:inherit;
+    font-size:14px;
+    color:var(--text);
+  }
+  .search-box input::placeholder{color:var(--text-muted);}
+  .search-clear{
+    flex:none;
+    width:22px;height:22px;
+    border-radius:50%;
+    background:var(--bg-void);
+    color:var(--text-muted);
+    font-size:16px;
+    line-height:1;
+  }
+
+  .filter-row{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .filter-group{display:flex;flex-direction:column;gap:8px;}
+  .filter-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+  }
+  .filter-pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .filter-pill{
+    flex:none;
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    color:var(--text-muted);
+    font-size:12.5px;
+    font-weight:700;
+    padding:8px 14px;
+    border-radius:999px;
+    white-space:nowrap;
+    transition:background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .filter-pill.is-active{
+    background:var(--beam);
+    border-color:var(--beam);
+    color:var(--bg-void);
+  }
+  .filter-pill:active{transform:scale(0.96);}
+  @media(hover:hover){
+    .filter-pill:not(.is-active):hover{border-color:var(--beam);color:var(--beam-bright);}
+  }
+
+  .sort-select{
+    font-family:inherit;
+    font-size:13px;
+    font-weight:700;
+    color:var(--text);
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    border-radius:999px;
+    padding:9px 14px;
+    max-width:220px;
+  }
+
+  .filter-status-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid var(--line-soft);
+  }
+  .filter-result-count{font-size:12.5px;color:var(--text-muted);}
+  .filter-reset-btn{
+    flex:none;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--beam-bright);
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+
+  .products-page-grid{padding-top:0;padding-bottom:48px;}
+
+  .filter-empty-state{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:56px 20px;
+    color:var(--text-muted);
+  }
+  .filter-empty-state svg{margin-bottom:14px;opacity:0.5;}
+  .filter-empty-state h3{font-size:16px;color:var(--text);margin-bottom:6px;}
+  .filter-empty-state p{font-size:13px;margin-bottom:18px;max-width:34ch;}
 
   /* ============================================================
      BELANJA PRODUK — katalog produk yang bisa dibeli
@@ -1347,6 +1537,9 @@
     .section-head{margin-bottom:32px;}
     .section-title{font-size:27px;}
     .section-desc{font-size:14.5px;}
+
+    .filter-row{flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:22px;}
+    .filter-group-sort{margin-left:auto;}
 
     .hero{padding-top:60px;padding-bottom:52px;}
     .hero h1{font-size:38px;}

@@ -137,6 +137,87 @@
   }
   .btn-wa-mini svg{width:15px;height:15px;flex:none;}
   .btn-wa-mini:active{transform:scale(0.96);}
+
+  /* di layar sangat sempit, tombol WA di header jadi ikon aja -- kasih ruang
+     ke nama brand supaya gak kepotong (bukan cuma di-ellipsis) */
+  @media (max-width:400px){
+    .btn-wa-mini{padding:9px 11px;}
+    .btn-wa-mini-label{display:none;}
+    .brand-name{font-size:14px;}
+  }
+
+  .header-actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn-cart{
+    position:relative;
+    flex:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:38px;height:38px;
+    border-radius:999px;
+    background:var(--beam-soft);
+    color:var(--beam-bright);
+    border:1px solid var(--line-soft);
+    transition:transform .2s var(--ease), background .2s var(--ease);
+  }
+  .btn-cart:active{transform:scale(0.93);}
+  @media(hover:hover){
+    .btn-cart:hover{background:rgba(245,169,76,0.26);}
+  }
+  .cart-badge{
+    position:absolute;
+    top:-4px;right:-4px;
+    min-width:18px;
+    height:18px;
+    padding:0 4px;
+    border-radius:999px;
+    background:var(--beam);
+    color:var(--bg-void);
+    font-size:10.5px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+  }
+
+  /* ---- running text: alasan belanja, jalan otomatis ---- */
+  .running-text{
+    overflow:hidden;
+    background:var(--beam-soft);
+    border-top:1px solid var(--line-soft);
+    padding:8px 0;
+  }
+  .running-text-track{
+    display:flex;
+    align-items:center;
+    width:max-content;
+    white-space:nowrap;
+    animation:running-text-scroll 26s linear infinite;
+  }
+  .running-text-item{
+    font-size:12px;
+    font-weight:700;
+    color:var(--beam-bright);
+    letter-spacing:0.01em;
+  }
+  .running-text-sep{
+    color:var(--beam);
+    opacity:0.6;
+    margin:0 14px;
+    font-size:11px;
+  }
+  @keyframes running-text-scroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+  }
+  @media(hover:hover){
+    .running-text:hover .running-text-track{animation-play-state:paused;}
+  }
   @media(hover:hover){
     .btn-wa-mini:hover{background:var(--wa-dark);}
   }
@@ -205,6 +286,7 @@
     font-size:29px;
     margin-bottom:12px;
   }
+  .hero-break{display:none;}
   .hero h1 em{
     font-style:normal;
     background:linear-gradient(90deg, var(--beam) 0%, #d97d1f 100%);
@@ -225,6 +307,7 @@
   }
 
   .btn-wa-lg{
+    position:relative;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -241,6 +324,14 @@
   }
   .btn-wa-lg svg{width:22px;height:22px;flex:none;}
   .btn-wa-lg:active{transform:scale(0.97);}
+
+  /* glow halus di tombol CTA utama hero -- animasi sama kayak ikon-ikon kecil (icon-glow),
+     bukan cincin membesar yang kemarin kebesaran. Shadow tombolnya sendiri tetap ada. */
+  .btn-wa-lg-ringed{animation:icon-glow-wa 2.6s ease-in-out infinite;}
+  @keyframes icon-glow-wa{
+    0%,100%{box-shadow:0 14px 30px -8px rgba(37,211,102,0.45), 0 0 0 0 rgba(37,211,102,0.0);}
+    50%{box-shadow:0 14px 30px -8px rgba(37,211,102,0.45), 0 0 0 8px rgba(37,211,102,0.22);}
+  }
   @media(hover:hover){
     .btn-wa-lg:hover{background:var(--wa-dark);box-shadow:0 18px 34px -8px rgba(37,211,102,0.55);}
   }
@@ -275,6 +366,12 @@
     font-size:23px;
     color:var(--text);
   }
+  .section-desc{
+    margin-top:8px;
+    font-size:13.5px;
+    color:var(--text-muted);
+    max-width:52ch;
+  }
   .divider{
     height:1px;
     background:linear-gradient(90deg, transparent, var(--line-soft) 20%, var(--line-soft) 80%, transparent);
@@ -288,6 +385,31 @@
   .reveal.is-visible{
     opacity:1;
     transform:translateY(0);
+  }
+
+  /* ---- animasi ikon: muncul dengan pop + putar dikit ---- */
+  @keyframes icon-pop{
+    0%{transform:scale(0.3) rotate(-20deg);opacity:0;}
+    55%{transform:scale(1.2) rotate(8deg);opacity:1;}
+    75%{transform:scale(0.94) rotate(-3deg);}
+    100%{transform:scale(1) rotate(0deg);}
+  }
+  /* ---- animasi ikon: goyang pas disentuh/hover ---- */
+  @keyframes icon-wiggle{
+    0%,100%{transform:rotate(0) scale(1);}
+    25%{transform:rotate(-12deg) scale(1.08);}
+    50%{transform:rotate(10deg) scale(1.08);}
+    75%{transform:rotate(-6deg) scale(1.04);}
+  }
+  /* ---- animasi ikon: glow halus terus-menerus (warna tetap sama, cuma sinarnya berdenyut) ---- */
+  @keyframes icon-glow{
+    0%,100%{box-shadow:0 0 0 0 rgba(245,169,76,0.0);}
+    50%{box-shadow:0 0 0 6px rgba(245,169,76,0.16);}
+  }
+  /* varian buat cert-badge: pertahankan drop shadow-nya yang sudah ada, tambah cincin glow */
+  @keyframes icon-glow-badge{
+    0%,100%{box-shadow:0 8px 16px -4px rgba(0,0,0,0.55), 0 0 0 0 rgba(245,169,76,0.0);}
+    50%{box-shadow:0 8px 16px -4px rgba(0,0,0,0.55), 0 0 0 6px rgba(245,169,76,0.25);}
   }
 
   /* ============================================================
@@ -316,8 +438,13 @@
     display:flex;
     align-items:center;
     justify-content:center;
+    animation:icon-glow 2.6s ease-in-out infinite;
   }
   .trust-icon svg{display:block;}
+  .trust-card.reveal.is-visible .trust-icon svg{animation:icon-pop .6s var(--ease) backwards;}
+  .trust-card:nth-child(1) .trust-icon svg{animation-delay:.05s;}
+  .trust-card:nth-child(2) .trust-icon svg{animation-delay:.15s;}
+  .trust-card:nth-child(3) .trust-icon svg{animation-delay:.25s;}
   .trust-card h3{
     font-size:16px;
     color:var(--text);
@@ -348,13 +475,17 @@
     flex:none;
     width:44px;height:44px;
     border-radius:11px;
-    background:var(--screen-dim);
-    color:var(--beam-bright);
+    background:var(--beam);
+    color:var(--screen);
     display:flex;
     align-items:center;
     justify-content:center;
   }
   .product-emoji svg{display:block;}
+  .product-card.reveal.is-visible .product-emoji svg{animation:icon-pop .6s var(--ease) backwards;}
+  .product-card:nth-child(1) .product-emoji svg{animation-delay:.05s;}
+  .product-card:nth-child(2) .product-emoji svg{animation-delay:.15s;}
+  .product-card:nth-child(3) .product-emoji svg{animation-delay:.25s;}
   .product-card h3{
     font-size:16px;
     color:var(--on-screen);
@@ -364,6 +495,319 @@
     font-size:13.5px;
     color:var(--on-screen-muted);
   }
+
+  /* ============================================================
+     BELANJA PRODUK — katalog produk yang bisa dibeli
+     ============================================================ */
+  .shop-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .shop-card{
+    background:var(--bg-surface);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-md);
+    padding:18px;
+    display:flex;
+    gap:14px;
+  }
+  .shop-card-icon{
+    flex:none;
+    width:52px;height:52px;
+    border-radius:12px;
+    background:var(--beam-soft);
+    color:var(--beam-bright);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    animation:icon-glow 2.6s ease-in-out infinite;
+  }
+  .shop-card-icon svg{display:block;}
+  .shop-card.reveal.is-visible .shop-card-icon svg{animation:icon-pop .6s var(--ease) backwards;}
+  .shop-card-body{flex:1;min-width:0;}
+  .shop-card-brand{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--beam);
+  }
+  .shop-card-body h3{
+    font-size:15.5px;
+    color:var(--text);
+    margin:2px 0 4px;
+  }
+  .shop-card-spec, .shop-card-ports{
+    font-size:12.5px;
+    color:var(--text-muted);
+    line-height:1.5;
+  }
+  .shop-card-price{
+    font-size:17px;
+    font-weight:800;
+    color:var(--beam-bright);
+    margin-top:8px;
+  }
+  .shop-price-note{
+    display:block;
+    font-size:10.5px;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+  .shop-card-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:12px;
+    flex-wrap:wrap;
+  }
+  .shop-qty{
+    display:inline-flex;
+    align-items:center;
+    gap:2px;
+    background:var(--bg-void);
+    border:1px solid var(--line-soft);
+    border-radius:999px;
+    padding:4px;
+  }
+  .shop-qty-btn{
+    width:26px;height:26px;
+    border-radius:50%;
+    background:transparent;
+    color:var(--text);
+    font-size:16px;
+    font-weight:700;
+    line-height:1;
+    transition:background .2s var(--ease);
+  }
+  .shop-qty-btn:active{background:var(--beam-soft);}
+  .shop-qty-val{
+    min-width:22px;
+    text-align:center;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--text);
+  }
+  .btn-add-cart{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--beam);
+    color:var(--bg-void);
+    font-weight:800;
+    font-size:12.5px;
+    padding:9px 14px;
+    border-radius:999px;
+    transition:background .2s var(--ease), transform .2s var(--ease);
+  }
+  .btn-add-cart:active{transform:scale(0.95);}
+  @media(hover:hover){
+    .btn-add-cart:hover{background:var(--beam-bright);}
+  }
+
+  /* ============================================================
+     KERANJANG & CHECKOUT — drawer + modal
+     ============================================================ */
+  .cart-drawer, .modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    background:rgba(10,11,16,0.6);
+    -webkit-backdrop-filter:blur(3px);
+    backdrop-filter:blur(3px);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .25s var(--ease), visibility .25s;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .modal-overlay{
+    justify-content:center;
+    align-items:center;
+    padding:var(--gutter);
+  }
+  .cart-drawer.is-open, .modal-overlay.is-open{
+    opacity:1;
+    visibility:visible;
+  }
+  .cart-panel, .modal-panel{
+    background:var(--bg-surface);
+    width:100%;
+    max-width:420px;
+    max-height:100vh;
+    display:flex;
+    flex-direction:column;
+    transform:translateX(24px);
+    transition:transform .3s var(--ease);
+  }
+  .cart-drawer.is-open .cart-panel{transform:translateX(0);}
+  .modal-panel{
+    border-radius:var(--radius-lg);
+    max-height:88vh;
+    transform:translateY(16px) scale(0.98);
+  }
+  .modal-panel-sm{max-width:360px;}
+  .modal-overlay.is-open .modal-panel{transform:translateY(0) scale(1);}
+
+  .cart-panel-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 20px;
+    border-bottom:1px solid var(--line-soft);
+    flex:none;
+  }
+  .cart-panel-head h2{font-size:17px;color:var(--text);}
+  .modal-close-btn{
+    width:32px;height:32px;
+    border-radius:50%;
+    background:var(--bg-void);
+    color:var(--text-muted);
+    font-size:20px;
+    line-height:1;
+    transition:background .2s var(--ease);
+  }
+  .modal-close-btn:active{background:var(--beam-soft);}
+
+  .cart-panel-body, .modal-panel-body{
+    padding:16px 20px;
+    overflow-y:auto;
+    flex:1;
+  }
+  .cart-empty{
+    font-size:13.5px;
+    color:var(--text-muted);
+    text-align:center;
+    padding:30px 0;
+  }
+  .cart-list{display:flex;flex-direction:column;gap:12px;}
+  .cart-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .cart-row-icon{
+    flex:none;
+    width:38px;height:38px;
+    border-radius:10px;
+    background:var(--beam-soft);
+    color:var(--beam-bright);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .cart-row-info{flex:1;min-width:0;}
+  .cart-row-info h4{
+    font-size:13.5px;
+    color:var(--text);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .cart-row-price{font-size:11.5px;color:var(--text-muted);}
+  .cart-row-qty{
+    flex:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    font-weight:700;
+    color:var(--text);
+  }
+  .cart-qty-btn{
+    width:22px;height:22px;
+    border-radius:50%;
+    background:var(--bg-void);
+    color:var(--text);
+    font-size:14px;
+    line-height:1;
+  }
+  .cart-row-remove{
+    flex:none;
+    color:var(--text-muted);
+    padding:4px;
+  }
+  .cart-row-remove svg{display:block;}
+
+  .cart-panel-footer{
+    flex:none;
+    padding:16px 20px 20px;
+    border-top:1px solid var(--line-soft);
+  }
+  .cart-total-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:15px;
+    font-weight:800;
+    color:var(--text);
+    margin-bottom:12px;
+  }
+  .cart-total-row span:last-child{color:var(--beam-bright);}
+
+  .checkout-summary{
+    background:var(--bg-void);
+    border-radius:var(--radius-sm);
+    padding:12px 14px;
+    margin-bottom:4px;
+  }
+  .checkout-summary-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:12.5px;
+    color:var(--text-muted);
+    padding:4px 0;
+  }
+  .checkout-total-row{margin-top:10px;}
+  .checkout-form{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:16px;
+  }
+  .form-field{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--text-muted);
+  }
+  .form-field input, .form-field textarea{
+    font-family:inherit;
+    font-size:14px;
+    color:var(--text);
+    background:var(--bg-void);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-sm);
+    padding:10px 12px;
+    resize:vertical;
+  }
+  .form-field input:focus, .form-field textarea:focus{
+    outline:2px solid var(--beam);
+    outline-offset:1px;
+  }
+  .checkout-form .btn-wa-lg{
+    width:100%;
+    justify-content:center;
+    margin-top:4px;
+  }
+
+  .order-confirm-body{
+    padding:28px 22px 24px;
+    text-align:center;
+  }
+  .order-confirm-icon{
+    color:var(--wa);
+    background:rgba(37,211,102,0.14);
+    border-radius:50%;
+    padding:12px;
+    margin-bottom:14px;
+  }
+  .order-confirm-body h2{font-size:18px;color:var(--text);margin-bottom:8px;}
+  .order-confirm-body p{font-size:13px;color:var(--text-muted);margin-bottom:14px;}
+  .order-confirm-body .btn-wa-lg{width:100%;justify-content:center;margin-top:6px;}
 
   /* ============================================================
      COCOK UNTUK SIAPA — audience grid
@@ -387,6 +831,11 @@
     margin-bottom:10px;
   }
   .audience-emoji svg{display:block;}
+  .audience-card.reveal.is-visible .audience-emoji svg{animation:icon-pop .6s var(--ease) backwards;}
+  .audience-card:nth-child(1) .audience-emoji svg{animation-delay:.05s;}
+  .audience-card:nth-child(2) .audience-emoji svg{animation-delay:.13s;}
+  .audience-card:nth-child(3) .audience-emoji svg{animation-delay:.21s;}
+  .audience-card:nth-child(4) .audience-emoji svg{animation-delay:.29s;}
   .audience-card h3{
     font-size:14.5px;
     color:var(--text);
@@ -456,6 +905,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
+    animation:icon-glow 2.6s ease-in-out infinite;
   }
   .contact-icon svg{display:block;}
   .contact-row h3{
@@ -545,10 +995,40 @@
     100%{transform:scale(1.7);opacity:0;}
   }
 
+  /* ---- ikon goyang pas card disentuh/di-hover (playful feedback) ---- */
+  .trust-card:active .trust-icon svg,
+  .product-card:active .product-emoji svg,
+  .audience-card:active .audience-emoji svg,
+  .cert-card:active .cert-badge svg,
+  .store-photo:active .store-photo-icon svg,
+  .contact-row:active .contact-icon svg{
+    animation:icon-wiggle .5s var(--ease);
+  }
+  @media(hover:hover){
+    .trust-card:hover .trust-icon svg,
+    .product-card:hover .product-emoji svg,
+    .audience-card:hover .audience-emoji svg,
+    .cert-card:hover .cert-badge svg,
+    .store-photo:hover .store-photo-icon svg,
+    .contact-row:hover .contact-icon svg{
+      animation:icon-wiggle .5s var(--ease);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .reveal{opacity:1;transform:none;transition:none;}
     .fab-ring{animation:none;display:none;}
+    .btn-wa-lg-ringed{animation:none;}
+    .trust-icon svg,.product-emoji svg,.audience-emoji svg,
+    .cert-badge svg,.store-photo-icon svg,.contact-icon svg,
+    .shop-card-icon svg{
+      animation:none!important;
+    }
+    .trust-icon,.contact-icon,.shop-card-icon,.cert-badge{
+      animation:none!important;
+    }
+    .running-text-track{animation:none!important;transform:none;}
   }
 
   /* ============================================================
@@ -584,8 +1064,12 @@
     align-items:center;
     justify-content:center;
     box-shadow:0 8px 16px -4px rgba(0,0,0,0.55);
+    animation:icon-glow-badge 2.6s ease-in-out infinite;
   }
   .cert-badge svg{display:block;}
+  .cert-card.reveal.is-visible .cert-badge svg{animation:icon-pop .6s var(--ease) backwards;}
+  .cert-card:nth-child(1) .cert-badge svg{animation-delay:.05s;}
+  .cert-card:nth-child(2) .cert-badge svg{animation-delay:.18s;}
   .cert-thumb-wrap{
     background:#fff;
     border-radius:10px;
@@ -738,6 +1222,7 @@
     display:inline-flex;
   }
   .store-photo-icon svg{display:block;}
+  .store-photo.reveal.is-visible .store-photo-icon svg{animation:icon-pop .6s var(--ease) .1s backwards;}
 
   /* ============================================================
      MEREK YANG KAMI SEDIAKAN
@@ -819,4 +1304,104 @@
   @media (min-width:540px){
     :root{--max-w:520px;}
     .hero h1{font-size:33px;}
+  }
+
+  /* ============================================================
+     TABLET (>=768px) — layout mulai berubah, bukan cuma melebar
+     ============================================================ */
+  @media (min-width:768px){
+    :root{
+      --max-w:700px;
+      --gutter:28px;
+    }
+    section{padding-top:64px;padding-bottom:64px;}
+    .section-head{margin-bottom:32px;}
+    .section-title{font-size:27px;}
+    .section-desc{font-size:14.5px;}
+
+    .hero{padding-top:60px;padding-bottom:52px;}
+    .hero h1{font-size:38px;}
+
+    .trust-grid{grid-template-columns:repeat(3,1fr);gap:16px;}
+    .product-list{grid-template-columns:repeat(3,1fr);}
+    .product-card{flex-direction:column;align-items:flex-start;text-align:left;}
+    .audience-grid{grid-template-columns:repeat(4,1fr);}
+    .cert-grid{grid-template-columns:repeat(2,1fr);gap:18px;}
+    .brosur-grid{grid-template-columns:repeat(3,1fr);}
+    .shop-grid{grid-template-columns:repeat(2,1fr);}
+    .brand-grid{grid-template-columns:repeat(4,1fr);}
+
+    .cart-panel{max-width:400px;}
+  }
+
+  /* ============================================================
+     DESKTOP (>=1024px) — layout khusus desktop, memanfaatkan ruang
+     layar secara proporsional (bukan mobile yang di-scale)
+     ============================================================ */
+  @media (min-width:1024px){
+    :root{
+      --max-w:1120px;
+      --gutter:40px;
+    }
+    section{padding-top:88px;padding-bottom:88px;}
+    .section-head{margin-bottom:36px;}
+    .section-title{font-size:32px;}
+    .section-desc{font-size:15px;max-width:60ch;}
+
+    .header-inner{padding-top:18px;padding-bottom:18px;}
+    .product-card{align-items:center;text-align:center;}
+    .product-emoji{margin:0 auto;}
+    .brand-logo{height:32px;width:auto;}
+    .brand-name{font-size:15px;}
+
+    .hero{padding-top:88px;padding-bottom:76px;text-align:left;}
+    .hero h1{font-size:46px;line-height:1.15;}
+    .hero-break{display:block;}
+    .eyebrow{font-size:13.5px;}
+    .hero-sub{font-size:16px;}
+    .hero-cta-zone{margin-top:8px;}
+    .hero-cta-zone .cta-microcopy{
+      text-align:center;
+      margin-top:14px;
+    }
+    .hero .beam-glow{width:480px;height:480px;top:-160px;right:-160px;}
+
+    .trust-grid{gap:20px;}
+    .trust-card{padding:24px;}
+    .audience-grid{gap:16px;}
+    .brosur-grid{grid-template-columns:repeat(3,1fr);gap:18px;}
+    .shop-grid{grid-template-columns:repeat(3,1fr);gap:16px;}
+    .brand-grid{grid-template-columns:repeat(8,1fr);}
+
+    .cert-grid{gap:22px;}
+
+    /* dokumentasi stok & testimoni: strip geser jadi lebih lega, bukan dipaksa grid penuh */
+    .testi-scroll{padding-left:0;padding-right:0;}
+    .testi-item{width:132px;height:234px;}
+
+    .store-photo{max-width:600px;margin-left:auto;margin-right:auto;}
+    .contact-card{max-width:600px;margin:0 auto;}
+
+    .cart-panel{max-width:420px;}
+    .modal-panel{max-width:480px;}
+  }
+
+  @media (min-width:1280px){
+    :root{--max-w:1200px;}
+  }
+
+  /* di layar yang beneran lega, keterangan CTA bisa mepet ke samping tombol
+     tanpa numpuk/kepotong -- tombolnya sendiri tetap 100% lebar (sama
+     dengan kotak putih) di ukuran layar manapun, ini cuma soal penempatan
+     teks keterangannya aja */
+  @media (min-width:1680px){
+    .hero-cta-zone .cta-microcopy{
+      position:absolute;
+      top:50%;
+      left:100%;
+      transform:translateY(-50%);
+      margin-top:0;
+      margin-left:20px;
+      width:220px;
+    }
   }

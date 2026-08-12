@@ -101,12 +101,16 @@
     <div class="filter-row">
       <div class="filter-group">
         <span class="filter-label">Kategori</span>
-        <div class="filter-pills" id="categoryPills" role="group" aria-label="Filter kategori">
+        <div class="filter-pills" id="categoryPills" role="group" aria-label="Filter kategori produk">
           <button type="button" class="filter-pill is-active" data-category="all">Semua</button>
-          <button type="button" class="filter-pill" data-category="Epson">Epson</button>
-          <button type="button" class="filter-pill" data-category="InFocus">InFocus</button>
-          <button type="button" class="filter-pill" data-category="SPC">SPC</button>
         </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Merek</span>
+        <select id="brandSelect" class="sort-select">
+          <option value="all">Semua Merek</option>
+        </select>
       </div>
 
       <div class="filter-group">

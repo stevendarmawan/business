@@ -687,6 +687,7 @@
     padding:56px 20px;
     color:var(--text-muted);
   }
+  .filter-empty-state[hidden]{display:none;}
   .filter-empty-state svg{margin-bottom:14px;opacity:0.5;}
   .filter-empty-state h3{font-size:16px;color:var(--text);margin-bottom:6px;}
   .filter-empty-state p{font-size:13px;margin-bottom:18px;max-width:34ch;}

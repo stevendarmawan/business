@@ -1,11 +1,17 @@
 /* ====================================================================
-   HALAMAN BELANJA PRODUK — search, filter kategori, filter harga, sort
+   HALAMAN BELANJA PRODUK — search, filter kategori, filter merek,
+   filter harga, sort
    ====================================================================
    File ini KHUSUS products.html (tidak dipakai index.html). Logic
    keranjang/checkout tetap di js/cart.js -- di sini cuma nentuin
    produk mana yang ditampilkan, lalu manggil window.dopRenderCatalog()
    (fungsi yang sama dipakai di cart.js) supaya kartu & tombolnya
    tetap konsisten dan tidak duplikasi kode.
+
+   CATATAN: "kategori" di sini artinya JENIS produk (Proyektor, dan
+   nanti kalau ada produk baru misal Screen/Printer, tinggal tambah
+   pill baru di products.html + data "category" di js/products.js).
+   Ini beda sama "merek" (brand) yang isinya Epson/BenQ/Acer/dst.
    ==================================================================== */
 (function () {
   "use strict";
@@ -13,6 +19,7 @@
   var state = {
     search: "",
     category: "all",
+    brand: "all",
     priceMin: 0,
     priceMax: 999999999,
     sort: "default"
@@ -26,9 +33,10 @@
         p.brand.toLowerCase().indexOf(q) !== -1 ||
         p.specLine.toLowerCase().indexOf(q) !== -1 ||
         p.ports.toLowerCase().indexOf(q) !== -1;
-      var matchCategory = state.category === "all" || p.brand === state.category;
+      var matchCategory = state.category === "all" || p.category === state.category;
+      var matchBrand = state.brand === "all" || p.brand === state.brand;
       var matchPrice = p.price >= state.priceMin && p.price <= state.priceMax;
-      return matchSearch && matchCategory && matchPrice;
+      return matchSearch && matchCategory && matchBrand && matchPrice;
     });
 
     if (state.sort === "price-asc") {
@@ -43,7 +51,7 @@
   }
 
   function hasActiveFilter() {
-    return !!state.search || state.category !== "all" ||
+    return !!state.search || state.category !== "all" || state.brand !== "all" ||
       state.priceMin !== 0 || state.priceMax !== 999999999 ||
       state.sort !== "default";
   }
@@ -75,6 +83,7 @@
   function resetFilters() {
     state.search = "";
     state.category = "all";
+    state.brand = "all";
     state.priceMin = 0;
     state.priceMax = 999999999;
     state.sort = "default";
@@ -90,6 +99,9 @@
         b.classList.toggle("is-active", b.dataset.category === "all");
       });
     }
+    var brandSelect = document.getElementById("brandSelect");
+    if (brandSelect) brandSelect.value = "all";
+
     var pricePills = document.getElementById("pricePills");
     if (pricePills) {
       pricePills.querySelectorAll(".filter-pill").forEach(function (b) {
@@ -135,6 +147,14 @@
         categoryPills.querySelectorAll(".filter-pill").forEach(function (b) {
           b.classList.toggle("is-active", b === btn);
         });
+        render();
+      });
+    }
+
+    var brandSelect = document.getElementById("brandSelect");
+    if (brandSelect) {
+      brandSelect.addEventListener("change", function () {
+        state.brand = brandSelect.value;
         render();
       });
     }

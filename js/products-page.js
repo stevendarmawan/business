@@ -8,13 +8,49 @@
    (fungsi yang sama dipakai di cart.js) supaya kartu & tombolnya
    tetap konsisten dan tidak duplikasi kode.
 
-   CATATAN: "kategori" di sini artinya JENIS produk (Proyektor, dan
-   nanti kalau ada produk baru misal Screen/Printer, tinggal tambah
-   pill baru di products.html + data "category" di js/products.js).
-   Ini beda sama "merek" (brand) yang isinya Epson/BenQ/Acer/dst.
+   CATATAN: pilihan "Kategori" dan "Merek" di halaman ini dibuat
+   OTOMATIS dari data produk di js/products.js (field "category" dan
+   "brand") -- BUKAN ditulis manual di HTML. Jadi kalau nanti nambah
+   produk dengan kategori/merek baru, pilihan filternya otomatis
+   nambah sendiri, gak perlu edit products.html sama sekali.
    ==================================================================== */
 (function () {
   "use strict";
+
+  function buildDynamicFilters() {
+    if (typeof PRODUCTS === "undefined") return;
+
+    var categories = [];
+    var brands = [];
+    PRODUCTS.forEach(function (p) {
+      if (p.category && categories.indexOf(p.category) === -1) categories.push(p.category);
+      if (p.brand && brands.indexOf(p.brand) === -1) brands.push(p.brand);
+    });
+    categories.sort(function (a, b) { return a.localeCompare(b); });
+    brands.sort(function (a, b) { return a.localeCompare(b); });
+
+    var categoryPills = document.getElementById("categoryPills");
+    if (categoryPills) {
+      categories.forEach(function (cat) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "filter-pill";
+        btn.setAttribute("data-category", cat);
+        btn.textContent = cat;
+        categoryPills.appendChild(btn);
+      });
+    }
+
+    var brandSelect = document.getElementById("brandSelect");
+    if (brandSelect) {
+      brands.forEach(function (brand) {
+        var opt = document.createElement("option");
+        opt.value = brand;
+        opt.textContent = brand;
+        brandSelect.appendChild(opt);
+      });
+    }
+  }
 
   var state = {
     search: "",
@@ -117,6 +153,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     if (typeof PRODUCTS === "undefined") return;
 
+    buildDynamicFilters();
     render();
 
     var searchInput = document.getElementById("productSearch");

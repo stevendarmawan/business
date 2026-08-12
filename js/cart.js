@@ -352,6 +352,13 @@
     renderCatalog();
     renderAll();
 
+    // teaser jumlah produk di homepage -- otomatis ngikutin panjang PRODUCTS,
+    // jadi gak perlu diedit manual tiap kali nambah produk baru
+    var teaserCount = document.getElementById("teaserProductCount");
+    if (teaserCount && typeof PRODUCTS !== "undefined") {
+      teaserCount.textContent = PRODUCTS.length;
+    }
+
     // klik di dalam grid produk: ubah qty / tambah ke keranjang
     var shopGrid = document.getElementById("shopGrid");
     if (shopGrid) {

@@ -176,12 +176,42 @@
     var items = list || PRODUCTS;
 
     grid.innerHTML = items.map(function (p) {
+      // produk tanpa harga pasti (mis. "ASK" di pricelist) -- price: null.
+      // Jangan dipaksa tampil "Rp NaN" atau bisa ditambah ke keranjang;
+      // ganti dengan ajakan tanya harga langsung ke WA.
+      var hasPrice = typeof p.price === "number";
+
       var priceNote = p.priceIsEstimate
         ? '<span class="shop-price-note">Estimasi &middot; final dikonfirmasi via WA</span>'
         : "";
       var thumb = p.image
         ? '<div class="shop-card-thumb-wrap"><img class="shop-card-thumb" src="' + p.image + '" alt="' + p.name + '" loading="lazy"></div>'
         : '<div class="shop-card-thumb-wrap shop-card-thumb-fallback">' + iconSvg(p.icon, 30) + '</div>';
+
+      var pricingHtml = hasPrice
+        ? '<div class="shop-card-price">' + formatRupiah(p.price) + '</div>' + priceNote
+        : '<div class="shop-card-price shop-card-price-ask">Hubungi kami untuk harga</div>';
+
+      var actionsHtml = hasPrice
+        ? (
+            '<div class="shop-qty">' +
+              '<button type="button" class="shop-qty-btn" data-action="qty-dec" data-id="' + p.id + '" aria-label="Kurangi jumlah">-</button>' +
+              '<span class="shop-qty-val" data-qty-for="' + p.id + '">1</span>' +
+              '<button type="button" class="shop-qty-btn" data-action="qty-inc" data-id="' + p.id + '" aria-label="Tambah jumlah">+</button>' +
+            '</div>' +
+            '<button type="button" class="btn-add-cart" data-action="add" data-id="' + p.id + '">' +
+              iconSvg("cart", 16) + '<span>Tambah</span>' +
+            '</button>'
+          )
+        : (function () {
+            var waNumber = (typeof CONFIG !== "undefined" && CONFIG.waNumber) ? CONFIG.waNumber : "";
+            var waText = encodeURIComponent("Halo, saya mau tanya harga " + p.name);
+            return '<a class="btn-add-cart btn-ask-price" target="_blank" rel="noopener" ' +
+              'href="https://wa.me/' + waNumber + '?text=' + waText + '">' +
+              iconSvg("cart", 16) + '<span>Tanya via WA</span>' +
+            '</a>';
+          })();
+
       return (
         '<div class="shop-card reveal">' +
           '<div class="shop-card-top">' +
@@ -194,18 +224,10 @@
             '</div>' +
           '</div>' +
           '<div class="shop-card-pricing">' +
-            '<div class="shop-card-price">' + formatRupiah(p.price) + '</div>' +
-            priceNote +
+            pricingHtml +
           '</div>' +
           '<div class="shop-card-actions">' +
-            '<div class="shop-qty">' +
-              '<button type="button" class="shop-qty-btn" data-action="qty-dec" data-id="' + p.id + '" aria-label="Kurangi jumlah">-</button>' +
-              '<span class="shop-qty-val" data-qty-for="' + p.id + '">1</span>' +
-              '<button type="button" class="shop-qty-btn" data-action="qty-inc" data-id="' + p.id + '" aria-label="Tambah jumlah">+</button>' +
-            '</div>' +
-            '<button type="button" class="btn-add-cart" data-action="add" data-id="' + p.id + '">' +
-              iconSvg("cart", 16) + '<span>Tambah</span>' +
-            '</button>' +
+            actionsHtml +
           '</div>' +
         '</div>'
       );

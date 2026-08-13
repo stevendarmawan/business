@@ -71,14 +71,26 @@
         p.ports.toLowerCase().indexOf(q) !== -1;
       var matchCategory = state.category === "all" || p.category === state.category;
       var matchBrand = state.brand === "all" || p.brand === state.brand;
-      var matchPrice = p.price >= state.priceMin && p.price <= state.priceMax;
+      // produk tanpa harga pasti (price: null, tampil "Hubungi kami") selalu
+      // lolos filter rentang harga -- gak ada angka buat dibandingkan
+      var matchPrice = typeof p.price !== "number" ||
+        (p.price >= state.priceMin && p.price <= state.priceMax);
       return matchSearch && matchCategory && matchBrand && matchPrice;
     });
 
+    // urutan produk tanpa harga saat sort by harga: selalu taruh di akhir
     if (state.sort === "price-asc") {
-      list = list.slice().sort(function (a, b) { return a.price - b.price; });
+      list = list.slice().sort(function (a, b) {
+        if (typeof a.price !== "number") return 1;
+        if (typeof b.price !== "number") return -1;
+        return a.price - b.price;
+      });
     } else if (state.sort === "price-desc") {
-      list = list.slice().sort(function (a, b) { return b.price - a.price; });
+      list = list.slice().sort(function (a, b) {
+        if (typeof a.price !== "number") return 1;
+        if (typeof b.price !== "number") return -1;
+        return b.price - a.price;
+      });
     } else if (state.sort === "name-asc") {
       list = list.slice().sort(function (a, b) { return a.name.localeCompare(b.name); });
     }

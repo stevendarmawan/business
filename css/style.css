@@ -757,9 +757,13 @@
     font-size:10.5px;
     color:var(--text-muted);
     line-height:1.35;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:3;
+    overflow:hidden;
   }
   .shop-card-ports{display:none;}
-  .shop-card-pricing{width:100%;}
+  .shop-card-pricing{width:100%;margin-top:auto;}
   .shop-card-price{
     font-size:14.5px;
     font-weight:800;
@@ -772,6 +776,15 @@
     color:var(--text-muted);
     margin-top:2px;
     text-align:center;
+  }
+  .shop-card-price-ask{
+    font-size:12.5px;
+    color:var(--text-muted);
+    font-weight:700;
+  }
+  .btn-ask-price{background:var(--text-muted);}
+  @media(hover:hover){
+    .btn-ask-price:hover{background:var(--text);}
   }
   .shop-card-actions{
     display:flex;
@@ -1558,7 +1571,10 @@
     .shop-card-brand{font-size:11px;}
     .shop-card-body h3{font-size:15px;white-space:normal;overflow:visible;text-overflow:clip;}
     .shop-card-spec, .shop-card-ports{
-      display:block;
+      display:-webkit-box;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:3;
+      overflow:hidden;
       font-size:12px;
       line-height:1.4;
     }

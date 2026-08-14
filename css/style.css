@@ -146,6 +146,15 @@
     .brand-name{font-size:14px;}
     .btn-shop-nav{padding:0;width:38px;justify-content:center;}
     .btn-shop-nav-label{display:none;}
+    /* ikon tas belanja di header -- ukuran disamakan proporsinya dengan
+       ikon keranjang & WA di sebelahnya (sekitar 22px), TIDAK sebesar
+       percobaan sebelumnya (44px, kebesaran) dan TIDAK sekecil semula
+       (kebetulan ke-shrink jadi ~7px karena bug flexbox di bawah).
+       flex:none WAJIB -- tanpa ini flexbox akan mengecilkan lebar svg
+       supaya muat di tombol yang sempit (38px/35px), sementara tinggi
+       tetap sesuai CSS -- hasilnya svg jadi gepeng dan preserveAspectRatio
+       otomatis mengecilkan seluruh isi ikon, itu penyebab awal masalahnya. */
+    .btn-shop-nav svg{width:22px;height:22px;flex:none;}
   }
   @media (max-width:400px){
     .header-inner{gap:8px;}

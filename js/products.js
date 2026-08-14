@@ -2723,5 +2723,304 @@ const PRODUCTS = [
     price: 6100000,
     priceIsEstimate: true,
     icon: "projector"
+  },
+
+  /* ====================================================================
+     BATCH BARU — BAFO & NETLINE (aksesoris HDMI: splitter, switch,
+     extender, wireless extender, kabel HDMI). Kategori "Aksesoris" (sudah
+     ada dari batch breket/monitor sebelumnya).
+     Catatan: 2 item di pricelist ("KABEL HDMI M-F 3M V2.0" dan
+     "KABEL HDMI M-F 5M V2.0") SENGAJA tidak dimasukkan -- satu-satunya foto
+     yang tersedia untuk nama itu adalah kabel HDMI-HDMI biasa (male-male),
+     bukan kabel male-female seperti namanya. Daripada pasang foto yang
+     kemungkinan salah produk, item ini menunggu foto yang benar dulu.
+     ==================================================================== */
+  {
+    image: "assets/img/bafo-bf-140.jpg",
+    id: "bafo-140",
+    brand: "BAFO",
+    name: "BAFO BF-140 HDMI Splitter Extender 2P 1080p",
+    category: "Aksesoris",
+    specLine: "Extender 2 Port · 1080p",
+    ports: "HDMI In | 2x HDMI Out (Splitter+Extender)",
+    price: 1450000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-141.jpg",
+    id: "bafo-141",
+    brand: "BAFO",
+    name: "BAFO BF-141 HDMI Splitter Extender 4P 1080p",
+    category: "Aksesoris",
+    specLine: "Extender 4 Port · 1080p",
+    ports: "HDMI In | 4x HDMI Out (Splitter+Extender)",
+    price: 1950000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-143.jpg",
+    id: "bafo-143",
+    brand: "BAFO",
+    name: "BAFO BF-143 HDMI Splitter Extender 2P 4K",
+    category: "Aksesoris",
+    specLine: "Extender 2 Port · 4K",
+    ports: "HDMI In | 2x HDMI Out (Splitter+Extender)",
+    price: 1950000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-144.jpg",
+    id: "bafo-144",
+    brand: "BAFO",
+    name: "BAFO BF-144 HDMI Splitter Extender 4P 4K",
+    category: "Aksesoris",
+    specLine: "Extender 4 Port · 4K",
+    ports: "HDMI In | 4x HDMI Out (Splitter+Extender)",
+    price: 2700000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-380.jpg",
+    id: "bafo-380",
+    brand: "BAFO",
+    name: "BAFO BF-380 Wireless HDMI Extender (50M)",
+    category: "Aksesoris",
+    specLine: "Wireless HDMI Extender · Jarak 50M",
+    ports: "Transmitter + Receiver Wireless",
+    price: 2100000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-384d.jpg",
+    id: "bafo-384d",
+    brand: "BAFO",
+    name: "BAFO BF-384D Wireless HDMI Extender (200M)",
+    category: "Aksesoris",
+    specLine: "Wireless HDMI Extender · Jarak 200M",
+    ports: "Transmitter + Receiver Wireless",
+    price: 2300000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-130.jpg",
+    id: "bafo-130",
+    brand: "BAFO",
+    name: "BAFO BF-130 HDMI Splitter 1-2 4K 30Hz V1.4",
+    category: "Aksesoris",
+    specLine: "Splitter 1-2 · 4K 30Hz · HDMI V1.4",
+    ports: "1x HDMI In | 2x HDMI Out",
+    price: 400000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-131.jpg",
+    id: "bafo-131",
+    brand: "BAFO",
+    name: "BAFO BF-131 HDMI Splitter 1-4 4K 30Hz V1.4",
+    category: "Aksesoris",
+    specLine: "Splitter 1-4 · 4K 30Hz · HDMI V1.4",
+    ports: "1x HDMI In | 4x HDMI Out",
+    price: 500000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-132.jpg",
+    id: "bafo-132",
+    brand: "BAFO",
+    name: "BAFO BF-132 HDMI Splitter 1-8 4K 30Hz V1.4",
+    category: "Aksesoris",
+    specLine: "Splitter 1-8 · 4K 30Hz · HDMI V1.4",
+    ports: "1x HDMI In | 8x HDMI Out",
+    price: 800000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-134.jpg",
+    id: "bafo-134",
+    brand: "BAFO",
+    name: "BAFO BF-134 HDMI Splitter 1-2 4K 60Hz V2.0",
+    category: "Aksesoris",
+    specLine: "Splitter 1-2 · 4K 60Hz · HDMI V2.0",
+    ports: "1x HDMI In | 2x HDMI Out",
+    price: 600000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-135.jpg",
+    id: "bafo-135",
+    brand: "BAFO",
+    name: "BAFO BF-135 HDMI Splitter 1-4 4K 60Hz V2.0",
+    category: "Aksesoris",
+    specLine: "Splitter 1-4 · 4K 60Hz · HDMI V2.0",
+    ports: "1x HDMI In | 4x HDMI Out",
+    price: 800000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-136.jpg",
+    id: "bafo-136",
+    brand: "BAFO",
+    name: "BAFO BF-136 HDMI Splitter 1-8 4K 60Hz V2.0",
+    category: "Aksesoris",
+    specLine: "Splitter 1-8 · 4K 60Hz · HDMI V2.0",
+    ports: "1x HDMI In | 8x HDMI Out",
+    price: 1450000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-175.jpg",
+    id: "bafo-175",
+    brand: "BAFO",
+    name: "BAFO BF-175 HDMI Switch 4K 2 Port V2.0 (2in-1out)",
+    category: "Aksesoris",
+    specLine: "Switch 2 Port (2in-1out) · 4K · HDMI V2.0",
+    ports: "2x HDMI In | 1x HDMI Out",
+    price: 200000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-176.jpg",
+    id: "bafo-176",
+    brand: "BAFO",
+    name: "BAFO BF-176 HDMI Switch 4K 3 Port V2.0 (3in-1out)",
+    category: "Aksesoris",
+    specLine: "Switch 3 Port (3in-1out) · 4K · HDMI V2.0",
+    ports: "3x HDMI In | 1x HDMI Out",
+    price: 450000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-bf-178.jpg",
+    id: "bafo-178",
+    brand: "BAFO",
+    name: "BAFO BF-178 HDMI Switch 4K 5 Port V2.0 (5in-1out)",
+    category: "Aksesoris",
+    specLine: "Switch 5 Port (5in-1out) · 4K · HDMI V2.0",
+    ports: "5x HDMI In | 1x HDMI Out",
+    price: 500000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-kabel-hdmi-hdmi-10m.jpg",
+    id: "bafo-kabel-hdmi-hdmi-10m-v2-0",
+    brand: "BAFO",
+    name: "BAFO Kabel HDMI - HDMI 10M V2.0",
+    category: "Aksesoris",
+    specLine: "Kabel HDMI to HDMI · Panjang 10M",
+    ports: "HDMI V2.0",
+    price: 380000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-kabel-hdmi-hdmi-15m.jpg",
+    id: "bafo-kabel-hdmi-hdmi-15m-v2-0",
+    brand: "BAFO",
+    name: "BAFO Kabel HDMI - HDMI 15M V2.0",
+    category: "Aksesoris",
+    specLine: "Kabel HDMI to HDMI · Panjang 15M",
+    ports: "HDMI V2.0",
+    price: 500000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-kabel-hdmi-hdmi-20m.jpg",
+    id: "bafo-kabel-hdmi-hdmi-20m-v2-0",
+    brand: "BAFO",
+    name: "BAFO Kabel HDMI - HDMI 20M V2.0",
+    category: "Aksesoris",
+    specLine: "Kabel HDMI to HDMI · Panjang 20M",
+    ports: "HDMI V2.0",
+    price: 850000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/bafo-kabel-hdmi-hdmi-25m.jpg",
+    id: "bafo-kabel-hdmi-hdmi-25m-v2-0",
+    brand: "BAFO",
+    name: "BAFO Kabel HDMI - HDMI 25M V2.0",
+    category: "Aksesoris",
+    specLine: "Kabel HDMI to HDMI · Panjang 25M",
+    ports: "HDMI V2.0",
+    price: 1200000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/netline-hdmi-cable-5m.jpg",
+    id: "netline-hdmi-cable-5m-v2-0",
+    brand: "Netline",
+    name: "Netline HDMI Cable 5M V2.0",
+    category: "Aksesoris",
+    specLine: "Kabel HDMI to HDMI · Panjang 5M",
+    ports: "HDMI V2.0",
+    price: 160000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/netline-hdmi-cable-10m.jpg",
+    id: "netline-hdmi-cable-10m-v2-0",
+    brand: "Netline",
+    name: "Netline HDMI Cable 10M V2.0",
+    category: "Aksesoris",
+    specLine: "Kabel HDMI to HDMI · Panjang 10M",
+    ports: "HDMI V2.0",
+    price: 270000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/netline-hdmi-cable-15m.jpg",
+    id: "netline-hdmi-cable-15m-v2-0",
+    brand: "Netline",
+    name: "Netline HDMI Cable 15M V2.0",
+    category: "Aksesoris",
+    specLine: "Kabel HDMI to HDMI · Panjang 15M",
+    ports: "HDMI V2.0",
+    price: 380000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/netline-hdmi-cable-20m.jpg",
+    id: "netline-hdmi-cable-20m-v2-0",
+    brand: "Netline",
+    name: "Netline HDMI Cable 20M V2.0",
+    category: "Aksesoris",
+    specLine: "Kabel HDMI to HDMI · Panjang 20M",
+    ports: "HDMI V2.0",
+    price: 490000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/netline-hdmi-cable-25m.jpg",
+    id: "netline-hdmi-cable-25m-v2-0",
+    brand: "Netline",
+    name: "Netline HDMI Cable 25M V2.0",
+    category: "Aksesoris",
+    specLine: "Kabel HDMI to HDMI · Panjang 25M",
+    ports: "HDMI V2.0",
+    price: 750000,
+    priceIsEstimate: true,
+    icon: "projector"
   }
 ];

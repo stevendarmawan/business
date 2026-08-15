@@ -57,7 +57,7 @@
     category: "all",
     brand: "all",
     priceMin: 0,
-    priceMax: 999999999,
+    priceMax: 999999999999,
     sort: "default"
   };
 
@@ -100,7 +100,7 @@
 
   function hasActiveFilter() {
     return !!state.search || state.category !== "all" || state.brand !== "all" ||
-      state.priceMin !== 0 || state.priceMax !== 999999999 ||
+      state.priceMin !== 0 || state.priceMax !== 999999999999 ||
       state.sort !== "default";
   }
 
@@ -133,7 +133,7 @@
     state.category = "all";
     state.brand = "all";
     state.priceMin = 0;
-    state.priceMax = 999999999;
+    state.priceMax = 999999999999;
     state.sort = "default";
 
     var searchInput = document.getElementById("productSearch");
@@ -153,7 +153,7 @@
     var pricePills = document.getElementById("pricePills");
     if (pricePills) {
       pricePills.querySelectorAll(".filter-pill").forEach(function (b) {
-        b.classList.toggle("is-active", b.dataset.min === "0" && b.dataset.max === "999999999");
+        b.classList.toggle("is-active", b.dataset.min === "0" && b.dataset.max === "999999999999");
       });
     }
     var sortSelect = document.getElementById("productSort");

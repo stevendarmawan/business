@@ -1650,8 +1650,14 @@
     .testi-scroll{padding-left:0;padding-right:0;}
     .testi-item{width:132px;height:234px;}
 
-    .store-photo{max-width:600px;margin-left:auto;margin-right:auto;}
-    .contact-card{max-width:600px;margin:0 auto;}
+    .store-photo{margin-bottom:0;}
+    .contact-card{max-width:none;margin:0;}
+    .kontak-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:40px;
+      align-items:center;
+    }
 
     .cart-panel{max-width:420px;}
     .modal-panel{max-width:480px;}

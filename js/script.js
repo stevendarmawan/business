@@ -91,3 +91,99 @@ const CONFIG = {
     });
   }
 })();
+
+/* ====================================================================
+   AUTO-SLIDE untuk strip "Dokumentasi Stok Gudang" & "Momen Serah
+   Terima" (.testi-scroll). Cuma nambah animasi geser otomatis pelan,
+   TIDAK mengubah HTML/CSS yang sudah ada. Geser manual (drag/swipe)
+   tetap jalan seperti biasa -- begitu user pegang, auto-slide berhenti
+   dulu, lalu lanjut lagi sendiri setelah beberapa detik idle.
+   ==================================================================== */
+(function(){
+  // Hormati preferensi pengguna yang mematikan animasi -- strip tetap
+  // bisa digeser manual seperti biasa, cuma auto-slide-nya yang dimatikan.
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) return;
+
+  var STEP_INTERVAL = 3200;   // jeda antar geser otomatis (ms)
+  var RESUME_DELAY = 4000;    // tunggu sekian ms setelah user berhenti pegang, baru auto-slide lanjut lagi
+
+  function setupAutoSlide(scrollEl){
+    var track = scrollEl.querySelector(".testi-track");
+    if (!track) return;
+
+    var timer = null;
+    var resumeTimeout = null;
+    var direction = 1;
+    var isVisible = false;
+
+    function getStep(){
+      var item = track.querySelector(".testi-item");
+      if (!item) return 0;
+      var gap = parseFloat(getComputedStyle(track).gap) || 0;
+      return item.getBoundingClientRect().width + gap;
+    }
+
+    function tick(){
+      var maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+      if (maxScroll <= 4) return; // semua item sudah muat, tidak perlu geser
+      if (scrollEl.scrollLeft >= maxScroll - 4){
+        direction = -1;
+      } else if (scrollEl.scrollLeft <= 4){
+        direction = 1;
+      }
+      var step = getStep();
+      if (!step) return;
+      scrollEl.scrollBy({ left: step * direction, behavior: "smooth" });
+    }
+
+    function start(){
+      stop();
+      if (!isVisible) return;
+      timer = setInterval(tick, STEP_INTERVAL);
+    }
+    function stop(){
+      if (timer){ clearInterval(timer); timer = null; }
+    }
+    function pauseThenResume(){
+      stop();
+      if (resumeTimeout) clearTimeout(resumeTimeout);
+      resumeTimeout = setTimeout(start, RESUME_DELAY);
+    }
+
+    // User pegang/geser manual (touch, mouse drag, wheel/trackpad) -> jeda,
+    // lalu lanjut otomatis lagi setelah idle beberapa detik.
+    ["pointerdown", "touchstart", "wheel"].forEach(function(evt){
+      scrollEl.addEventListener(evt, pauseThenResume, { passive: true });
+    });
+
+    // Desktop: berhenti sementara saat kursor di atas strip supaya nyaman
+    // dipandang/diklik, lanjut lagi begitu kursor menjauh.
+    scrollEl.addEventListener("mouseenter", stop);
+    scrollEl.addEventListener("mouseleave", function(){
+      if (resumeTimeout) clearTimeout(resumeTimeout);
+      start();
+    });
+
+    // Hemat resource: cuma jalan kalau strip-nya kelihatan di layar.
+    if ("IntersectionObserver" in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          isVisible = entry.isIntersecting;
+          if (isVisible) start(); else stop();
+        });
+      }, { threshold: 0.2 });
+      io.observe(scrollEl);
+    } else {
+      isVisible = true;
+      start();
+    }
+
+    // Jeda saat tab browser tidak aktif.
+    document.addEventListener("visibilitychange", function(){
+      if (document.hidden) stop(); else if (isVisible) start();
+    });
+  }
+
+  document.querySelectorAll(".testi-scroll").forEach(setupAutoSlide);
+})();

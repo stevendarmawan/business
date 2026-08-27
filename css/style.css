@@ -354,6 +354,93 @@
     margin-top:22px;
   }
 
+  /* dua tombol CTA bersebelahan (WA + Lihat Produk). Mobile: full-width
+     ditumpuk (konsisten dengan gaya tombol besar di seluruh situs).
+     Desktop/tablet (≥600px): sejajar dan mengisi penuh lebar baris
+     (selebar kartu headline di atasnya) -- WA dapat porsi lebih besar
+     karena teksnya lebih panjang, supaya tidak ada rongga kosong di
+     ujung baris dan teksnya tetap 1 baris. */
+  .hero-cta-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .hero-cta-row .btn-wa-lg{
+    width:100%;
+  }
+  @media (min-width:600px){
+    .hero-cta-row{
+      flex-direction:row;
+      flex-wrap:wrap;
+      width:100%;
+    }
+    .hero-cta-row .btn-wa-lg{
+      width:auto;
+      flex:1 1 auto;
+      white-space:nowrap;
+    }
+    .hero-cta-row .js-wa-link{flex-grow:1.6;}
+    .hero-cta-row .btn-shop-teaser{flex-grow:1;}
+  }
+
+  /* ---- panel foto slideshow "Momen Serah Terima" di hero ----
+     Ratio panel disamakan persis dengan ratio asli foto sumbernya
+     (380x676) supaya foto tidak pernah terpotong. Mobile: lebar penuh
+     (kiri-kanan pas seperti panel lain), tinggi menyesuaikan sendiri. */
+  .hero-photo-panel{
+    position:relative;
+    z-index:1;
+    margin-top:24px;
+    width:100%;
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    aspect-ratio:380/676;
+    background:var(--bg-surface);
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.03),
+      0 24px 50px -18px rgba(0,0,0,0.55);
+  }
+  .hero-slideshow{
+    position:absolute;
+    inset:0;
+  }
+  .hero-slide{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    opacity:0;
+    transition:opacity 1.4s var(--ease);
+  }
+  .hero-slide.is-active{
+    opacity:1;
+    z-index:1;
+  }
+  .hero-photo-caption{
+    position:absolute;
+    z-index:2;
+    left:50%;
+    bottom:14px;
+    transform:translateX(-50%);
+    width:max-content;
+    max-width:calc(100% - 24px);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    padding:7px 12px 7px 10px;
+    border-radius:999px;
+    background:rgba(16,18,26,0.72);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    border:1px solid rgba(241,239,233,0.14);
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .hero-photo-caption svg{flex:none;color:var(--beam-bright);display:block;}
+
   .btn-wa-lg{
     position:relative;
     display:flex;
@@ -437,12 +524,12 @@
     background:linear-gradient(90deg, transparent, var(--line-soft) 20%, var(--line-soft) 80%, transparent);
   }
 
-  .reveal{
+  html.js .reveal{
     opacity:0;
     transform:translateY(18px);
     transition:opacity .7s var(--ease), transform .7s var(--ease);
   }
-  .reveal.is-visible{
+  html.js .reveal.is-visible{
     opacity:1;
     transform:translateY(0);
   }
@@ -1626,16 +1713,73 @@
     .brand-name{font-size:15px;}
 
     .hero{padding-top:88px;padding-bottom:76px;text-align:left;}
-    .hero h1{font-size:46px;line-height:1.15;}
-    .hero-break{display:block;}
+    .hero h1{font-size:52px;line-height:1.18;}
+    .hero-break{display:none;}
     .eyebrow{font-size:13.5px;}
-    .hero-sub{font-size:16px;}
-    .hero-cta-zone{margin-top:8px;}
+    .hero-sub{font-size:17px;line-height:1.75;}
+    .hero-cta-zone{margin-top:24px;}
     .hero-cta-zone .cta-microcopy{
-      text-align:center;
-      margin-top:14px;
+      text-align:left;
+      margin-top:18px;
     }
     .hero .beam-glow{width:480px;height:480px;top:-160px;right:-160px;}
+
+    /* Kartu headline "menyerap" sisa tinggi (flex:1 + konten
+       di-tengah-kan vertikal) supaya blok headline+tombol otomatis
+       sama tinggi dengan panel foto TANPA rongga kosong terpisah --
+       kartunya sendiri yang jadi lebih lega/besar, bukan area kosong
+       di background gelap. Ini juga jamin selalu pas berapa pun
+       ukuran font asli yang ter-render (Space Grotesk / Plus Jakarta
+       Sans), tidak tergantung tebakan pixel. */
+    .screen-panel{
+      padding:36px 34px;
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .hero-cta-row .btn-wa-lg{padding:22px 26px;font-size:17.5px;}
+
+    @media (max-width:1279px){
+      .hero h1{font-size:44px;}
+      .screen-panel{padding:30px 30px;}
+      .hero-cta-zone{margin-top:24px;}
+      .hero-cta-zone .cta-microcopy{margin-top:16px;}
+      .hero-cta-row .btn-wa-lg{padding:20px 24px;font-size:17px;}
+    }
+
+    /* headline+CTA jadi kolom utama, panel foto "Momen Serah Terima"
+       jadi kolom kedua di sebelahnya. Pakai flexbox (bukan grid 1fr)
+       supaya kolom teks mengisi penuh sisa ruang dan nempel rapat ke
+       panel foto -- tidak ada rongga kosong di antara keduanya. */
+    .hero-grid{
+      display:flex;
+      align-items:stretch;
+      gap:32px;
+    }
+    .hero-main{
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      flex:1 1 auto;
+      min-width:0;
+    }
+    .hero-photo-panel{
+      margin-top:0;
+      flex:0 0 260px;
+      width:260px;
+    }
+    /* panel foto lebih sempit di desktop (260px) -- badge keterangan
+       dikecilkan & dipaksa 1 baris supaya tetap muat rapi, tidak
+       numpuk beberapa baris seperti kalau pakai ukuran mobile */
+    .hero-photo-caption{
+      font-size:9px;
+      padding:6px 9px 6px 7px;
+      gap:4px;
+      white-space:nowrap;
+      max-width:calc(100% - 16px);
+    }
+    .hero-photo-caption svg{width:10px;height:10px;}
 
     .trust-grid{gap:20px;}
     .trust-card{padding:24px;}
@@ -1667,18 +1811,4 @@
     :root{--max-w:1200px;}
   }
 
-  /* di layar yang beneran lega, keterangan CTA bisa mepet ke samping tombol
-     tanpa numpuk/kepotong -- tombolnya sendiri tetap 100% lebar (sama
-     dengan kotak putih) di ukuran layar manapun, ini cuma soal penempatan
-     teks keterangannya aja */
-  @media (min-width:1680px){
-    .hero-cta-zone .cta-microcopy{
-      position:absolute;
-      top:50%;
-      left:100%;
-      transform:translateY(-50%);
-      margin-top:0;
-      margin-left:20px;
-      width:220px;
-    }
-  }
+

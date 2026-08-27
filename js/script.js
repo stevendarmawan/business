@@ -187,3 +187,56 @@ const CONFIG = {
 
   document.querySelectorAll(".testi-scroll").forEach(setupAutoSlide);
 })();
+
+/* ====================================================================
+   SLIDESHOW foto "Momen Serah Terima" di panel hero (.hero-slideshow).
+   Crossfade otomatis antar foto, hormati prefers-reduced-motion, dan
+   pause saat panel tidak kelihatan / tab browser tidak aktif.
+   ==================================================================== */
+(function(){
+  var panel = document.querySelector(".hero-slideshow");
+  if (!panel) return;
+
+  var slides = Array.prototype.slice.call(panel.querySelectorAll(".hero-slide"));
+  if (slides.length < 2) return;
+
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) return;
+
+  var SLIDE_INTERVAL = 3500; // jeda antar foto (ms)
+  var current = 0;
+  var timer = null;
+  var isVisible = false;
+
+  function goTo(index){
+    slides[current].classList.remove("is-active");
+    current = index;
+    slides[current].classList.add("is-active");
+  }
+  function next(){ goTo((current + 1) % slides.length); }
+  function start(){
+    stop();
+    if (!isVisible) return;
+    timer = setInterval(next, SLIDE_INTERVAL);
+  }
+  function stop(){
+    if (timer){ clearInterval(timer); timer = null; }
+  }
+
+  if ("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        isVisible = entry.isIntersecting;
+        if (isVisible) start(); else stop();
+      });
+    }, { threshold: 0.2 });
+    io.observe(panel);
+  } else {
+    isVisible = true;
+    start();
+  }
+
+  document.addEventListener("visibilitychange", function(){
+    if (document.hidden) stop(); else if (isVisible) start();
+  });
+})();

@@ -200,20 +200,34 @@ const CONFIG = {
   var slides = Array.prototype.slice.call(panel.querySelectorAll(".hero-slide"));
   if (slides.length < 2) return;
 
+  // acak urutan tampil (Fisher-Yates) supaya foto yang muncul pertama
+  // & urutan gesernya beda-beda tiap kali halaman dibuka, tidak selalu
+  // foto yang sama duluan
+  var order = slides.map(function(_, i){ return i; });
+  for (var i = order.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = order[i]; order[i] = order[j]; order[j] = tmp;
+  }
+
+  // pindahkan status "is-active" bawaan HTML (selalu foto pertama) ke
+  // foto pertama hasil acakan
+  slides.forEach(function(s){ s.classList.remove("is-active"); });
+  var pos = 0;
+  slides[order[pos]].classList.add("is-active");
+
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduceMotion) return;
 
   var SLIDE_INTERVAL = 3500; // jeda antar foto (ms)
-  var current = 0;
   var timer = null;
   var isVisible = false;
 
-  function goTo(index){
-    slides[current].classList.remove("is-active");
-    current = index;
-    slides[current].classList.add("is-active");
+  function goTo(nextPos){
+    slides[order[pos]].classList.remove("is-active");
+    pos = nextPos;
+    slides[order[pos]].classList.add("is-active");
   }
-  function next(){ goTo((current + 1) % slides.length); }
+  function next(){ goTo((pos + 1) % order.length); }
   function start(){
     stop();
     if (!isVisible) return;

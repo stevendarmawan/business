@@ -143,6 +143,58 @@
   </div>
 </section>
 
+<!-- ================= BAR SEARCH+FILTER RINGKAS (nempel pas scroll) =================
+     Cuma aktif di layar sempit (mobile/tablet kecil). Begitu bagian search+filter
+     lengkap di atas ke-scroll lewat, bar ini "nempel" 1 baris di bawah header:
+     search lebih lebar + 1 tombol Filter yang buka panel dropdown (kategori,
+     rentang harga, merek). Semua kontrolnya baca/tulis ke state filter yang
+     SAMA dengan filter lengkap di atas via products-page.js -- jadi selalu
+     sinkron dua arah, tidak ada logic filter yang dobel. -->
+<div class="compact-filter-bar" id="compactFilterBar">
+  <div class="wrap compact-filter-row">
+    <div class="compact-search-box">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="productSearchCompact" placeholder="Cari nama produk..." autocomplete="off">
+    </div>
+    <button type="button" class="compact-filter-btn" id="filterToggleBtn" aria-expanded="false" aria-controls="filterPanel">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+      Filter
+      <span class="compact-filter-badge" id="filterBadge" hidden>0</span>
+    </button>
+  </div>
+
+  <div class="compact-filter-panel" id="filterPanel" hidden>
+    <div class="wrap compact-filter-panel-inner">
+    <div class="filter-group">
+      <span class="filter-label">Kategori</span>
+      <div class="filter-pills" id="categoryPillsCompact" role="group" aria-label="Filter kategori produk (ringkas)">
+        <button type="button" class="filter-pill is-active" data-category="all">Semua</button>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Rentang Harga</span>
+      <div class="filter-pills" id="pricePillsCompact" role="group" aria-label="Filter rentang harga (ringkas)">
+        <button type="button" class="filter-pill is-active" data-min="0" data-max="999999999999">Semua Harga</button>
+        <button type="button" class="filter-pill" data-min="0" data-max="5000000">&lt; Rp 5 Juta</button>
+        <button type="button" class="filter-pill" data-min="5000000" data-max="10000000">Rp 5–10 Juta</button>
+        <button type="button" class="filter-pill" data-min="10000000" data-max="25000000">Rp 10–25 Juta</button>
+        <button type="button" class="filter-pill" data-min="25000000" data-max="999999999999">&gt; Rp 25 Juta</button>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Merek</span>
+      <select id="brandSelectCompact" class="sort-select">
+        <option value="all">Semua Merek</option>
+      </select>
+    </div>
+
+    <button type="button" class="compact-filter-apply" id="filterApplyBtn">Terapkan Filter</button>
+    </div>
+  </div>
+</div>
+
 <!-- ================= GRID PRODUK ================= -->
 <section class="products-page-grid">
   <div class="wrap">

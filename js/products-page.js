@@ -29,8 +29,8 @@
     categories.sort(function (a, b) { return a.localeCompare(b); });
     brands.sort(function (a, b) { return a.localeCompare(b); });
 
-    var categoryPills = document.getElementById("categoryPills");
-    if (categoryPills) {
+    [document.getElementById("categoryPills"), document.getElementById("categoryPillsCompact")].forEach(function (categoryPills) {
+      if (!categoryPills) return;
       categories.forEach(function (cat) {
         var btn = document.createElement("button");
         btn.type = "button";
@@ -39,16 +39,68 @@
         btn.textContent = cat;
         categoryPills.appendChild(btn);
       });
-    }
+    });
 
-    var brandSelect = document.getElementById("brandSelect");
-    if (brandSelect) {
+    [document.getElementById("brandSelect"), document.getElementById("brandSelectCompact")].forEach(function (brandSelect) {
+      if (!brandSelect) return;
       brands.forEach(function (brand) {
         var opt = document.createElement("option");
         opt.value = brand;
         opt.textContent = brand;
         brandSelect.appendChild(opt);
       });
+    });
+  }
+
+  /* tinggi header (logo+ticker) dipakai sebagai jarak "nempel" buat bar
+     search+filter ringkas, dihitung dari elemen asli -- bukan angka
+     tebakan -- supaya tetap pas walau kontennya berubah */
+  function setHeaderHeightVar() {
+    var header = document.querySelector(".site-header");
+    if (!header) return;
+    document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px");
+  }
+
+  /* helper sinkron dua arah: bar search+filter lengkap (atas) dan bar
+     ringkas (nempel pas scroll) baca/tulis STATE yang sama, fungsi di
+     bawah ini yang jaga tampilan keduanya tetap kompak */
+  function syncCategoryPillsUI(activeCategory) {
+    [document.getElementById("categoryPills"), document.getElementById("categoryPillsCompact")].forEach(function (group) {
+      if (!group) return;
+      group.querySelectorAll(".filter-pill").forEach(function (b) {
+        b.classList.toggle("is-active", b.dataset.category === activeCategory);
+      });
+    });
+  }
+  function syncPricePillsUI(min, max) {
+    [document.getElementById("pricePills"), document.getElementById("pricePillsCompact")].forEach(function (group) {
+      if (!group) return;
+      group.querySelectorAll(".filter-pill").forEach(function (b) {
+        b.classList.toggle("is-active", parseInt(b.dataset.min, 10) === min && parseInt(b.dataset.max, 10) === max);
+      });
+    });
+  }
+  function syncBrandSelectUI(value) {
+    [document.getElementById("brandSelect"), document.getElementById("brandSelectCompact")].forEach(function (sel) {
+      if (sel) sel.value = value;
+    });
+  }
+  function syncSearchUI(value) {
+    [document.getElementById("productSearch"), document.getElementById("productSearchCompact")].forEach(function (input) {
+      if (input && input.value !== value) input.value = value;
+    });
+    var clearBtn = document.getElementById("productSearchClear");
+    if (clearBtn) clearBtn.hidden = !value;
+  }
+  function updateFilterBadge() {
+    var count = 0;
+    if (state.category !== "all") count++;
+    if (state.brand !== "all") count++;
+    if (state.priceMin !== 0 || state.priceMax !== 999999999999) count++;
+    var badge = document.getElementById("filterBadge");
+    if (badge) {
+      badge.hidden = count === 0;
+      badge.textContent = count;
     }
   }
 
@@ -126,6 +178,8 @@
 
     var resetBtn = document.getElementById("filterResetBtn");
     if (resetBtn) resetBtn.hidden = !hasActiveFilter();
+
+    updateFilterBadge();
   }
 
   function resetFilters() {
@@ -136,30 +190,23 @@
     state.priceMax = 999999999999;
     state.sort = "default";
 
-    var searchInput = document.getElementById("productSearch");
-    if (searchInput) searchInput.value = "";
-    var searchClear = document.getElementById("productSearchClear");
-    if (searchClear) searchClear.hidden = true;
+    syncSearchUI("");
+    syncCategoryPillsUI("all");
+    syncPricePillsUI(0, 999999999999);
+    syncBrandSelectUI("all");
 
-    var categoryPills = document.getElementById("categoryPills");
-    if (categoryPills) {
-      categoryPills.querySelectorAll(".filter-pill").forEach(function (b) {
-        b.classList.toggle("is-active", b.dataset.category === "all");
-      });
-    }
-    var brandSelect = document.getElementById("brandSelect");
-    if (brandSelect) brandSelect.value = "all";
-
-    var pricePills = document.getElementById("pricePills");
-    if (pricePills) {
-      pricePills.querySelectorAll(".filter-pill").forEach(function (b) {
-        b.classList.toggle("is-active", b.dataset.min === "0" && b.dataset.max === "999999999999");
-      });
-    }
     var sortSelect = document.getElementById("productSort");
     if (sortSelect) sortSelect.value = "default";
 
+    closeFilterPanel();
     render();
+  }
+
+  function closeFilterPanel() {
+    var panel = document.getElementById("filterPanel");
+    var toggleBtn = document.getElementById("filterToggleBtn");
+    if (panel) panel.hidden = true;
+    if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -167,23 +214,34 @@
 
     buildDynamicFilters();
     render();
+    setHeaderHeightVar();
+    window.addEventListener("resize", setHeaderHeightVar);
+    window.addEventListener("load", setHeaderHeightVar);
 
     var searchInput = document.getElementById("productSearch");
     var searchClear = document.getElementById("productSearchClear");
     if (searchInput) {
       searchInput.addEventListener("input", function () {
         state.search = searchInput.value.trim().toLowerCase();
-        if (searchClear) searchClear.hidden = !state.search;
+        syncSearchUI(searchInput.value);
         render();
       });
     }
     if (searchClear) {
       searchClear.addEventListener("click", function () {
-        if (searchInput) searchInput.value = "";
         state.search = "";
-        searchClear.hidden = true;
+        syncSearchUI("");
         render();
         if (searchInput) searchInput.focus();
+      });
+    }
+
+    var searchInputCompact = document.getElementById("productSearchCompact");
+    if (searchInputCompact) {
+      searchInputCompact.addEventListener("input", function () {
+        state.search = searchInputCompact.value.trim().toLowerCase();
+        syncSearchUI(searchInputCompact.value);
+        render();
       });
     }
 
@@ -193,9 +251,18 @@
         var btn = e.target.closest(".filter-pill");
         if (!btn) return;
         state.category = btn.dataset.category;
-        categoryPills.querySelectorAll(".filter-pill").forEach(function (b) {
-          b.classList.toggle("is-active", b === btn);
-        });
+        syncCategoryPillsUI(state.category);
+        render();
+      });
+    }
+
+    var categoryPillsCompact = document.getElementById("categoryPillsCompact");
+    if (categoryPillsCompact) {
+      categoryPillsCompact.addEventListener("click", function (e) {
+        var btn = e.target.closest(".filter-pill");
+        if (!btn) return;
+        state.category = btn.dataset.category;
+        syncCategoryPillsUI(state.category);
         render();
       });
     }
@@ -204,6 +271,16 @@
     if (brandSelect) {
       brandSelect.addEventListener("change", function () {
         state.brand = brandSelect.value;
+        syncBrandSelectUI(state.brand);
+        render();
+      });
+    }
+
+    var brandSelectCompact = document.getElementById("brandSelectCompact");
+    if (brandSelectCompact) {
+      brandSelectCompact.addEventListener("change", function () {
+        state.brand = brandSelectCompact.value;
+        syncBrandSelectUI(state.brand);
         render();
       });
     }
@@ -215,9 +292,19 @@
         if (!btn) return;
         state.priceMin = parseInt(btn.dataset.min, 10);
         state.priceMax = parseInt(btn.dataset.max, 10);
-        pricePills.querySelectorAll(".filter-pill").forEach(function (b) {
-          b.classList.toggle("is-active", b === btn);
-        });
+        syncPricePillsUI(state.priceMin, state.priceMax);
+        render();
+      });
+    }
+
+    var pricePillsCompact = document.getElementById("pricePillsCompact");
+    if (pricePillsCompact) {
+      pricePillsCompact.addEventListener("click", function (e) {
+        var btn = e.target.closest(".filter-pill");
+        if (!btn) return;
+        state.priceMin = parseInt(btn.dataset.min, 10);
+        state.priceMax = parseInt(btn.dataset.max, 10);
+        syncPricePillsUI(state.priceMin, state.priceMax);
         render();
       });
     }
@@ -234,5 +321,17 @@
     if (resetBtn) resetBtn.addEventListener("click", resetFilters);
     var emptyResetBtn = document.getElementById("filterEmptyResetBtn");
     if (emptyResetBtn) emptyResetBtn.addEventListener("click", resetFilters);
+
+    var filterToggleBtn = document.getElementById("filterToggleBtn");
+    var filterPanel = document.getElementById("filterPanel");
+    if (filterToggleBtn && filterPanel) {
+      filterToggleBtn.addEventListener("click", function () {
+        var isOpen = !filterPanel.hidden;
+        filterPanel.hidden = isOpen;
+        filterToggleBtn.setAttribute("aria-expanded", isOpen ? "false" : "true");
+      });
+    }
+    var filterApplyBtn = document.getElementById("filterApplyBtn");
+    if (filterApplyBtn) filterApplyBtn.addEventListener("click", closeFilterPanel);
   });
 })();

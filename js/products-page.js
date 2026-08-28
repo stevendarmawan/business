@@ -205,8 +205,31 @@
   function closeFilterPanel() {
     var panel = document.getElementById("filterPanel");
     var toggleBtn = document.getElementById("filterToggleBtn");
+    var wasOpen = panel && !panel.hidden;
     if (panel) panel.hidden = true;
     if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+    if (wasOpen) scrollToGridTop();
+  }
+
+  /* pengunjung yang lagi scroll di tengah katalog terus aktifin filter
+     dari bar ringkas jangan sampai bingung -- begitu filter diterapkan
+     (panel ditutup, atau berhenti ngetik di search ringkas), halaman
+     otomatis digeser ke bagian paling atas dari hasil filter, pas di
+     bawah header + bar ringkas -- gak perlu scroll manual ke atas lagi */
+  function scrollToGridTop() {
+    var grid = document.getElementById("shopGrid");
+    if (!grid) return;
+    var compactBar = document.getElementById("compactFilterBar");
+    var headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--header-h"), 10) || 0;
+    var barH = compactBar ? compactBar.getBoundingClientRect().height : 0;
+    var targetY = grid.getBoundingClientRect().top + window.pageYOffset - headerH - barH - 8;
+    window.scrollTo({ top: Math.max(0, targetY), behavior: "smooth" });
+  }
+
+  var scrollDebounceTimer = null;
+  function scrollToGridTopDebounced() {
+    clearTimeout(scrollDebounceTimer);
+    scrollDebounceTimer = setTimeout(scrollToGridTop, 450);
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -242,6 +265,7 @@
         state.search = searchInputCompact.value.trim().toLowerCase();
         syncSearchUI(searchInputCompact.value);
         render();
+        scrollToGridTopDebounced();
       });
     }
 
@@ -327,8 +351,12 @@
     if (filterToggleBtn && filterPanel) {
       filterToggleBtn.addEventListener("click", function () {
         var isOpen = !filterPanel.hidden;
-        filterPanel.hidden = isOpen;
-        filterToggleBtn.setAttribute("aria-expanded", isOpen ? "false" : "true");
+        if (isOpen) {
+          closeFilterPanel();
+        } else {
+          filterPanel.hidden = false;
+          filterToggleBtn.setAttribute("aria-expanded", "true");
+        }
       });
     }
     var filterApplyBtn = document.getElementById("filterApplyBtn");

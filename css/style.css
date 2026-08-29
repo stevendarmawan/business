@@ -271,175 +271,280 @@
   }
 
   /* ============================================================
-     HERO
+     HERO — "marquee" foto dokumentasi asli (pengiriman + stok gudang)
+     Struktur: satu strip foto jalan otomatis di bagian bawah hero,
+     teks + tombol melayang di atasnya. Semua animasi murni CSS
+     (tetap jalan walau JS diblokir) & otomatis mati kalau pengguna
+     mengaktifkan "reduce motion" di OS-nya.
      ============================================================ */
   .hero{
+    /* --hm-h = tinggi kartu foto di strip. Semua ukuran lain
+       (tinggi strip, padding bawah hero) diturunkan dari sini
+       supaya proporsinya selalu benar di layar mana pun. */
+    --hm-h:clamp(135px, 21vh, 186px);
+    --hm-gap:clamp(10px, 1.4vw, 18px);
+
     position:relative;
-    padding-top:44px;
-    padding-bottom:40px;
     overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    /* tinggi hero = tinggi layar DIKURANGI header sticky + running text,
+       supaya strip fotonya selalu ikut kelihatan tanpa harus scroll dulu */
+    min-height:calc(100vh - 106px);
+    min-height:calc(100svh - 106px);
+    padding-top:34px;
+    padding-bottom:calc(var(--hm-h) * 0.72);
   }
   .hero .beam-glow{
     width:340px;height:340px;
     background:radial-gradient(circle, var(--beam) 0%, transparent 70%);
-    top:-120px;
-    right:-120px;
+    top:-130px;
+    right:-130px;
+    opacity:0.4;
   }
-  .eyebrow{
-    position:relative;
+
+  /* ---------- strip foto berjalan ---------- */
+  .hm-stage{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:calc(var(--hm-h) + 34px);
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    z-index:0;
+    pointer-events:none;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 24%, #000 82%, transparent 100%);
+    mask-image:linear-gradient(to bottom, transparent 0%, #000 24%, #000 82%, transparent 100%);
+  }
+  /* lapisan peredup: foto tetap kelihatan tapi teks di atasnya tetap
+     terbaca jelas, plus tepi kiri-kanan dibuat memudar ke background */
+  .hm-stage::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:2;
+    background:
+      linear-gradient(to right, var(--bg-void) 0%, rgba(16,18,26,0) 13%, rgba(16,18,26,0) 87%, var(--bg-void) 100%),
+      linear-gradient(to bottom, rgba(16,18,26,0.84) 0%, rgba(16,18,26,0.30) 44%, rgba(16,18,26,0.58) 100%);
+  }
+  .hm-track{
+    display:flex;
+    align-items:center;
+    width:max-content;
     z-index:1;
+    animation:hm-scroll 46s linear infinite;
+    will-change:transform;
+  }
+  /* isi .hm-track = 2x set foto yang sama persis, jadi geser 50%
+     hasilnya sambungan mulus tanpa lompat. Jarak antar kartu pakai
+     margin-right (bukan gap) supaya 50% jatuh tepat di batas set. */
+  @keyframes hm-scroll{
+    from{transform:translate3d(-50%,0,0);}
+    to{transform:translate3d(0,0,0);}
+  }
+  .hm-card{
+    flex:0 0 auto;
+    /* rasio asli foto dokumentasi 380x676 -> tidak ada yang terpotong */
+    width:calc(var(--hm-h) * 0.5621);
+    height:var(--hm-h);
+    margin-right:var(--hm-gap);
+    border-radius:clamp(12px, 1.5vw, 20px);
+    overflow:hidden;
+    background:var(--bg-surface);
+    box-shadow:
+      0 18px 40px -18px rgba(0,0,0,0.75),
+      0 0 0 1px rgba(241,239,233,0.06);
+  }
+  .hm-card:nth-child(odd){transform:rotate(-2deg);}
+  .hm-card:nth-child(even){transform:rotate(4deg);}
+  .hm-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  /* halo gelap lembut di belakang blok teks -- ini yang bikin judul &
+     tombol tetap kebaca jelas walau di atasnya ada foto */
+  .hero::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translateX(-50%);
+    width:min(1180px, 140%);
+    height:calc(100% - var(--hm-h) * 0.26);
+    z-index:1;
+    pointer-events:none;
+    background:radial-gradient(ellipse at 50% 46%,
+      rgba(16,18,26,0.94) 0%,
+      rgba(16,18,26,0.72) 46%,
+      rgba(16,18,26,0) 74%);
+  }
+
+  /* ---------- isi hero (teks + tombol) ---------- */
+  .hero-content{
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  @keyframes hm-rise{
+    from{opacity:0;transform:translateY(12px);}
+    to{opacity:1;transform:none;}
+  }
+
+  .hero-tag{
     display:inline-flex;
     align-items:center;
     gap:8px;
-    font-size:12.5px;
+    padding:7px 15px 7px 12px;
+    margin-bottom:clamp(14px, 2.4vw, 20px);
+    border-radius:999px;
+    border:1px solid rgba(241,239,233,0.16);
+    background:rgba(27,31,44,0.6);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    font-size:clamp(10.5px, 2.6vw, 13px);
     font-weight:700;
     letter-spacing:0.08em;
     text-transform:uppercase;
     color:var(--beam-bright);
-    margin-bottom:18px;
+    animation:hm-rise .7s var(--ease) both;
   }
-  .eyebrow::before{
+  .hero-tag::before{
     content:"";
+    flex:none;
     width:7px;height:7px;
     border-radius:50%;
     background:var(--beam-bright);
     box-shadow:0 0 10px 2px var(--beam-soft);
   }
 
-  /* the "projection screen" card — signature element */
-  .screen-panel{
-    position:relative;
-    z-index:1;
-    background:var(--screen);
-    border-radius:var(--radius-lg);
-    padding:26px 22px 24px;
-    box-shadow:
-      0 0 0 1px rgba(0,0,0,0.03),
-      0 30px 60px -20px rgba(0,0,0,0.55),
-      0 0 90px -10px var(--beam-soft);
-  }
-  .screen-panel::before{
-    content:"";
-    position:absolute;
-    top:-46px;
-    left:28px;
-    width:0;height:0;
-    border-left:16px solid transparent;
-    border-right:16px solid transparent;
-    border-bottom:46px solid var(--beam-soft);
-    opacity:0.9;
-  }
   .hero h1{
-    color:var(--on-screen);
-    font-size:29px;
-    margin-bottom:12px;
+    max-width:22ch;
+    font-size:clamp(28px, 6.2vw, 56px);
+    line-height:1.12;
+    color:var(--text);
   }
-  .hero-break{display:none;}
-  .hero h1 em{
-    font-style:normal;
-    background:linear-gradient(90deg, var(--beam) 0%, #d97d1f 100%);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+  /* tiap kata muncul berurutan (efek stagger) — delay-nya dari --d */
+  .hm-w{
+    display:inline-block;
+    text-shadow:0 2px 22px rgba(16,18,26,0.92);
+    animation:hm-rise .75s var(--ease) both;
+    animation-delay:calc(var(--d) * .06s + .05s);
   }
+  .hm-em{color:var(--beam-bright);}
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    .hm-em{
+      background:linear-gradient(90deg, var(--beam-bright) 0%, #dd8a24 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow:none;
+      filter:drop-shadow(0 2px 16px rgba(16,18,26,0.92));
+    }
+  }
+
   .hero-sub{
-    color:var(--on-screen-muted);
-    font-size:15px;
-    line-height:1.6;
+    max-width:52ch;
+    margin-top:clamp(14px, 2.4vw, 22px);
+    font-size:clamp(14px, 2.9vw, 17px);
+    line-height:1.7;
+    color:#d9dbe4;
+    text-shadow:0 2px 20px rgba(16,18,26,0.92);
+    animation:hm-rise .75s var(--ease) both;
+    animation-delay:.5s;
   }
 
-  .hero-cta-zone{
-    position:relative;
-    z-index:1;
-    margin-top:22px;
-  }
-
-  /* dua tombol CTA bersebelahan (WA + Lihat Produk). Mobile: full-width
-     ditumpuk (konsisten dengan gaya tombol besar di seluruh situs).
-     Desktop/tablet (≥600px): sejajar dan mengisi penuh lebar baris
-     (selebar kartu headline di atasnya) -- WA dapat porsi lebih besar
-     karena teksnya lebih panjang, supaya tidak ada rongga kosong di
-     ujung baris dan teksnya tetap 1 baris. */
   .hero-cta-row{
     display:flex;
     flex-direction:column;
     gap:10px;
-  }
-  .hero-cta-row .btn-wa-lg{
     width:100%;
+    max-width:420px;
+    margin-top:clamp(20px, 3vw, 30px);
+    animation:hm-rise .75s var(--ease) both;
+    animation-delay:.62s;
   }
+  .hero-cta-row .btn-wa-lg{width:100%;}
   @media (min-width:600px){
     .hero-cta-row{
       flex-direction:row;
       flex-wrap:wrap;
-      width:100%;
+      justify-content:center;
+      width:auto;
+      max-width:none;
     }
     .hero-cta-row .btn-wa-lg{
       width:auto;
-      flex:1 1 auto;
+      flex:0 0 auto;
       white-space:nowrap;
+      padding:18px 28px;
     }
-    .hero-cta-row .js-wa-link{flex-grow:1.6;}
-    .hero-cta-row .btn-shop-teaser{flex-grow:1;}
+  }
+  .hero .cta-microcopy{
+    margin-top:14px;
+    color:#c5c9d6;
+    text-shadow:0 2px 16px rgba(16,18,26,0.95), 0 0 26px rgba(16,18,26,0.85);
+    animation:hm-rise .75s var(--ease) both;
+    animation-delay:.72s;
   }
 
-  /* ---- panel foto slideshow "Momen Serah Terima" di hero ----
-     Ratio panel disamakan persis dengan ratio asli foto sumbernya
-     (380x676) supaya foto tidak pernah terpotong. Mobile: lebar penuh
-     (kiri-kanan pas seperti panel lain), tinggi menyesuaikan sendiri. */
-  .hero-photo-panel{
-    position:relative;
-    z-index:1;
-    margin-top:24px;
-    width:100%;
-    border-radius:var(--radius-lg);
-    overflow:hidden;
-    aspect-ratio:380/676;
-    background:var(--bg-surface);
-    box-shadow:
-      0 0 0 1px rgba(0,0,0,0.03),
-      0 24px 50px -18px rgba(0,0,0,0.55);
+  /* ---------- HP kecil / layar pendek: rapatkan supaya strip foto
+       tetap kebagian ruang, tidak terdorong ke bawah lipatan ---------- */
+  @media (max-width:374px), (max-height:680px){
+    .hero{
+      --hm-h:clamp(120px, 20vh, 165px);
+      padding-top:22px;
+    }
+    .hero-tag{margin-bottom:12px;font-size:10px;padding:6px 12px 6px 10px;}
+    .hero h1{font-size:clamp(24px, 6.6vw, 34px);}
+    .hero-sub{margin-top:12px;font-size:13.5px;line-height:1.6;}
+    .hero-cta-row{margin-top:16px;gap:8px;}
+    .hero-cta-row .btn-wa-lg{padding:14px 16px;font-size:15px;}
+    .hero-cta-row .btn-wa-lg svg{width:19px;height:19px;}
+    .hero .cta-microcopy{margin-top:10px;font-size:11.5px;}
   }
-  .hero-slideshow{
-    position:absolute;
-    inset:0;
+
+  /* ---------- penyesuaian layar besar ---------- */
+  @media (min-width:768px){
+    .hero{
+      --hm-h:clamp(180px, 25vh, 262px);
+      min-height:calc(100vh - 110px);
+      min-height:calc(100svh - 110px);
+      padding-top:44px;
+    }
   }
-  .hero-slide{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    opacity:0;
-    transition:opacity 1.4s var(--ease);
+  @media (min-width:1024px){
+    .hero{
+      --hm-h:clamp(200px, 27vh, 300px);
+      min-height:calc(100vh - 116px);
+      min-height:calc(100svh - 116px);
+      padding-top:44px;
+    }
+    .hero .beam-glow{width:520px;height:520px;top:-190px;right:-180px;}
+    .hero-cta-row .btn-wa-lg{padding:20px 32px;font-size:17px;}
   }
-  .hero-slide.is-active{
-    opacity:1;
-    z-index:1;
+
+  /* ---------- hormati setelan "kurangi animasi" ---------- */
+  @media (prefers-reduced-motion: reduce){
+    .hm-track{animation:none;}
+    .hero-tag,
+    .hm-w,
+    .hero-sub,
+    .hero-cta-row,
+    .hero .cta-microcopy{
+      animation:none;
+      opacity:1;
+      transform:none;
+    }
   }
-  .hero-photo-caption{
-    position:absolute;
-    z-index:2;
-    left:50%;
-    bottom:14px;
-    transform:translateX(-50%);
-    width:max-content;
-    max-width:calc(100% - 24px);
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    padding:7px 12px 7px 10px;
-    border-radius:999px;
-    background:rgba(16,18,26,0.72);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-    border:1px solid rgba(241,239,233,0.14);
-    font-size:11.5px;
-    font-weight:600;
-    color:var(--text);
-  }
-  .hero-photo-caption svg{flex:none;color:var(--beam-bright);display:block;}
 
   .btn-wa-lg{
     position:relative;
@@ -562,90 +667,6 @@
   @keyframes icon-glow-badge{
     0%,100%{box-shadow:0 8px 16px -4px rgba(0,0,0,0.55), 0 0 0 0 rgba(245,169,76,0.0);}
     50%{box-shadow:0 8px 16px -4px rgba(0,0,0,0.55), 0 0 0 6px rgba(245,169,76,0.25);}
-  }
-
-  /* ============================================================
-     KENAPA PILIH KAMI — trust cards
-     ============================================================ */
-  .trust-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:14px;
-  }
-  .trust-card{
-    background:var(--bg-surface);
-    border:1px solid var(--line-soft);
-    border-radius:var(--radius-md);
-    padding:20px;
-    display:flex;
-    gap:16px;
-    align-items:flex-start;
-  }
-  .trust-icon{
-    flex:none;
-    width:46px;height:46px;
-    border-radius:12px;
-    background:var(--beam-soft);
-    color:var(--beam-bright);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    animation:icon-glow 2.6s ease-in-out infinite;
-  }
-  .trust-icon svg{display:block;}
-  .trust-card.reveal.is-visible .trust-icon svg{animation:icon-pop .6s var(--ease) backwards;}
-  .trust-card:nth-child(1) .trust-icon svg{animation-delay:.05s;}
-  .trust-card:nth-child(2) .trust-icon svg{animation-delay:.15s;}
-  .trust-card:nth-child(3) .trust-icon svg{animation-delay:.25s;}
-  .trust-card h3{
-    font-size:16px;
-    color:var(--text);
-    margin-bottom:5px;
-  }
-  .trust-card p{
-    font-size:14px;
-    color:var(--text-muted);
-  }
-
-  /* ============================================================
-     PRODUK — light "screen" cards
-     ============================================================ */
-  .product-list{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:12px;
-  }
-  .product-card{
-    background:var(--screen);
-    border-radius:var(--radius-md);
-    padding:19px 20px;
-    display:flex;
-    gap:14px;
-    align-items:center;
-  }
-  .product-emoji{
-    flex:none;
-    width:44px;height:44px;
-    border-radius:11px;
-    background:var(--beam);
-    color:var(--screen);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .product-emoji svg{display:block;}
-  .product-card.reveal.is-visible .product-emoji svg{animation:icon-pop .6s var(--ease) backwards;}
-  .product-card:nth-child(1) .product-emoji svg{animation-delay:.05s;}
-  .product-card:nth-child(2) .product-emoji svg{animation-delay:.15s;}
-  .product-card:nth-child(3) .product-emoji svg{animation-delay:.25s;}
-  .product-card h3{
-    font-size:16px;
-    color:var(--on-screen);
-    margin-bottom:3px;
-  }
-  .product-card p{
-    font-size:13.5px;
-    color:var(--on-screen-muted);
   }
 
   /* ============================================================
@@ -1242,44 +1263,6 @@
   .order-confirm-body .btn-wa-lg{width:100%;justify-content:center;margin-top:6px;}
 
   /* ============================================================
-     COCOK UNTUK SIAPA — audience grid
-     ============================================================ */
-  .audience-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-  }
-  .audience-card{
-    background:var(--bg-surface);
-    border:1px solid var(--line-soft);
-    border-radius:var(--radius-md);
-    padding:18px 14px;
-    text-align:center;
-  }
-  .audience-emoji{
-    display:flex;
-    justify-content:center;
-    color:var(--beam-bright);
-    margin-bottom:10px;
-  }
-  .audience-emoji svg{display:block;}
-  .audience-card.reveal.is-visible .audience-emoji svg{animation:icon-pop .6s var(--ease) backwards;}
-  .audience-card:nth-child(1) .audience-emoji svg{animation-delay:.05s;}
-  .audience-card:nth-child(2) .audience-emoji svg{animation-delay:.13s;}
-  .audience-card:nth-child(3) .audience-emoji svg{animation-delay:.21s;}
-  .audience-card:nth-child(4) .audience-emoji svg{animation-delay:.29s;}
-  .audience-card h3{
-    font-size:14.5px;
-    color:var(--text);
-    margin-bottom:4px;
-  }
-  .audience-card p{
-    font-size:12.5px;
-    color:var(--text-muted);
-    line-height:1.5;
-  }
-
-  /* ============================================================
      MID-PAGE CTA BANNER
      ============================================================ */
   .cta-banner{
@@ -1311,77 +1294,25 @@
   }
 
   /* ============================================================
-     KONTAK
-     ============================================================ */
-  .contact-card{
-    background:var(--bg-surface);
-    border:1px solid var(--line-soft);
-    border-radius:var(--radius-md);
-    padding:22px 20px;
-  }
-  .contact-row{
-    display:flex;
-    gap:14px;
-    align-items:flex-start;
-    padding:14px 0;
-  }
-  .contact-row + .contact-row{
-    border-top:1px solid var(--line-soft);
-  }
-  .contact-icon{
-    flex:none;
-    width:38px;height:38px;
-    border-radius:10px;
-    background:var(--beam-soft);
-    color:var(--beam-bright);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    animation:icon-glow 2.6s ease-in-out infinite;
-  }
-  .contact-icon svg{display:block;}
-  .contact-row h3{
-    font-family:'Plus Jakarta Sans', sans-serif;
-    font-weight:700;
-    font-size:13px;
-    text-transform:uppercase;
-    letter-spacing:0.04em;
-    color:var(--text-muted);
-    margin-bottom:4px;
-  }
-  .contact-row p, .contact-row a.contact-link{
-    font-size:14.5px;
-    color:var(--text);
-  }
-  .contact-link svg{
-    vertical-align:-2px;
-    margin-left:2px;
-  }
-  .contact-link{
-    display:inline-block;
-    margin-top:4px;
-    color:var(--beam-bright);
-    font-weight:600;
-    font-size:13.5px;
-  }
-  .contact-link:active{opacity:0.7;}
-
-  .contact-card .btn-wa-lg{margin-top:20px;}
-
-  /* ============================================================
      FOOTER
+     Susunan: logo -> nama & tagline -> menu -> ikon sosial ->
+     pita bergaris miring -> daftar kategori & hak cipta.
+     Muncul bertahap saat footer masuk layar (pakai .reveal yang
+     sudah ada, tinggal diberi jeda berbeda-beda). Tanpa JS semuanya
+     tetap tampil, cuma tanpa animasi masuk.
      ============================================================ */
   footer{
-    padding-top:32px;
+    padding-top:clamp(34px, 6vw, 56px);
     padding-bottom:110px;
     text-align:center;
+    overflow:hidden;
   }
   footer p{
     font-size:12.5px;
     color:var(--text-muted);
   }
   .footer-logo{
-    height:30px;
+    height:clamp(30px, 6vw, 38px);
     width:auto;
     display:block;
     margin:0 auto 14px;
@@ -1391,8 +1322,127 @@
     font-family:'Space Grotesk', sans-serif;
     font-weight:700;
     color:var(--text);
-    font-size:14px;
-    margin-bottom:6px;
+    font-size:clamp(14px, 3.2vw, 16px);
+    margin-bottom:5px;
+  }
+
+  /* saat dilompati dari menu footer, sisakan ruang untuk header
+     yang menempel di atas supaya judulnya tidak ketutup */
+  #kenapa-kami,
+  #sertifikasi,
+  #merek,
+  #brosur,
+  #dokumentasi,
+  #kontak{
+    scroll-margin-top:118px;
+  }
+
+  /* ---------- menu ---------- */
+  .foot-nav{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:clamp(2px, 1vw, 10px);
+    margin-top:clamp(20px, 3.6vw, 30px);
+  }
+  .foot-nav a{
+    position:relative;
+    display:inline-block;
+    padding:7px 13px;
+    border-radius:9px;
+    font-size:clamp(13px, 3vw, 14.5px);
+    font-weight:600;
+    color:var(--text);
+    text-decoration:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .25s var(--ease);
+  }
+  /* kotak latar yang mengembang dari tengah saat disorot */
+  .foot-nav a::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    border-radius:9px;
+    background:rgba(241,239,233,0.09);
+    opacity:0;
+    transform:scale(0.6);
+    transition:transform .32s cubic-bezier(.34, 1.5, .6, 1), opacity .22s linear;
+  }
+  .foot-nav a span{position:relative;z-index:1;}
+  .foot-nav a:active{transform:scale(0.95);}
+  @media (hover:hover){
+    .foot-nav a:hover{transform:scale(1.05);}
+    .foot-nav a:hover::before{opacity:1;transform:scale(1);}
+  }
+
+  /* ---------- ikon sosial ---------- */
+  .foot-social{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:clamp(12px, 3vw, 20px);
+    margin-top:clamp(18px, 3.2vw, 26px);
+  }
+  .foot-social a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    color:var(--text);
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .3s cubic-bezier(.34, 1.5, .6, 1), color .25s var(--ease);
+  }
+  .foot-social svg{display:block;}
+  .foot-social a:active{transform:scale(0.92);}
+  @media (hover:hover){
+    .foot-social a:hover{
+      transform:translateY(-3px) scale(1.14);
+      color:var(--beam-bright);
+    }
+  }
+
+  /* ---------- pita bergaris miring ---------- */
+  .foot-rule{
+    height:48px;
+    margin-top:clamp(26px, 4.6vw, 40px);
+    /* warna garisnya disamakan dengan teks kecil di bawahnya
+       (--text-muted), bukan putih, supaya tidak terlalu mencolok */
+    border-top:1px solid var(--line-soft);
+    border-bottom:1px solid var(--line-soft);
+    opacity:0.45;
+    color:var(--text-muted);
+    background-image:repeating-linear-gradient(315deg,
+      currentColor 0, currentColor 1px, transparent 0, transparent 50%);
+    background-size:10px 10px;
+    animation:foot-stripes 20s linear infinite;
+  }
+  @keyframes foot-stripes{
+    from{background-position:0 0;}
+    to{background-position:200px 0;}
+  }
+
+  /* ---------- baris penutup ---------- */
+  .foot-tail{
+    margin-top:clamp(20px, 3.4vw, 30px);
+  }
+  .foot-cats{
+    max-width:62ch;
+    margin:0 auto;
+    font-size:11.5px;
+    line-height:1.75;
+    color:var(--text-dim, var(--text-muted));
+    opacity:0.75;
+  }
+  .foot-copy{margin-top:12px;}
+
+  @media (prefers-reduced-motion: reduce){
+    .foot-rule{animation:none;}
+    .foot-nav a,
+    .foot-nav a::before,
+    .foot-social a{transition:none;}
   }
 
   /* ============================================================
@@ -1427,157 +1477,190 @@
     100%{transform:scale(1.7);opacity:0;}
   }
 
-  /* ---- ikon goyang pas card disentuh/di-hover (playful feedback) ---- */
-  .trust-card:active .trust-icon svg,
-  .product-card:active .product-emoji svg,
-  .audience-card:active .audience-emoji svg,
-  .cert-card:active .cert-badge svg,
-  .store-photo:active .store-photo-icon svg,
-  .contact-row:active .contact-icon svg{
-    animation:icon-wiggle .5s var(--ease);
-  }
-  @media(hover:hover){
-    .trust-card:hover .trust-icon svg,
-    .product-card:hover .product-emoji svg,
-    .audience-card:hover .audience-emoji svg,
-    .cert-card:hover .cert-badge svg,
-    .store-photo:hover .store-photo-icon svg,
-    .contact-row:hover .contact-icon svg{
-      animation:icon-wiggle .5s var(--ease);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .reveal{opacity:1;transform:none;transition:none;}
     .fab-ring{animation:none;display:none;}
     .btn-wa-lg-ringed{animation:none;}
-    .trust-icon svg,.product-emoji svg,.audience-emoji svg,
-    .cert-badge svg,.store-photo-icon svg,.contact-icon svg,
     .shop-card-thumb{
-      animation:none!important;
-    }
-    .trust-icon,.contact-icon,.cert-badge{
       animation:none!important;
     }
     .running-text-track{animation:none!important;transform:none;}
   }
 
   /* ============================================================
-     SERTIFIKASI & PENGHARGAAN
+     BROSUR PRODUK BEST SELLER — kartu "kipas" (fan carousel)
+     Brosur ditumpuk melengkung seperti kartu di tangan. Kartu tengah
+     yang terbesar & paling depan; kartu samping miring dan mengecil.
+
+     Dua mode:
+     1. TANPA JS -> strip yang bisa digeser ke samping (aman & tetap
+        lengkap, caption ikut tampil di tiap kartu).
+     2. DENGAN JS (html.js) -> mode kipas: ada panah, titik navigasi,
+        geser/swipe, dan caption pindah ke bawah mengikuti kartu tengah.
+     Posisi tiap kartu dihitung di JS supaya ikut ukuran layar.
      ============================================================ */
-  .cert-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:18px;
+  .fan{
+    --fan-h:clamp(206px, 42vw, 390px);
+    --fan-w:calc(var(--fan-h) * 0.707);
   }
-  .cert-card{
-    position:relative;
+
+  /* ---------- mode dasar: strip geser (dipakai kalau JS mati) ---------- */
+  .fan-deck{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding-bottom:4px;
+  }
+  .fan-deck::-webkit-scrollbar{display:none;}
+  .fan-card{
+    flex:0 0 auto;
+    width:var(--fan-w);
     background:var(--bg-surface);
     border:1px solid var(--line-soft);
-    border-radius:var(--radius-md);
-    padding:16px 16px 18px;
-    cursor:pointer;
-    transition:transform .2s var(--ease), border-color .2s var(--ease);
-  }
-  .cert-card:active{transform:scale(0.98);}
-  @media(hover:hover){
-    .cert-card:hover{border-color:var(--beam);}
-  }
-  .cert-badge{
-    position:absolute;
-    top:-12px;
-    left:16px;
-    width:34px;height:34px;
-    border-radius:50%;
-    background:linear-gradient(135deg, var(--beam-bright), var(--beam));
-    color:var(--bg-void);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 8px 16px -4px rgba(0,0,0,0.55);
-    animation:icon-glow-badge 2.6s ease-in-out infinite;
-  }
-  .cert-badge svg{display:block;}
-  .cert-card.reveal.is-visible .cert-badge svg{animation:icon-pop .6s var(--ease) backwards;}
-  .cert-card:nth-child(1) .cert-badge svg{animation-delay:.05s;}
-  .cert-card:nth-child(2) .cert-badge svg{animation-delay:.18s;}
-  .cert-thumb-wrap{
-    background:#fff;
-    border-radius:10px;
-    padding:5px;
-    margin-bottom:13px;
+    border-radius:16px;
     overflow:hidden;
+    cursor:pointer;
   }
-  .cert-thumb{
+  .fan-thumb{
+    display:block;
     width:100%;
     height:auto;
-    display:block;
-    border-radius:6px;
+    background:#fff;
   }
-  .cert-caption h3{
-    font-size:15.5px;
+  .fan-cap{padding:9px 10px 11px;}
+  .fan-cap h3{
+    font-size:12.5px;
+    line-height:1.3;
+    margin-bottom:3px;
     color:var(--text);
-    margin-bottom:5px;
   }
-  .cert-caption p{
-    font-size:13px;
-    color:var(--text-muted);
-    line-height:1.55;
-    margin-bottom:10px;
+  .fan-cap span{
+    font-size:11px;
+    font-weight:700;
+    color:var(--beam-bright);
   }
-  .cert-zoom-hint{
-    display:inline-flex;
-    align-items:center;
-    gap:4px;
-    font-size:12px;
+  .fan-caption,
+  .fan-nav{display:none;}
+
+  /* ---------- mode kipas (JS aktif) ---------- */
+  html.js .fan-deck{
+    position:relative;
+    display:block;
+    /* dipotong di tepi supaya kartu yang sedang "terbang keluar" tidak
+       bikin halaman bisa digeser ke samping; tingginya dilebihkan
+       supaya bayangan kartu tidak ikut terpotong */
+    overflow:hidden;
+    height:calc(var(--fan-h) * 1.34);
+    padding-bottom:0;
+    touch-action:pan-y;
+  }
+  html.js .fan-card{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:var(--fan-w);
+    height:var(--fan-h);
+    margin-left:calc(var(--fan-w) / -2);
+    margin-top:calc(var(--fan-h) / -2);
+    border-radius:clamp(12px, 2vw, 20px);
+    box-shadow:0 22px 50px -20px rgba(0,0,0,0.85);
+    will-change:transform, opacity;
+    /* sedikit melewati target lalu balik -- ini yang bikin gerakan
+       menyibaknya terasa memantul seperti di contoh */
+    transition:transform .52s cubic-bezier(.34, 1.42, .58, 1),
+               opacity .4s linear;
+  }
+  html.js .fan-thumb{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  html.js .fan-cap{display:none;}
+
+  /* caption kartu tengah, ditaruh di bawah kipas */
+  html.js .fan-caption{
+    display:block;
+    max-width:44ch;
+    margin:clamp(16px, 3vw, 26px) auto 0;
+    text-align:center;
+    min-height:3.4em;
+  }
+  .fan-caption h3{
+    font-size:clamp(14px, 3.2vw, 17px);
+    line-height:1.35;
+    color:var(--text);
+  }
+  .fan-caption span{
+    display:block;
+    margin-top:5px;
+    font-size:clamp(11.5px, 2.6vw, 13px);
     font-weight:700;
     color:var(--beam-bright);
   }
 
-  /* ============================================================
-     BROSUR PRODUK BEST SELLER — galeri brosur (ketuk untuk zoom)
-     ============================================================ */
-  .brosur-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
+  /* panah + titik navigasi */
+  html.js .fan-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(10px, 2.5vw, 18px);
+    margin-top:clamp(12px, 2.4vw, 18px);
   }
-  .brosur-card{
-    position:relative;
-    background:var(--bg-surface);
-    border:1px solid var(--line-soft);
-    border-radius:var(--radius-md);
-    overflow:hidden;
+  .fan-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+    width:42px;
+    height:42px;
+    padding:0;
+    border-radius:50%;
+    border:1.5px solid var(--line-soft);
+    background:rgba(27,31,44,0.7);
+    color:var(--text-muted);
     cursor:pointer;
-    transition:transform .2s var(--ease), border-color .2s var(--ease);
+    transition:border-color .25s var(--ease), color .25s var(--ease);
   }
-  .brosur-card:active{transform:scale(0.97);}
-  @media(hover:hover){
-    .brosur-card:hover{border-color:var(--beam);}
+  .fan-arrow svg{display:block;}
+  .fan-arrow:active{opacity:0.7;}
+  @media (hover:hover){
+    .fan-arrow:hover{border-color:var(--beam);color:var(--beam-bright);}
   }
-  .brosur-thumb-wrap{
-    background:#fff;
-    overflow:hidden;
+  .fan-dots{
+    display:flex;
+    align-items:center;
+    gap:8px;
   }
-  .brosur-thumb{
-    width:100%;
-    height:auto;
-    display:block;
+  .fan-dot{
+    width:9px;
+    height:9px;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    background:rgba(241,239,233,0.18);
+    cursor:pointer;
+    transition:background .3s var(--ease), transform .3s var(--ease);
   }
-  .brosur-caption{
-    padding:11px 12px 13px;
+  .fan-dot.is-on{
+    background:var(--beam);
+    transform:scale(1.35);
   }
-  .brosur-caption h3{
-    font-size:13px;
-    color:var(--text);
-    line-height:1.3;
-    margin-bottom:3px;
+
+  /* angkat sedikit kartu yang disentuh kursor (hanya di perangkat
+     yang benar-benar punya hover, jadi tidak mengganggu layar sentuh) */
+  @media (hover:hover){
+    html.js .fan-card{cursor:pointer;}
   }
-  .brosur-caption span{
-    font-size:11px;
-    font-weight:700;
-    color:var(--beam-bright);
+
+  /* kalau pengguna minta animasi dikurangi: perpindahan langsung,
+     tanpa transisi -- semua fungsi tetap jalan */
+  @media (prefers-reduced-motion: reduce){
+    html.js .fan-card{transition:none;}
+    .fan-dot,
+    .fan-arrow{transition:none;}
   }
 
   .lightbox{
@@ -1624,54 +1707,55 @@
   }
 
   /* ============================================================
-     FOTO TOKO
-     ============================================================ */
-  .store-photo{
-    border-radius:var(--radius-lg);
-    overflow:hidden;
-    margin-bottom:18px;
-    border:1px solid var(--line-soft);
-    box-shadow:0 20px 40px -18px rgba(0,0,0,0.55);
-  }
-  .store-photo-img{
-    width:100%;
-    height:auto;
-    display:block;
-  }
-  .store-photo-caption{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:14px 16px;
-    background:var(--bg-surface);
-    font-size:13px;
-    color:var(--text-muted);
-    line-height:1.5;
-  }
-  .store-photo-icon{
-    flex:none;
-    color:var(--beam-bright);
-    display:inline-flex;
-  }
-  .store-photo-icon svg{display:block;}
-  .store-photo.reveal.is-visible .store-photo-icon svg{animation:icon-pop .6s var(--ease) .1s backwards;}
-
-  /* ============================================================
      MEREK YANG KAMI SEDIAKAN
      ============================================================ */
-  .brand-grid{
-    display:grid;
-    grid-template-columns:repeat(4, 1fr);
-    gap:10px;
+  /* Dua baris logo berjalan otomatis dengan arah BERLAWANAN (baris atas
+     ke kiri, baris bawah ke kanan). Isi tiap baris ditulis 2x persis
+     sama; jarak antar chip pakai margin-right (bukan gap) supaya geser
+     50% jatuh tepat di batas set -> sambungannya mulus tanpa lompat.
+     Mau tambah/kurangi merek? ubah DI KEDUA SET baris yang sama. */
+  .brand-marquee{
+    --bc-h:clamp(52px, 12vw, 68px);
+    --bc-w:clamp(106px, 25vw, 150px);
+    --bc-gap:clamp(9px, 1.4vw, 16px);
+    position:relative;
+    /* keluar dari padding .wrap supaya stripnya selebar layar */
+    margin-left:calc(var(--gutter) * -1);
+    margin-right:calc(var(--gutter) * -1);
+    overflow:hidden;
+  }
+  .brand-row{
+    display:flex;
+    overflow:hidden;
+  }
+  .brand-row + .brand-row{margin-top:var(--bc-gap);}
+  .brand-track{
+    display:flex;
+    width:max-content;
+    will-change:transform;
+  }
+  .brand-row-a .brand-track{animation:brand-left 62s linear infinite;}
+  .brand-row-b .brand-track{animation:brand-right 62s linear infinite;}
+  @keyframes brand-left{
+    from{transform:translate3d(0,0,0);}
+    to{transform:translate3d(-50%,0,0);}
+  }
+  @keyframes brand-right{
+    from{transform:translate3d(-50%,0,0);}
+    to{transform:translate3d(0,0,0);}
   }
   .brand-chip{
+    flex:0 0 auto;
+    width:var(--bc-w);
+    height:var(--bc-h);
+    margin-right:var(--bc-gap);
     background:var(--screen);
-    border-radius:var(--radius-sm);
-    height:58px;
+    border-radius:999px;
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:9px;
+    padding:clamp(11px, 2.2vw, 18px);
+    box-shadow:0 10px 24px -12px rgba(0,0,0,0.65);
   }
   .brand-chip img{
     max-width:100%;
@@ -1679,63 +1763,36 @@
     object-fit:contain;
     display:block;
   }
-
-  @media (min-width:540px){
-    .brand-chip{height:70px;padding:12px;}
+  /* tepi kiri & kanan memudar ke warna background, seperti di contoh */
+  .brand-marquee::before,
+  .brand-marquee::after{
+    content:"";
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:clamp(44px, 10vw, 130px);
+    z-index:2;
+    pointer-events:none;
   }
-
-  /* ============================================================
-     TESTIMONI TRANSAKSI (strip geser)
-     ============================================================ */
-  .testi-scroll{
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-    padding-left:var(--gutter);
-    padding-right:var(--gutter);
-    margin-top:20px;
+  .brand-marquee::before{
+    left:0;
+    background:linear-gradient(to right, var(--bg-void) 0%, rgba(16,18,26,0) 100%);
   }
-  .testi-scroll::-webkit-scrollbar{display:none;}
-  .testi-track{
-    display:flex;
-    gap:9px;
-    width:max-content;
+  .brand-marquee::after{
+    right:0;
+    background:linear-gradient(to left, var(--bg-void) 0%, rgba(16,18,26,0) 100%);
   }
-  .testi-item{
-    flex:none;
-    width:112px;
-    height:199px;
-    border-radius:var(--radius-sm);
-    overflow:hidden;
-    border:1px solid var(--line-soft);
-    background:var(--bg-surface);
-    cursor:pointer;
-    padding:0;
-    transition:transform .2s var(--ease);
+  /* berhenti sebentar kalau kursor diarahkan ke strip (desktop) */
+  @media (hover:hover){
+    .brand-marquee:hover .brand-track{animation-play-state:paused;}
   }
-  .testi-item:active{transform:scale(0.96);}
-  .testi-item img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-  }
-  .testi-hint{
-    font-size:12px;
-    color:var(--text-muted);
-    margin-top:10px;
-  }
-
-  /* small phones */
-  @media (max-width:340px){
-    .hero h1{font-size:25px;}
-    .audience-grid{grid-template-columns:1fr;}
+  @media (prefers-reduced-motion: reduce){
+    .brand-track{animation:none;}
   }
 
   /* let the layout breathe a bit more on wider phones/small tablets */
   @media (min-width:540px){
     :root{--max-w:520px;}
-    .hero h1{font-size:33px;}
   }
 
   /* ============================================================
@@ -1753,16 +1810,6 @@
 
     .filter-row{flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:22px;}
     .filter-group-sort{margin-left:auto;}
-
-    .hero{padding-top:60px;padding-bottom:52px;}
-    .hero h1{font-size:38px;}
-
-    .trust-grid{grid-template-columns:repeat(3,1fr);gap:16px;}
-    .product-list{grid-template-columns:repeat(3,1fr);}
-    .product-card{flex-direction:column;align-items:flex-start;text-align:left;}
-    .audience-grid{grid-template-columns:repeat(4,1fr);}
-    .cert-grid{grid-template-columns:repeat(2,1fr);gap:18px;}
-    .brosur-grid{grid-template-columns:repeat(3,1fr);}
     .shop-grid{grid-template-columns:repeat(2,1fr);gap:16px;}
     .shop-card{padding:14px;gap:10px;}
     .shop-card-top{flex-direction:column;align-items:center;text-align:center;gap:10px;}
@@ -1791,7 +1838,6 @@
     }
     .shop-qty{justify-content:center;}
     .btn-add-cart{width:auto;font-size:12.5px;padding:9px 14px;white-space:nowrap;}
-    .brand-grid{grid-template-columns:repeat(4,1fr);}
 
     .cart-panel{max-width:400px;}
   }
@@ -1811,101 +1857,9 @@
     .section-desc{font-size:15px;max-width:60ch;}
 
     .header-inner{padding-top:18px;padding-bottom:18px;}
-    .product-card{align-items:center;text-align:center;}
-    .product-emoji{margin:0 auto;}
     .brand-logo{height:32px;width:auto;}
     .brand-name{font-size:15px;}
-
-    .hero{padding-top:88px;padding-bottom:76px;text-align:left;}
-    .hero h1{font-size:52px;line-height:1.18;}
-    .hero-break{display:none;}
-    .eyebrow{font-size:13.5px;}
-    .hero-sub{font-size:17px;line-height:1.75;}
-    .hero-cta-zone{margin-top:24px;}
-    .hero-cta-zone .cta-microcopy{
-      text-align:left;
-      margin-top:18px;
-    }
-    .hero .beam-glow{width:480px;height:480px;top:-160px;right:-160px;}
-
-    /* Kartu headline "menyerap" sisa tinggi (flex:1 + konten
-       di-tengah-kan vertikal) supaya blok headline+tombol otomatis
-       sama tinggi dengan panel foto TANPA rongga kosong terpisah --
-       kartunya sendiri yang jadi lebih lega/besar, bukan area kosong
-       di background gelap. Ini juga jamin selalu pas berapa pun
-       ukuran font asli yang ter-render (Space Grotesk / Plus Jakarta
-       Sans), tidak tergantung tebakan pixel. */
-    .screen-panel{
-      padding:36px 34px;
-      flex:1 1 auto;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-    }
-    .hero-cta-row .btn-wa-lg{padding:22px 26px;font-size:17.5px;}
-
-    @media (max-width:1279px){
-      .hero h1{font-size:44px;}
-      .screen-panel{padding:30px 30px;}
-      .hero-cta-zone{margin-top:24px;}
-      .hero-cta-zone .cta-microcopy{margin-top:16px;}
-      .hero-cta-row .btn-wa-lg{padding:20px 24px;font-size:17px;}
-    }
-
-    /* headline+CTA jadi kolom utama, panel foto "Momen Serah Terima"
-       jadi kolom kedua di sebelahnya. Pakai flexbox (bukan grid 1fr)
-       supaya kolom teks mengisi penuh sisa ruang dan nempel rapat ke
-       panel foto -- tidak ada rongga kosong di antara keduanya. */
-    .hero-grid{
-      display:flex;
-      align-items:stretch;
-      gap:32px;
-    }
-    .hero-main{
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start;
-      flex:1 1 auto;
-      min-width:0;
-    }
-    .hero-photo-panel{
-      margin-top:0;
-      flex:0 0 260px;
-      width:260px;
-    }
-    /* panel foto lebih sempit di desktop (260px) -- badge keterangan
-       dikecilkan & dipaksa 1 baris supaya tetap muat rapi, tidak
-       numpuk beberapa baris seperti kalau pakai ukuran mobile */
-    .hero-photo-caption{
-      font-size:9px;
-      padding:6px 9px 6px 7px;
-      gap:4px;
-      white-space:nowrap;
-      max-width:calc(100% - 16px);
-    }
-    .hero-photo-caption svg{width:10px;height:10px;}
-
-    .trust-grid{gap:20px;}
-    .trust-card{padding:24px;}
-    .audience-grid{gap:16px;}
-    .brosur-grid{grid-template-columns:repeat(3,1fr);gap:18px;}
     .shop-grid{grid-template-columns:repeat(4,1fr);gap:18px;}
-    .brand-grid{grid-template-columns:repeat(8,1fr);}
-
-    .cert-grid{gap:22px;}
-
-    /* dokumentasi stok & testimoni: strip geser jadi lebih lega, bukan dipaksa grid penuh */
-    .testi-scroll{padding-left:0;padding-right:0;}
-    .testi-item{width:132px;height:234px;}
-
-    .store-photo{margin-bottom:0;}
-    .contact-card{max-width:none;margin:0;}
-    .kontak-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:40px;
-      align-items:center;
-    }
 
     .cart-panel{max-width:420px;}
     .modal-panel{max-width:480px;}
@@ -1915,4 +1869,449 @@
     :root{--max-w:1200px;}
   }
 
+  /* ============================================================
+     KONTAK & LOKASI (.kt)
+     Kiri: judul, ajakan, daftar kontak, tombol WhatsApp.
+     Kanan: satu foto toko, dipasang lurus (tidak dimiringkan).
+     Disorot kursor, fotonya terangkat sedikit.
+     Latar bergaris kotak-kotak yang memudar ke tepi, seperti contoh.
+     ============================================================ */
+  #kontak{position:relative;overflow:hidden;}
+  #kontak > .wrap{position:relative;z-index:1;}
+  #kontak::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:clamp(34px, 7vw, 52px) clamp(34px, 7vw, 52px);
+    /* garisnya dibuat memudar ke tepi supaya tidak ramai */
+    -webkit-mask-image:radial-gradient(ellipse at 50% 42%, #000 0%, rgba(0,0,0,0.45) 46%, transparent 74%);
+    mask-image:radial-gradient(ellipse at 50% 42%, #000 0%, rgba(0,0,0,0.45) 46%, transparent 74%);
+    opacity:0.75;
+  }
 
+  .kt-grid{
+    display:grid;
+    gap:clamp(26px, 5vw, 40px);
+  }
+  .kt-lead{
+    max-width:46ch;
+    margin-top:12px;
+    font-size:clamp(14px, 3vw, 15.5px);
+    line-height:1.7;
+    color:var(--text-muted);
+  }
+
+  /* ---------- daftar kontak ---------- */
+  .kt-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:clamp(20px, 3.4vw, 28px);
+  }
+  .kt-item{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    gap:12px;
+    align-items:start;
+  }
+  .kt-ico{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+    width:36px;
+    height:36px;
+    border-radius:11px;
+    border:1px solid var(--line-soft);
+    background:rgba(27,31,44,0.7);
+    color:var(--beam-bright);
+  }
+  .kt-ico svg{display:block;}
+  .kt-item h3{
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    margin-bottom:3px;
+  }
+  .kt-item p{
+    font-size:clamp(13.5px, 3vw, 15px);
+    line-height:1.55;
+    color:var(--text);
+  }
+  .kt-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:3px;
+    font-size:clamp(13.5px, 3vw, 15px);
+    font-weight:700;
+    line-height:1.45;
+    color:var(--beam-bright);
+    text-decoration:none;
+  }
+  .kt-link svg{flex:none;display:block;}
+  .kt-link:active{opacity:0.7;}
+  @media (hover:hover){
+    .kt-link:hover{text-decoration:underline;}
+  }
+
+  .kt-cta{margin-top:clamp(22px, 3.6vw, 30px);}
+  .kt-cta .btn-wa-lg{width:100%;}
+  .kt-arrow{
+    margin-left:2px;
+    transition:transform .3s var(--ease);
+  }
+  @media (hover:hover){
+    .kt-cta .btn-wa-lg:hover .kt-arrow{transform:translateX(4px);}
+  }
+
+  /* ---------- foto toko (satu, lurus) ---------- */
+  .kt-photos{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    /* ruang ekstra supaya bayangan foto tidak terpotong saat terangkat */
+    padding:14px 0;
+  }
+  .kt-shot{
+    display:block;
+    width:100%;
+    max-width:480px;
+  }
+  .kt-shot img{
+    display:block;
+    width:100%;
+    height:auto;
+    /* 5:4 = rasio asli fotonya, jadi tidak ada bagian yang terpotong */
+    aspect-ratio:5 / 4;
+    object-fit:cover;
+    border-radius:clamp(14px, 2vw, 20px);
+    border:1px solid rgba(241,239,233,0.1);
+    box-shadow:0 26px 55px -22px rgba(0,0,0,0.92);
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+  }
+  @media (hover:hover){
+    .kt-shot:hover img{
+      transform:translateY(-10px) scale(1.015);
+      box-shadow:0 36px 68px -20px rgba(0,0,0,0.95);
+    }
+  }
+
+  /* muncul dari kanan (untuk kolom foto), bukan dari bawah */
+  html.js .reveal-x{
+    opacity:0;
+    transform:translateX(30px);
+    transition:opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  html.js .reveal-x.is-visible{
+    opacity:1;
+    transform:none;
+  }
+
+  @media (min-width:900px){
+    .kt-grid{
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+      gap:clamp(36px, 5vw, 60px);
+      align-items:center;
+    }
+    .kt-cta .btn-wa-lg{width:auto;display:inline-flex;padding:18px 30px;}
+    .kt-photos{padding:22px 0;}
+    .kt-shot{max-width:none;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .kt-shot img,
+    .kt-arrow{transition:none;}
+    html.js .reveal-x{opacity:1;transform:none;transition:none;}
+  }
+
+  /* ============================================================
+     DOKUMENTASI (.doc) — gabungan section "Stok Gudang" dan
+     "Momen Serah Terima" jadi satu mozaik foto 3 dimensi.
+
+     Empat kolom foto berjalan otomatis ke atas & ke bawah bergantian,
+     lalu seluruh blok dimiringkan pakai perspective supaya terlihat
+     seperti dinding foto. Tepinya dibuat memudar ke warna background
+     di keempat sisi.
+
+     Ukuran kartu memakai rasio asli foto (380 x 676), jadi TIDAK ADA
+     bagian foto yang terpotong.
+
+     Isi tiap kolom ditulis 2x persis sama; jarak antar foto memakai
+     margin-bottom (bukan gap) supaya geser 50% jatuh tepat di batas
+     set -> sambungannya mulus tanpa lompat.
+     ============================================================ */
+  .doc-stage{
+    --doc-w:clamp(80px, 13vw, 148px);
+    --doc-gap:clamp(9px, 1.3vw, 15px);
+    position:relative;
+    height:clamp(360px, 64vw, 540px);
+    overflow:hidden;
+    border-radius:var(--radius-lg);
+    perspective:clamp(700px, 80vw, 1250px);
+  }
+  .doc-3d{
+    position:absolute;
+    left:50%;
+    top:50%;
+    display:flex;
+    gap:var(--doc-gap);
+    transform:translate(-50%, -50%)
+              rotateX(18deg) rotateY(-10deg) rotateZ(16deg)
+              scale(1.08);
+    transform-style:preserve-3d;
+  }
+  .doc-col{
+    display:flex;
+    flex-direction:column;
+    flex:0 0 auto;
+    width:var(--doc-w);
+    will-change:transform;
+    animation:doc-up 52s linear infinite;
+  }
+  /* kolom genap jalan ke arah sebaliknya */
+  .doc-col-down{animation-name:doc-down;}
+  /* durasi tiap kolom sengaja dibedakan sedikit supaya tidak terlihat
+     bergerak serempak seperti balok kaku */
+  .doc-col:nth-child(1){animation-duration:52s;}
+  .doc-col:nth-child(2){animation-duration:61s;}
+  .doc-col:nth-child(3){animation-duration:46s;}
+  .doc-col:nth-child(4){animation-duration:57s;}
+  .doc-col:nth-child(5){animation-duration:64s;}
+  .doc-col:nth-child(6){animation-duration:50s;}
+  @keyframes doc-up{
+    from{transform:translate3d(0, 0, 0);}
+    to{transform:translate3d(0, -50%, 0);}
+  }
+  @keyframes doc-down{
+    from{transform:translate3d(0, -50%, 0);}
+    to{transform:translate3d(0, 0, 0);}
+  }
+  .doc-item{
+    display:block;
+    width:100%;
+    /* rasio asli foto -> tidak ada yang terpotong */
+    aspect-ratio:380 / 676;
+    margin-bottom:var(--doc-gap);
+    border-radius:clamp(8px, 1.2vw, 14px);
+    overflow:hidden;
+    background:var(--bg-surface);
+    border:1px solid rgba(241,239,233,0.08);
+    box-shadow:0 14px 30px -14px rgba(0,0,0,0.8);
+    cursor:zoom-in;
+  }
+  .doc-item img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .doc-item:active{opacity:0.8;}
+
+  /* tepi memudar di keempat sisi */
+  .doc-stage::before,
+  .doc-stage::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:2;
+    pointer-events:none;
+  }
+  .doc-stage::before{
+    background:
+      linear-gradient(to bottom, var(--bg-void) 0%, rgba(16,18,26,0) 26%),
+      linear-gradient(to top, var(--bg-void) 0%, rgba(16,18,26,0) 26%);
+  }
+  .doc-stage::after{
+    background:
+      linear-gradient(to right, var(--bg-void) 0%, rgba(16,18,26,0) 20%),
+      linear-gradient(to left, var(--bg-void) 0%, rgba(16,18,26,0) 20%);
+  }
+
+  .doc-hint{
+    margin-top:14px;
+    text-align:center;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+
+  /* berhenti sebentar kalau kursor diarahkan ke mozaiknya */
+  @media (hover:hover){
+    .doc-stage:hover .doc-col{animation-play-state:paused;}
+  }
+
+  @media (min-width:900px){
+    .doc-stage{height:clamp(440px, 42vw, 560px);}
+  }
+
+  /* kalau pengguna minta animasi dikurangi: diam, tapi mozaiknya
+     tetap tampil utuh */
+  @media (prefers-reduced-motion: reduce){
+    .doc-col{animation:none;}
+  }
+
+  /* ============================================================
+     ALASAN MEMILIH KAMI (.feat) — kisi poin singkat
+     Delapan poin pendek dalam kisi bergaris. Disorot kursor: latar
+     kartu menyala dari bawah, garis penanda di kiri judul memanjang
+     & berubah warna, judulnya bergeser sedikit ke kanan.
+     Garis pemisah dibuat pakai gap 1px berlatar warna garis, jadi
+     otomatis benar di 1, 2, maupun 4 kolom tanpa aturan tambahan.
+     ============================================================ */
+  .feat-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1px;
+    background:var(--line-soft);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+  }
+  .feat{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    padding:24px 22px;
+    background:var(--bg-void);
+    overflow:hidden;
+  }
+  .feat::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    opacity:0;
+    pointer-events:none;
+    background:linear-gradient(to top, rgba(27,31,44,0.95) 0%, rgba(27,31,44,0) 75%);
+    transition:opacity .25s var(--ease);
+  }
+  .feat-ico{
+    position:relative;
+    z-index:1;
+    display:inline-flex;
+    margin-bottom:14px;
+    color:var(--text-muted);
+    transition:color .25s var(--ease), transform .25s var(--ease);
+  }
+  .feat-ico svg{display:block;}
+  .feat-title{
+    position:relative;
+    z-index:1;
+    font-size:clamp(15px, 3.4vw, 16.5px);
+    line-height:1.3;
+    color:var(--text);
+    margin-bottom:7px;
+  }
+  /* garis penanda di tepi kiri kartu */
+  .feat-title::before{
+    content:"";
+    position:absolute;
+    left:-22px;
+    top:50%;
+    width:3px;
+    height:17px;
+    border-radius:0 3px 3px 0;
+    background:var(--line-soft);
+    transform:translateY(-50%);
+    transition:height .25s var(--ease), background .25s var(--ease);
+  }
+  .feat-title span{
+    display:inline-block;
+    transition:transform .25s var(--ease);
+  }
+  .feat-desc{
+    position:relative;
+    z-index:1;
+    font-size:clamp(12.5px, 2.9vw, 13.5px);
+    line-height:1.6;
+    color:var(--text-muted);
+  }
+  @media (hover:hover){
+    .feat:hover::before{opacity:1;}
+    .feat:hover .feat-ico{color:var(--beam-bright);transform:translateY(-2px);}
+    .feat:hover .feat-title::before{height:26px;background:var(--beam);}
+    .feat:hover .feat-title span{transform:translateX(6px);}
+  }
+  @media (min-width:600px){
+    .feat-grid{grid-template-columns:repeat(2, minmax(0,1fr));}
+    .feat{padding:26px 24px;}
+    .feat-title::before{left:-24px;}
+  }
+  @media (min-width:1024px){
+    .feat-grid{grid-template-columns:repeat(4, minmax(0,1fr));}
+    .feat{padding:30px 26px;}
+    .feat-title::before{left:-26px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .feat::before,
+    .feat-ico,
+    .feat-title::before,
+    .feat-title span{transition:none;}
+  }
+
+  /* ============================================================
+     SERTIFIKAT & PENGHARGAAN (.cert2)
+     Dua sertifikat dipasang miring saling bersandar. Disorot kursor:
+     yang disorot terangkat, miringnya berkurang, dan yang satunya
+     menyibak menjauh — gerakan yang sama seperti kartu brosur.
+     Ketuk untuk lihat versi besar (lightbox yang sudah ada).
+     ============================================================ */
+  .cert2-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 0;
+  }
+  .cert2-card{
+    flex:0 0 auto;
+    width:clamp(146px, 39vw, 330px);
+    cursor:zoom-in;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .cert2-card img{
+    display:block;
+    width:100%;
+    height:auto;                 /* rasio asli, tidak ada yang terpotong */
+    border-radius:clamp(10px, 1.4vw, 16px);
+    background:#ffffff;
+    border:1px solid rgba(241,239,233,0.12);
+    box-shadow:0 24px 50px -22px rgba(0,0,0,0.9);
+    transition:transform .45s cubic-bezier(.34, 1.42, .58, 1),
+               box-shadow .35s var(--ease);
+  }
+  .cert2-card:first-child{margin-right:-5%;z-index:2;}
+  .cert2-card:last-child{z-index:1;}
+  .cert2-card:first-child img{transform:rotate(-5deg);}
+  .cert2-card:last-child img{transform:rotate(5deg);}
+  .cert2-card:active img{opacity:0.85;}
+  @media (hover:hover){
+    .cert2-card:first-child:hover img{
+      transform:rotate(-2deg) translateY(-12px) scale(1.04);
+      box-shadow:0 34px 62px -20px rgba(0,0,0,0.95);
+    }
+    .cert2-card:last-child:hover img{
+      transform:rotate(2deg) translateY(-12px) scale(1.04);
+      box-shadow:0 34px 62px -20px rgba(0,0,0,0.95);
+    }
+    /* kartu yang tidak disorot menyibak menjauh */
+    .cert2-card:first-child:hover + .cert2-card img{transform:rotate(7deg) translateX(22px);}
+    .cert2-row:has(.cert2-card:last-child:hover) .cert2-card:first-child img{
+      transform:rotate(-7deg) translateX(-22px);
+    }
+  }
+  .cert2-hint{
+    margin-top:12px;
+    text-align:center;
+    font-size:12.5px;
+    color:var(--text-muted);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .cert2-card img{transition:none;}
+  }

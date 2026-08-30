@@ -250,8 +250,31 @@ const CONFIG = {
     hoveredSlot = null;
     busyUntil = Date.now() + 560;
     render();
+    schedule();          // hitungan mundur auto-geser dimulai dari nol lagi
   }
   function step(dir){ goTo(center + dir); }
+
+  /* ---- geser sendiri tiap 4,5 detik ----
+     Berhenti kalau: kursor lagi di atas kipasnya, kipasnya tidak
+     kelihatan di layar, tab browser tidak aktif, atau pengguna
+     mengaktifkan "reduce motion". Panah/titik/swipe tetap bisa
+     dipakai kapan saja -- begitu dipakai, hitungannya mulai lagi
+     dari awal supaya tidak langsung loncat lagi. */
+  var AUTO_MS = 4500;
+  var autoTimer = null;
+  var onScreen = false;
+  var hovered = false;
+  var reducedMotion = window.matchMedia &&
+                      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function schedule(){
+    if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
+    if (reducedMotion || !onScreen || hovered || document.hidden) return;
+    autoTimer = setTimeout(function(){ step(1); }, AUTO_MS);
+  }
+  function stopAuto(){
+    if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
+  }
 
   // ---- titik navigasi ----
   if (dotsBox){
@@ -274,6 +297,7 @@ const CONFIG = {
   var canHover = window.matchMedia && window.matchMedia("(hover:hover)").matches;
   if (canHover){
     var leaveTimer = null;
+    deck.addEventListener("mouseenter", function(){ hovered = true; stopAuto(); });
     cards.forEach(function(card, i){
       card.addEventListener("mouseenter", function(){
         if (Date.now() < busyUntil) return;
@@ -285,6 +309,8 @@ const CONFIG = {
       });
     });
     deck.addEventListener("mouseleave", function(){
+      hovered = false;
+      schedule();
       if (leaveTimer) clearTimeout(leaveTimer);
       leaveTimer = setTimeout(function(){
         hoveredSlot = null;
@@ -337,6 +363,20 @@ const CONFIG = {
     resizeTimer = setTimeout(render, 120);
   });
 
+  document.addEventListener("visibilitychange", function(){
+    if (document.hidden) stopAuto(); else schedule();
+  });
+
+  if ("IntersectionObserver" in window){
+    new IntersectionObserver(function(entries){
+      onScreen = entries[0].isIntersecting;
+      if (onScreen) schedule(); else stopAuto();
+    }, { threshold: 0.35 }).observe(fan);
+  } else {
+    onScreen = true;
+    schedule();
+  }
+
   render();
 })();
 
@@ -379,4 +419,62 @@ const CONFIG = {
   }, { rootMargin: "400px" });
 
   for (var k = 0; k < blocks.length; k++){ io.observe(blocks[k]); }
+})();
+
+
+/* ====================================================================
+   TAB KATEGORI halaman produk (.pf-tabs-wrap).
+   Tugasnya cuma satu: memberi tahu pengunjung bahwa deretan tabnya
+   masih berlanjut ke samping. Tepi yang memudar dan panah kecil cuma
+   dimunculkan kalau memang masih ada tab di arah itu -- kalau sudah
+   mentok, penandanya hilang sendiri.
+   Panahnya juga bisa diklik untuk menggeser satu layar.
+   Ditambah: tab yang sedang aktif otomatis digeser ke dalam pandangan,
+   jadi setelah memilih kategori posisinya tidak tersembunyi di tepi.
+   Tanpa JS: tab tetap bisa digeser dengan jari/trackpad seperti biasa.
+   ==================================================================== */
+(function(){
+  var wrap = document.getElementById("tabsWrap");
+  var tabs = document.getElementById("categoryTabs");
+  if (!wrap || !tabs) return;
+
+  function update(){
+    var max = tabs.scrollWidth - tabs.clientWidth;
+    var x = tabs.scrollLeft;
+    wrap.classList.toggle("can-prev", x > 4);
+    wrap.classList.toggle("can-next", x < max - 4);
+  }
+
+  tabs.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+
+  wrap.addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest("[data-tabs-scroll]") : null;
+    if (!btn) return;
+    var dir = parseInt(btn.getAttribute("data-tabs-scroll"), 10) || 1;
+    tabs.scrollBy({ left: dir * Math.round(tabs.clientWidth * 0.7), behavior: "smooth" });
+  });
+
+  // tab aktif dibawa ke dalam pandangan setiap kali kategori berganti
+  function revealActive(){
+    var active = tabs.querySelector(".filter-pill.is-active");
+    if (!active) return;
+    var a = active.getBoundingClientRect();
+    var t = tabs.getBoundingClientRect();
+    if (a.left < t.left + 40){
+      tabs.scrollBy({ left: a.left - t.left - 48, behavior: "smooth" });
+    } else if (a.right > t.right - 40){
+      tabs.scrollBy({ left: a.right - t.right + 48, behavior: "smooth" });
+    }
+  }
+  tabs.addEventListener("click", function(){ setTimeout(revealActive, 60); });
+
+  // daftar kategorinya dibuat oleh products-page.js setelah halaman siap,
+  // jadi penandanya dihitung ulang begitu isinya berubah
+  if ("MutationObserver" in window){
+    new MutationObserver(update).observe(tabs, { childList: true, subtree: true });
+  }
+
+  update();
+  window.addEventListener("load", update);
 })();

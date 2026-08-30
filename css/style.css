@@ -689,213 +689,332 @@
     .back-to-home:hover{color:var(--beam-bright);}
   }
 
-  .products-filter-zone{padding:8px 0 20px;}
-  .search-box{
+  /* ============================================================
+     BAR CARI & FILTER halaman produk (.pf)
+     Ringkas: satu bar yang menempel di bawah header sepanjang
+     halaman. Dua baris saja -- baris cari + tombol Filter, lalu
+     baris tab kategori yang bisa digeser ke samping.
+     Filter yang jarang dipakai (merek, harga, urutan) disimpan di
+     panel yang dibuka lewat tombol Filter, jadi tidak makan layar.
+     ============================================================ */
+  .pf{
+    position:sticky;
+    top:var(--header-h, 64px);
+    z-index:40;
+    background:var(--bg-void);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .pf-top{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:10px 0;
+  }
+  .pf-search{
     position:relative;
     display:flex;
     align-items:center;
+    gap:9px;
+    flex:1 1 auto;
+    min-width:0;
+    height:40px;
+    padding:0 12px;
+    border-radius:10px;
     background:var(--bg-surface);
     border:1px solid var(--line-soft);
-    border-radius:999px;
-    padding:12px 16px;
-    gap:10px;
-    margin-bottom:18px;
-    color:var(--text-muted);
+    transition:border-color .2s var(--ease);
   }
-  .search-box input{
-    flex:1;
+  .pf-search:focus-within{border-color:var(--beam);}
+  .pf-search > svg{flex:none;color:var(--text-muted);}
+  .pf-search input{
+    flex:1 1 auto;
     min-width:0;
-    background:none;
-    border:none;
+    background:transparent;
+    border:0;
     outline:none;
+    color:var(--text);
     font-family:inherit;
     font-size:14px;
-    color:var(--text);
   }
-  .search-box input::placeholder{color:var(--text-muted);}
-  .search-clear{
+  .pf-search input::placeholder{color:var(--text-muted);}
+  .pf-clear{
     flex:none;
-    width:22px;height:22px;
+    width:22px;
+    height:22px;
+    padding:0;
+    border:0;
     border-radius:50%;
-    background:var(--bg-void);
+    background:rgba(241,239,233,0.1);
     color:var(--text-muted);
-    font-size:16px;
+    font-size:15px;
     line-height:1;
+    cursor:pointer;
+  }
+  .pf-clear[hidden]{display:none;}
+
+  .pf-more{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    flex:none;
+    height:40px;
+    padding:0 13px;
+    border-radius:10px;
+    border:1px solid var(--line-soft);
+    background:var(--bg-surface);
+    color:var(--text);
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:700;
+    cursor:pointer;
+    transition:border-color .2s var(--ease), color .2s var(--ease);
+  }
+  .pf-more svg{flex:none;}
+  .pf-more[aria-expanded="true"]{border-color:var(--beam);color:var(--beam-bright);}
+  .pf-more:active{transform:scale(0.97);}
+  @media (hover:hover){
+    .pf-more:hover{border-color:var(--beam);}
+  }
+  .pf-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:18px;
+    height:18px;
+    padding:0 5px;
+    border-radius:999px;
+    background:var(--beam);
+    color:#201c14;
+    font-size:11px;
+    font-weight:800;
+  }
+  .pf-badge[hidden]{display:none;}
+
+  /* ---------- tab kategori ---------- */
+  .pf-tabs-wrap{
+    position:relative;
+    /* melar sampai tepi layar supaya tab bisa digeser mulus di HP */
+    margin:0 calc(var(--gutter) * -1);
+  }
+  .pf-tabs{
+    position:relative;
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    scroll-behavior:smooth;
+  }
+  /* tepi memudar: penanda bahwa deretannya masih berlanjut ke samping */
+  .pf-tabs-wrap::before,
+  .pf-tabs-wrap::after{
+    content:"";
+    position:absolute;
+    top:0;
+    bottom:1px;
+    width:clamp(38px, 9vw, 64px);
+    z-index:2;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .25s var(--ease);
+  }
+  .pf-tabs-wrap::before{
+    left:0;
+    background:linear-gradient(to right, var(--bg-void) 0%, var(--bg-void) 42%, rgba(16,18,26,0) 100%);
+  }
+  .pf-tabs-wrap::after{
+    right:0;
+    background:linear-gradient(to left, var(--bg-void) 0%, var(--bg-void) 42%, rgba(16,18,26,0) 100%);
+  }
+  .pf-tabs-wrap.can-prev::before,
+  .pf-tabs-wrap.can-next::after{opacity:1;}
+  /* panah kecil di dalam area yang memudar */
+  .pf-tabs-nudge{
+    position:absolute;
+    top:0;
+    bottom:1px;
+    z-index:3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:clamp(30px, 7vw, 40px);
+    padding:0;
+    border:0;
+    background:transparent;
+    color:var(--text-muted);
+    cursor:pointer;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .25s var(--ease), color .2s var(--ease), visibility .25s;
+  }
+  .pf-tabs-nudge svg{display:block;}
+  .pf-tabs-nudge-prev{left:0;}
+  .pf-tabs-nudge-next{right:0;}
+  .pf-tabs-wrap.can-prev .pf-tabs-nudge-prev,
+  .pf-tabs-wrap.can-next .pf-tabs-nudge-next{opacity:1;visibility:visible;}
+  .pf-tabs-nudge:active{transform:scale(0.9);}
+  @media (hover:hover){
+    .pf-tabs-nudge:hover{color:var(--beam-bright);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .pf-tabs{scroll-behavior:auto;}
+    .pf-tabs-wrap::before,
+    .pf-tabs-wrap::after,
+    .pf-tabs-nudge{transition:none;}
+  }
+  .pf-tabs::-webkit-scrollbar{display:none;}
+  .pf-tabs .filter-pills{
+    display:flex;
+    flex-wrap:nowrap;
+    gap:0;
+    width:max-content;
+    min-width:100%;
+    padding:0 var(--gutter);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .pf-tabs .filter-pill{
+    flex:none;
+    position:relative;
+    padding:9px 13px 10px;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:var(--text-muted);
+    font-size:13.5px;
+    font-weight:600;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:color .2s var(--ease);
+  }
+  /* garis penanda tab yang sedang aktif */
+  .pf-tabs .filter-pill::after{
+    content:"";
+    position:absolute;
+    left:13px;
+    right:13px;
+    bottom:-1px;
+    height:2px;
+    border-radius:2px;
+    background:var(--beam);
+    opacity:0;
+    transform:scaleX(0.4);
+    transition:opacity .22s var(--ease), transform .22s var(--ease);
+  }
+  .pf-tabs .filter-pill.is-active{color:var(--text);font-weight:700;}
+  .pf-tabs .filter-pill.is-active::after{opacity:1;transform:scaleX(1);}
+  .pf-tabs .filter-pill:active{transform:none;}
+  @media (hover:hover){
+    .pf-tabs .filter-pill:not(.is-active):hover{color:var(--text);}
   }
 
-  .filter-row{
-    display:flex;
-    flex-direction:column;
-    gap:16px;
+  /* ---------- panel filter tambahan ---------- */
+  .pf-panel{
+    border-top:1px solid var(--line-soft);
+    background:var(--bg-void-2);
+    box-shadow:0 22px 40px -26px rgba(0,0,0,0.9);
   }
-  .filter-group{display:flex;flex-direction:column;gap:8px;}
-  .filter-label{
+  .pf-panel[hidden]{display:none;}
+  .pf-panel-inner{
+    display:grid;
+    gap:14px;
+    padding-top:14px;
+    padding-bottom:16px;
+  }
+  .pf-field{display:flex;flex-direction:column;gap:7px;min-width:0;}
+  .pf-label{
     font-size:11px;
     font-weight:700;
-    letter-spacing:0.04em;
+    letter-spacing:0.08em;
     text-transform:uppercase;
     color:var(--text-muted);
   }
-  .filter-pills{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-  .filter-pill{
-    flex:none;
-    background:var(--bg-surface);
+  .pf-select{
+    width:100%;
+    height:38px;
+    padding:0 12px;
+    border-radius:9px;
     border:1px solid var(--line-soft);
-    color:var(--text-muted);
-    font-size:12.5px;
-    font-weight:700;
-    padding:8px 14px;
-    border-radius:999px;
-    white-space:nowrap;
-    transition:background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+    background:var(--bg-surface);
+    color:var(--text);
+    font-family:inherit;
+    font-size:13.5px;
+    cursor:pointer;
   }
-  .filter-pill.is-active{
+  .pf-panel .filter-pills{display:flex;flex-wrap:wrap;gap:7px;}
+  .pf-panel .filter-pill{
+    padding:7px 12px;
+    border-radius:999px;
+    border:1px solid var(--line-soft);
+    background:var(--bg-surface);
+    color:var(--text-muted);
+    font-family:inherit;
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+    transition:border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease);
+  }
+  .pf-panel .filter-pill.is-active{
     background:var(--beam);
     border-color:var(--beam);
-    color:var(--bg-void);
+    color:#201c14;
   }
-  .filter-pill:active{transform:scale(0.96);}
-  @media(hover:hover){
-    .filter-pill:not(.is-active):hover{border-color:var(--beam);color:var(--beam-bright);}
-  }
-
-  .sort-select{
+  .pf-panel .filter-pill:active{transform:scale(0.96);}
+  .pf-actions{display:flex;gap:9px;align-items:center;}
+  .pf-apply{
+    flex:1 1 auto;
+    height:40px;
+    border-radius:10px;
+    border:0;
+    background:var(--beam);
+    color:#201c14;
     font-family:inherit;
-    font-size:13px;
+    font-size:14px;
     font-weight:700;
-    color:var(--text);
-    background:var(--bg-surface);
-    border:1px solid var(--line-soft);
-    border-radius:999px;
-    padding:9px 14px;
-    max-width:220px;
+    cursor:pointer;
   }
+  .pf-apply:active{transform:scale(0.98);}
+  .pf-reset{
+    flex:none;
+    height:40px;
+    padding:0 14px;
+    border-radius:10px;
+    border:1px solid var(--line-soft);
+    background:transparent;
+    color:var(--text-muted);
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .pf-reset[hidden]{display:none;}
 
-  .filter-status-row{
+  /* ---------- baris jumlah hasil (di luar bar) ---------- */
+  .pf-status{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:12px;
-    margin-top:18px;
-    padding-top:14px;
-    border-top:1px solid var(--line-soft);
+    padding:12px 0 4px;
   }
   .filter-result-count{font-size:12.5px;color:var(--text-muted);}
-  .filter-reset-btn{
-    flex:none;
-    font-size:12.5px;
-    font-weight:700;
-    color:var(--beam-bright);
-    text-decoration:underline;
-    text-underline-offset:2px;
+
+  @media (min-width:768px){
+    .pf-top{gap:12px;padding:12px 0;}
+    .pf-search{height:42px;}
+    .pf-more{height:42px;padding:0 16px;}
+    .pf-tabs-wrap{margin:0;}
+    .pf-tabs .filter-pills{padding:0;}
+    .pf-panel-inner{
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      align-items:end;
+    }
+    .pf-field-wide{grid-column:1 / -1;}
+    .pf-actions{grid-column:1 / -1;justify-content:flex-end;}
+    .pf-apply{flex:0 0 auto;padding:0 26px;}
   }
 
-  /* ============================================================
-     BAR SEARCH+FILTER RINGKAS -- nempel di bawah header pas scroll
-     ngelewatin search+filter yang lengkap. Cuma tampil di layar
-     sempit (lihat @media max-width:1023px di bawah); di desktop
-     filter lengkapnya sudah 1 baris jadi gak perlu versi ringkas.
-     ============================================================ */
-  .compact-filter-bar{
-    position:sticky;
-    top:var(--header-h, 96px);
-    z-index:40;
-    background:var(--bg-void-2);
-    border-bottom:1px solid var(--line-soft);
-    box-shadow:0 8px 18px rgba(0,0,0,0.28);
-  }
-  .compact-filter-row{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding-top:9px;
-    padding-bottom:9px;
-  }
-  .compact-search-box{
-    flex:1;
-    min-width:0;
-    display:flex;
-    align-items:center;
-    gap:7px;
-    background:var(--bg-surface);
-    border:1px solid rgba(241,239,233,0.16);
-    border-radius:10px;
-    padding:8px 11px;
-  }
-  .compact-search-box svg{flex:none;color:var(--text-muted);}
-  .compact-search-box input{
-    flex:1;
-    min-width:0;
-    border:none;
-    background:transparent;
-    outline:none;
-    color:var(--text);
-    font-size:12.5px;
-    font-family:inherit;
-    padding:0;
-  }
-  .compact-search-box input::placeholder{color:var(--text);opacity:0.75;}
-  .compact-filter-btn{
-    position:relative;
-    flex:none;
-    display:flex;
-    align-items:center;
-    gap:5px;
-    background:var(--bg-surface);
-    border:1px solid rgba(241,239,233,0.16);
-    border-radius:10px;
-    padding:8px 12px;
-    color:var(--text);
-    font-size:12.5px;
-    font-weight:700;
-    font-family:inherit;
-  }
-  .compact-filter-btn[aria-expanded="true"]{border-color:var(--beam);color:var(--beam-bright);}
-  .compact-filter-badge{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:absolute;
-    top:-5px;
-    right:-5px;
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    background:var(--beam);
-    color:var(--on-screen);
-    font-size:9.5px;
-    font-weight:700;
-  }
-  .compact-filter-badge[hidden]{display:none;}
-  .compact-filter-panel{
-    border-top:1px solid var(--line-soft);
-    max-height:min(60vh, 420px);
-    overflow-y:auto;
-  }
-  .compact-filter-panel[hidden]{display:none;}
-  .compact-filter-panel-inner{padding-top:2px;padding-bottom:16px;}
-  .compact-filter-panel .filter-group{margin-top:12px;}
-  .compact-filter-panel .filter-label{display:block;margin-bottom:7px;}
-  .compact-filter-apply{
-    width:100%;
-    margin-top:16px;
-    background:var(--beam);
-    color:var(--on-screen);
-    border:none;
-    border-radius:10px;
-    padding:11px;
-    font-size:13px;
-    font-weight:700;
-    font-family:inherit;
-  }
-  .compact-filter-apply:active{transform:scale(0.98);}
-
-  @media (min-width:1024px){
-    .compact-filter-apply{max-width:260px;}
+  @media (prefers-reduced-motion: reduce){
+    .pf-tabs .filter-pill::after,
+    .pf-more,
+    .pf-panel .filter-pill{transition:none;}
   }
 
   .products-page-grid{padding-top:0;padding-bottom:48px;}
@@ -1808,8 +1927,6 @@
     .section-title{font-size:27px;}
     .section-desc{font-size:14.5px;}
 
-    .filter-row{flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:22px;}
-    .filter-group-sort{margin-left:auto;}
     .shop-grid{grid-template-columns:repeat(2,1fr);gap:16px;}
     .shop-card{padding:14px;gap:10px;}
     .shop-card-top{flex-direction:column;align-items:center;text-align:center;gap:10px;}
@@ -2314,4 +2431,195 @@
   }
   @media (prefers-reduced-motion: reduce){
     .cert2-card img{transition:none;}
+  }
+
+  /* ============================================================
+     GARIS CAHAYA BERPUTAR (.has-beam)
+     Seberkas cahaya yang berjalan mengelilingi tepi sebuah kotak.
+     Dipakai di kisi "Kenapa Darmawan Optima" dan foto toko.
+
+     Caranya: pseudo-element ::after diisi gradient yang arahnya
+     diputar terus (--beam-angle), lalu bagian tengahnya "dilubangi"
+     pakai mask supaya yang tersisa cuma bingkainya saja.
+
+     @property dibutuhkan supaya sudut gradient bisa dianimasikan.
+     Di browser yang belum mendukung, var(--beam-angle, 125deg) bikin
+     bingkainya tetap tampil, cuma diam -- tidak ada yang rusak.
+
+     Animasinya berhenti selama kotaknya belum kelihatan di layar
+     (menumpang penanda .is-visible dari .reveal) supaya tidak
+     membebani HP saat bagian ini masih jauh dari pandangan.
+     ============================================================ */
+  @property --beam-angle{
+    syntax:"<angle>";
+    initial-value:0deg;
+    inherits:false;
+  }
+  @keyframes beam-spin{
+    from{--beam-angle:0deg;}
+    to{--beam-angle:360deg;}
+  }
+  .has-beam{position:relative;}
+  .has-beam::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:3;
+    pointer-events:none;
+    border-radius:inherit;
+    padding:var(--beam-w, 1.6px);
+    background:linear-gradient(var(--beam-angle, 125deg),
+      transparent 0%,
+      transparent 35%,
+      var(--beam) 50%,
+      #ffdca8 65%,
+      transparent 80%,
+      transparent 100%);
+    /* lubangi bagian tengahnya, sisakan bingkainya saja */
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite:exclude;
+    animation:beam-spin var(--beam-dur, 12s) linear infinite;
+  }
+  /* tanpa JS: langsung jalan. Dengan JS: diam dulu sampai kelihatan. */
+  html.js .has-beam::after{animation-play-state:paused;}
+  html.js .reveal.is-visible.has-beam::after,
+  html.js .reveal.is-visible .has-beam::after{animation-play-state:running;}
+
+  /* ---------- pemakaian: kisi alasan memilih kami ---------- */
+  .feat-grid.has-beam::after{--beam-w:1.6px;--beam-dur:14s;}
+
+  /* ---------- pemakaian: foto toko ---------- */
+  .kt-frame{
+    position:relative;
+    display:block;
+    border-radius:clamp(14px, 2vw, 20px);
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+  }
+  .kt-frame::after{--beam-w:2px;--beam-dur:11s;}
+  .kt-shot img{
+    /* radius & bayangan pindah ke .kt-frame, gambar tinggal mengisi */
+    border-radius:inherit;
+    box-shadow:none;
+    transition:none;
+  }
+  .kt-frame{
+    box-shadow:0 26px 55px -22px rgba(0,0,0,0.92);
+  }
+  .kt-frame > img{
+    border-radius:clamp(14px, 2vw, 20px);
+    border:1px solid rgba(241,239,233,0.1);
+  }
+  @media (hover:hover){
+    .kt-shot:hover .kt-frame{
+      transform:translateY(-10px) scale(1.015);
+      box-shadow:0 36px 68px -20px rgba(0,0,0,0.95);
+    }
+    /* aturan lama yang menggerakkan <img> dimatikan, sekarang yang
+       bergerak bingkainya supaya garis cahayanya ikut naik */
+    .kt-shot:hover img{transform:none;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .has-beam::after{animation:none;}
+    .kt-frame{transition:none;}
+  }
+
+  /* ============================================================
+     TOMBOL PELANGI (.btn-rainbow)
+     Dibuat sama persis seperti komponen aslinya (versi dark mode):
+     isi tombol PUTIH dengan teks gelap, sudut rounded-xl (12px), dan
+     pelanginya hanya muncul di tepi BAWAH tombol plus seberkas
+     cahaya buram di bawahnya.
+
+     Tiga lapis background dalam satu elemen:
+       1. putih polos                      -> mengisi bagian dalam
+       2. putih memudar ke bawah           -> menutupi pelangi di
+                                              sisi atas & samping
+       3. gradient pelangi                 -> tersisa di tepi bawah
+     Border dibuat transparan supaya lapisan 2 & 3 terlihat di situ.
+     Semua lapisan digeser bersamaan (background-position 0% -> 200%,
+     2 detik, linear) -- sama seperti aslinya.
+     ============================================================ */
+  :root{
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
+    --rainbow: linear-gradient(90deg,
+      hsl(var(--color-1)), hsl(var(--color-5)), hsl(var(--color-3)),
+      hsl(var(--color-4)), hsl(var(--color-2)));
+  }
+  @keyframes rainbow{
+    from{background-position:0%;}
+    to{background-position:200%;}
+  }
+
+  .btn-rainbow,
+  .btn-wa-lg.btn-rainbow,
+  .btn-shop-teaser.btn-rainbow{
+    --rb-speed:2s;
+    border:2px solid transparent;
+    border-radius:12px;
+    color:#121213;
+    box-shadow:none;
+    background:
+      linear-gradient(#fff, #fff) padding-box,
+      linear-gradient(#fff 50%, rgba(255,255,255,0.6) 80%, rgba(255,255,255,0)) border-box,
+      var(--rainbow) border-box;
+    background-size:200%;
+    animation:rainbow var(--rb-speed) linear infinite;
+  }
+  /* cahaya pelangi buram di bawah tombol */
+  .btn-rainbow::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-20%;
+    z-index:0;
+    width:60%;
+    height:20%;
+    transform:translateX(-50%);
+    background:var(--rainbow);
+    background-size:200%;
+    filter:blur(12.8px);
+    pointer-events:none;
+    animation:rainbow var(--rb-speed) linear infinite;
+  }
+  .btn-rainbow > *{position:relative;z-index:1;}
+
+  /* aturan lama memakai properti singkat `background` / `box-shadow`,
+     kalau dibiarkan bakal menghapus lapisan gradient di atas */
+  .btn-wa-lg.btn-rainbow:active,
+  .btn-shop-teaser.btn-rainbow:active{
+    background:
+      linear-gradient(#fff, #fff) padding-box,
+      linear-gradient(#fff 50%, rgba(255,255,255,0.6) 80%, rgba(255,255,255,0)) border-box,
+      var(--rainbow) border-box;
+    background-size:200%;
+    transform:scale(0.97);
+  }
+  @media (hover:hover){
+    .btn-wa-lg.btn-rainbow:hover,
+    .btn-shop-teaser.btn-rainbow:hover{
+      background:
+        linear-gradient(#f2f2f3, #f2f2f3) padding-box,
+        linear-gradient(#f2f2f3 50%, rgba(242,242,243,0.6) 80%, rgba(242,242,243,0)) border-box,
+        var(--rainbow) border-box;
+      background-size:200%;
+      box-shadow:none;
+    }
+  }
+  /* denyut cahaya hijau di tombol hero dimatikan -- isinya sudah putih,
+     glow hijau di situ jadi tidak nyambung */
+  .btn-wa-lg-ringed.btn-rainbow{
+    animation:rainbow var(--rb-speed) linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .btn-rainbow,
+    .btn-rainbow::before,
+    .btn-wa-lg-ringed.btn-rainbow{animation:none;}
   }

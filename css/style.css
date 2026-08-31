@@ -2423,6 +2423,100 @@
       transform:rotate(-7deg) translateX(-22px);
     }
   }
+  /* label kecil pemisah dua kelompok bukti */
+  .cert2-sub{
+    margin-bottom:6px;
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+  }
+  .cert2-sub-gap{margin-top:clamp(30px, 5vw, 44px);}
+
+  /* ---------- kartu reputasi toko online ---------- */
+  .rep-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:clamp(14px, 2.4vw, 22px);
+    margin-top:4px;
+  }
+  /* Kartunya sengaja berlatar GELAP dengan tangkapan layar putih di
+     dalamnya, bukan kartu putih polos. Alasannya: garis cahaya yang
+     berputar hampir tidak terlihat kalau berjalan di atas tepi putih.
+     Dengan bingkai gelap, cahayanya jadi kontras dan langsung kelihatan. */
+  .rep-card{
+    position:relative;
+    display:block;
+    margin:0;
+    padding:clamp(9px, 1.4vw, 13px);
+    border-radius:18px;
+    background:var(--bg-surface);
+    text-decoration:none;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    box-shadow:0 20px 44px -24px rgba(0,0,0,0.9);
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .rep-shot{
+    display:block;
+    border-radius:11px;
+    overflow:hidden;
+    background:#ffffff;
+  }
+  .rep-card img{
+    display:block;
+    width:100%;
+    height:auto;      /* rasio asli tangkapan layar, tidak dipotong */
+  }
+  .rep-cta{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    padding:11px 10px 3px;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:0.02em;
+    color:var(--beam-bright);
+  }
+  .rep-cta svg{flex:none;display:block;transition:transform .25s var(--ease);}
+  .rep-card:active{transform:scale(0.99);}
+  @media (hover:hover){
+    .rep-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 30px 56px -22px rgba(0,0,0,0.95);
+    }
+    .rep-card:hover .rep-cta svg{transform:translate(3px,-3px);}
+  }
+  /* garis cahaya di kartu reputasi dibuat paling menonjol di halaman:
+     lebih tebal, lebih cepat, berkas terangnya lebih lebar, dan
+     diberi pendar supaya benar-benar menarik mata */
+  .rep-card .beam{--beam-w:3px;--beam-dur:8s;}
+  /* berkas terangnya dibuat lebih lebar & lebih menyala daripada di
+     section lain, karena ini penanda utama di halaman */
+  .rep-card .beam::before{
+    background:conic-gradient(
+      from 0deg,
+      transparent 0%,
+      transparent 46%,
+      var(--beam) 64%,
+      #fff1d6 74%,
+      var(--beam) 82%,
+      transparent 96%,
+      transparent 100%);
+  }
+  /* kartu kedua dimulai dari sudut berbeda, biar tidak berputar seragam */
+  .rep-card:nth-child(2) .beam::before{animation-delay:-4s;}
+
+  @media (min-width:820px){
+    .rep-grid{grid-template-columns:repeat(2, minmax(0,1fr));}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .rep-card,
+    .rep-cta svg{transition:none;}
+  }
+
   .cert2-hint{
     margin-top:12px;
     text-align:center;
@@ -2434,61 +2528,71 @@
   }
 
   /* ============================================================
-     GARIS CAHAYA BERPUTAR (.has-beam)
+     GARIS CAHAYA BERPUTAR (.has-beam + <span class="beam">)
+
      Seberkas cahaya yang berjalan mengelilingi tepi sebuah kotak.
-     Dipakai di kisi "Kenapa Darmawan Optima" dan foto toko.
 
-     Caranya: pseudo-element ::after diisi gradient yang arahnya
-     diputar terus (--beam-angle), lalu bagian tengahnya "dilubangi"
-     pakai mask supaya yang tersisa cuma bingkainya saja.
+     Cara kerjanya: <span class="beam"> dipasang menutupi kotaknya,
+     lalu "dilubangi" pakai mask sehingga yang tersisa hanya bingkai
+     setebal --beam-w. Di dalamnya ada satu lapisan conic-gradient
+     besar yang DIPUTAR pakai transform: rotate().
 
-     @property dibutuhkan supaya sudut gradient bisa dianimasikan.
-     Di browser yang belum mendukung, var(--beam-angle, 125deg) bikin
-     bingkainya tetap tampil, cuma diam -- tidak ada yang rusak.
+     Kenapa transform, bukan menganimasikan sudut gradient:
+     menganimasikan sudut butuh @property, dan itu (a) tidak jalan di
+     browser lama, dan (b) di sebagian kasus gambarnya tidak digambar
+     ulang walau nilainya berubah -- hasilnya bingkai diam padahal
+     animasinya "berjalan". transform: rotate() didukung semua browser
+     dan dijalankan di compositor, jadi mulus juga di HP.
 
      Animasinya berhenti selama kotaknya belum kelihatan di layar
      (menumpang penanda .is-visible dari .reveal) supaya tidak
      membebani HP saat bagian ini masih jauh dari pandangan.
      ============================================================ */
-  @property --beam-angle{
-    syntax:"<angle>";
-    initial-value:0deg;
-    inherits:false;
-  }
-  @keyframes beam-spin{
-    from{--beam-angle:0deg;}
-    to{--beam-angle:360deg;}
-  }
   .has-beam{position:relative;}
-  .has-beam::after{
-    content:"";
+  .beam{
     position:absolute;
     inset:0;
     z-index:3;
-    pointer-events:none;
     border-radius:inherit;
+    pointer-events:none;
+    overflow:hidden;
     padding:var(--beam-w, 1.6px);
-    background:linear-gradient(var(--beam-angle, 125deg),
-      transparent 0%,
-      transparent 35%,
-      var(--beam) 50%,
-      #ffdca8 65%,
-      transparent 80%,
-      transparent 100%);
     /* lubangi bagian tengahnya, sisakan bingkainya saja */
     -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite:xor;
     mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite:exclude;
+  }
+  .beam::before{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:150%;
+    aspect-ratio:1;
+    transform:translate(-50%, -50%) rotate(0deg);
+    background:conic-gradient(
+      from 0deg,
+      transparent 0%,
+      transparent 58%,
+      var(--beam) 72%,
+      #ffdca8 78%,
+      transparent 90%,
+      transparent 100%);
     animation:beam-spin var(--beam-dur, 12s) linear infinite;
+    will-change:transform;
+  }
+  @keyframes beam-spin{
+    from{transform:translate(-50%, -50%) rotate(0deg);}
+    to{transform:translate(-50%, -50%) rotate(360deg);}
   }
   /* tanpa JS: langsung jalan. Dengan JS: diam dulu sampai kelihatan. */
-  html.js .has-beam::after{animation-play-state:paused;}
-  html.js .reveal.is-visible.has-beam::after,
-  html.js .reveal.is-visible .has-beam::after{animation-play-state:running;}
+  html.js .beam::before{animation-play-state:paused;}
+  html.js .reveal.is-visible .beam::before,
+  html.js .reveal.is-visible.has-beam .beam::before{animation-play-state:running;}
 
   /* ---------- pemakaian: kisi alasan memilih kami ---------- */
-  .feat-grid.has-beam::after{--beam-w:1.6px;--beam-dur:14s;}
+  .feat-grid .beam{--beam-w:1.6px;--beam-dur:14s;}
 
   /* ---------- pemakaian: foto toko ---------- */
   .kt-frame{
@@ -2497,7 +2601,7 @@
     border-radius:clamp(14px, 2vw, 20px);
     transition:transform .35s var(--ease), box-shadow .35s var(--ease);
   }
-  .kt-frame::after{--beam-w:2px;--beam-dur:11s;}
+  .kt-frame .beam{--beam-w:2px;--beam-dur:11s;}
   .kt-shot img{
     /* radius & bayangan pindah ke .kt-frame, gambar tinggal mengisi */
     border-radius:inherit;
@@ -2522,7 +2626,7 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .has-beam::after{animation:none;}
+    .beam::before{animation:none;}
     .kt-frame{transition:none;}
   }
 

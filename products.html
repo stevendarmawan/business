@@ -222,7 +222,7 @@
   <div class="wrap cta-banner-inner reveal">
     <h2>Nggak Nemu yang Cocok?</h2>
     <p>Ceritakan kebutuhan Anda, tim kami bantu carikan yang paling pas dan sesuai budget.</p>
-    <a href="#" class="btn-wa-lg js-wa-link" aria-label="Chat WhatsApp sekarang">
+    <a href="#" class="btn-wa-lg btn-rainbow js-wa-link" aria-label="Chat WhatsApp sekarang">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.09c-.24.68-1.4 1.33-1.93 1.4-.5.07-1.11.1-1.79-.11-.41-.13-.94-.3-1.62-.6-2.84-1.23-4.7-4.1-4.84-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.08.99-2.36c.26-.28.56-.35.75-.35h.53c.17 0 .4-.03.62.48.24.56.8 1.94.87 2.08.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.18 1.53 1.92 1.05.95 1.94 1.24 2.21 1.38.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.63-.14.26.09 1.63.77 1.91.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
       Chat Sekarang
     </a>
@@ -257,10 +257,6 @@
       <a href="#" class="js-ig-link" aria-label="Instagram Agen Projektor Jakarta"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM17.8 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg></a>
       <a href="#" class="js-maps-link" aria-label="Lokasi kami di Google Maps"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg></a>
     </div>
-  </div>
-
-  <div class="reveal" style="transition-delay:.5s" aria-hidden="true">
-    <div class="foot-rule"></div>
   </div>
 
   <div class="wrap foot-tail reveal" style="transition-delay:.6s">
@@ -342,6 +338,15 @@
 </div>
 
 <!-- ================= FLOATING WHATSAPP BUTTON ================= -->
+<!-- Tombol kembali ke atas. Ditulis sebagai <a href="#"> supaya
+     tetap berfungsi walau JavaScript diblokir (mis. saat halaman
+     dibuka lewat penampil file di aplikasi chat). Dengan JS aktif,
+     tombolnya disembunyikan dulu dan baru muncul setelah pengunjung
+     menggulung agak jauh. Ditumpuk persis di atas tombol WhatsApp. -->
+<a href="#" class="fab-top" id="backToTop" aria-label="Kembali ke atas halaman">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="m5 12 7-7 7 7"/></svg>
+</a>
+
 <a href="#" class="fab-wa js-wa-link" aria-label="Chat WhatsApp Agen Projektor Jakarta">
   <span class="fab-ring" aria-hidden="true"></span>
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.09c-.24.68-1.4 1.33-1.93 1.4-.5.07-1.11.1-1.79-.11-.41-.13-.94-.3-1.62-.6-2.84-1.23-4.7-4.1-4.84-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.08.99-2.36c.26-.28.56-.35.75-.35h.53c.17 0 .4-.03.62.48.24.56.8 1.94.87 2.08.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.18 1.53 1.92 1.05.95 1.94 1.24 2.21 1.38.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.63-.14.26.09 1.63.77 1.91.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>

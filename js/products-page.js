@@ -217,13 +217,22 @@
      otomatis digeser ke bagian paling atas dari hasil filter, pas di
      bawah header + bar ringkas -- gak perlu scroll manual ke atas lagi */
   function scrollToGridTop() {
-    var grid = document.getElementById("shopGrid");
-    if (!grid) return;
+    /* Patokannya baris "Menampilkan X dari Y produk", bukan grid-nya,
+       supaya jumlah hasil ikut kelihatan setelah halaman digeser. */
+    var anchor = document.querySelector(".pf-status") || document.getElementById("shopGrid");
+    if (!anchor) return;
+
     var compactBar = document.getElementById("compactFilterBar");
     var headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--header-h"), 10) || 0;
     var barH = compactBar ? compactBar.getBoundingClientRect().height : 0;
-    var targetY = grid.getBoundingClientRect().top + window.pageYOffset - headerH - barH - 8;
-    window.scrollTo({ top: Math.max(0, targetY), behavior: "smooth" });
+    var targetY = Math.max(0, anchor.getBoundingClientRect().top + window.pageYOffset - headerH - barH - 10);
+
+    /* Kalau pengunjung sudah berada di atas hasil, jangan digeser --
+       menggeser TURUN saat orang sedang di paling atas itu bikin kaget. */
+    if (window.pageYOffset <= targetY + 2) return;
+
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: targetY, behavior: reduced ? "auto" : "smooth" });
   }
 
   var scrollDebounceTimer = null;
@@ -248,6 +257,7 @@
         state.search = searchInput.value.trim().toLowerCase();
         syncSearchUI(searchInput.value);
         render();
+        scrollToGridTopDebounced();
       });
     }
     if (searchClear) {
@@ -277,6 +287,7 @@
         state.category = btn.dataset.category;
         syncCategoryPillsUI(state.category);
         render();
+        scrollToGridTop();
       });
     }
 
@@ -297,6 +308,7 @@
         state.brand = brandSelect.value;
         syncBrandSelectUI(state.brand);
         render();
+        scrollToGridTop();
       });
     }
 
@@ -318,6 +330,7 @@
         state.priceMax = parseInt(btn.dataset.max, 10);
         syncPricePillsUI(state.priceMin, state.priceMax);
         render();
+        scrollToGridTop();
       });
     }
 
@@ -338,13 +351,18 @@
       sortSelect.addEventListener("change", function () {
         state.sort = sortSelect.value;
         render();
+        scrollToGridTop();
       });
     }
 
+    function resetFiltersAndScroll() {
+      resetFilters();
+      scrollToGridTop();
+    }
     var resetBtn = document.getElementById("filterResetBtn");
-    if (resetBtn) resetBtn.addEventListener("click", resetFilters);
+    if (resetBtn) resetBtn.addEventListener("click", resetFiltersAndScroll);
     var emptyResetBtn = document.getElementById("filterEmptyResetBtn");
-    if (emptyResetBtn) emptyResetBtn.addEventListener("click", resetFilters);
+    if (emptyResetBtn) emptyResetBtn.addEventListener("click", resetFiltersAndScroll);
 
     var filterToggleBtn = document.getElementById("filterToggleBtn");
     var filterPanel = document.getElementById("filterPanel");

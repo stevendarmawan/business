@@ -478,3 +478,58 @@ const CONFIG = {
   update();
   window.addEventListener("load", update);
 })();
+
+
+/* ====================================================================
+   TOMBOL KEMBALI KE ATAS (#backToTop).
+   Muncul setelah pengunjung menggulung lebih dari satu layar penuh,
+   dan hilang lagi begitu sudah dekat puncak halaman. Ambangnya dibuat
+   relatif terhadap tinggi layar, bukan angka mati, supaya terasa sama
+   di HP maupun layar besar.
+
+   Dicek ulang lewat requestAnimationFrame supaya tidak menghitung
+   berkali-kali dalam satu frame saat digulung cepat.
+
+   Tanpa JS: tombolnya tetap tampil dan tetap berfungsi, karena aslinya
+   <a href="#"> -- yang disembunyikan-munculkan cuma lapisan CSS yang
+   diaktifkan oleh penanda html.js.
+   ==================================================================== */
+(function(){
+  var btn = document.getElementById("backToTop");
+  if (!btn) return;
+
+  var ticking = false;
+  var shown = false;
+
+  function threshold(){
+    return Math.max(400, window.innerHeight * 0.9);
+  }
+
+  function update(){
+    ticking = false;
+    var should = window.pageYOffset > threshold();
+    if (should === shown) return;
+    shown = should;
+    btn.classList.toggle("is-on", should);
+  }
+
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+
+  btn.addEventListener("click", function(e){
+    // tanpa JS, href="#" sudah melompat ke atas. Dengan JS, lompatannya
+    // diambil alih supaya gerakannya halus dan URL tidak kemasukan "#".
+    e.preventDefault();
+    var reduced = window.matchMedia &&
+                  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+  });
+
+  update();
+})();

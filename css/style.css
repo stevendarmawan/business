@@ -1102,6 +1102,16 @@
     -webkit-line-clamp:3;
     overflow:hidden;
   }
+  /* rentetan kode model panjang tanpa spasi (mis. L1110/L1210/L1250/...)
+     tidak punya titik patah alami; tanpa ini kartunya melebar dan
+     halaman jadi bisa digeser ke samping di layar sempit */
+  .shop-card-body h3,
+  .shop-card-spec,
+  .shop-card-ports{
+    overflow-wrap:anywhere;
+    word-break:break-word;
+  }
+
   .shop-card-ports{display:none;}
   .shop-card-pricing{width:100%;margin-top:auto;}
   .shop-card-price{

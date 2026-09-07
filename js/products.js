@@ -10720,5 +10720,151 @@ const PRODUCTS = [
     price: 150000,
     priceIsEstimate: true,
     icon: "projector"
+  },
+
+  /* ==== Brand baru: EZZRALE (Proyektor) ==== */
+  {
+    image: "assets/img/ezzrale-z-style-mini.jpg",
+    id: "ezzrale-z-style-mini",
+    brand: "EZZRALE",
+    name: "EZZRALE Z Style Mini",
+    category: "Proyektor",
+    specLine: "720p · 220 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Android 14.0, Rotasi Layar 200°",
+    price: 1299000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-ez330-basic.jpg",
+    id: "ezzrale-ez330-basic",
+    brand: "EZZRALE",
+    name: "EZZRALE EZ330 Basic",
+    category: "Proyektor",
+    specLine: "1080p Full HD · 330 ANSI Lumens",
+    ports: "WiFi | HDMI · Miracast Screen Cast",
+    price: 1499000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-ez400-basic.jpg",
+    id: "ezzrale-ez400-basic",
+    brand: "EZZRALE",
+    name: "EZZRALE EZ400 Basic",
+    category: "Proyektor",
+    specLine: "1080p Full HD · 450 ANSI Lumens",
+    ports: "WiFi | HDMI · Miracast Screen Cast, Bonus Tas",
+    price: 1899000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-z-style-neo.jpg",
+    id: "ezzrale-z-style-neo",
+    brand: "EZZRALE",
+    name: "EZZRALE Z Style Neo",
+    category: "Proyektor",
+    specLine: "1080p Full HD · 500 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Android 12.0, Auto Focus/Keystone",
+    price: 2499000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-x-style-home.jpg",
+    id: "ezzrale-x-style-home",
+    brand: "EZZRALE",
+    name: "EZZRALE X Style Home",
+    category: "Proyektor",
+    specLine: "1080p Full HD · 500 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Android 9.0, Rotasi Layar 360°",
+    price: 2499000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-ezr3-plus.jpg",
+    id: "ezzrale-ezr3-plus",
+    brand: "EZZRALE",
+    name: "EZZRALE EZR3 Plus",
+    category: "Proyektor",
+    specLine: "1080p Full HD · 420 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Linux, Dolby Audio",
+    price: 3299000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-ezs1.jpg",
+    id: "ezzrale-ezs1",
+    brand: "EZZRALE",
+    name: "EZZRALE EZS1",
+    category: "Proyektor",
+    specLine: "1080p Full HD · 550 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Android 9.0, Auto Focus/Keystone, Dolby Audio",
+    price: 3199000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-x-style-home-pro.jpg",
+    id: "ezzrale-x-style-home-pro",
+    brand: "EZZRALE",
+    name: "EZZRALE X Style Home Pro",
+    category: "Proyektor",
+    specLine: "1080p Full HD · 450 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Google TV, Auto Focus/Keystone",
+    price: 3599000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-x-style-prime.jpg",
+    id: "ezzrale-x-style-prime",
+    brand: "EZZRALE",
+    name: "EZZRALE X Style Prime",
+    category: "Proyektor",
+    specLine: "1080p Full HD · 600 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Android 9.0, Auto Focus/Keystone, Dolby Audio",
+    price: 3899000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-ezr4-pro.jpg",
+    id: "ezzrale-ezr4-pro",
+    brand: "EZZRALE",
+    name: "EZZRALE EZR4 Pro",
+    category: "Proyektor",
+    specLine: "1080p · 1.000 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Google TV, Auto Focus/Keystone",
+    price: 4499000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-imax-one.jpg",
+    id: "ezzrale-imax-one",
+    brand: "EZZRALE",
+    name: "EZZRALE IMAX One",
+    category: "Proyektor",
+    specLine: "1080p · 1.200 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Google TV, Auto Focus/Keystone",
+    price: 5499000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/ezzrale-phobos.jpg",
+    id: "ezzrale-phobos",
+    brand: "EZZRALE",
+    name: "EZZRALE Phobos",
+    category: "Proyektor",
+    specLine: "1080p Full HD · 600 ANSI Lumens",
+    ports: "WiFi | HDMI | Bluetooth · Ultra Short Throw, Google TV",
+    price: 15999000,
+    priceIsEstimate: true,
+    icon: "projector"
   }
 ];

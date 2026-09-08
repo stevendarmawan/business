@@ -14,7 +14,11 @@ const CONFIG = {
   igUrl: "https://instagram.com/agenprojektorjakarta",
 
   // Alamat lengkap (dipakai juga untuk bikin link Google Maps)
-  address: "Harco Mangga Dua Plaza Blok A2 Lantai 2 No 69, Jakarta"
+  address: "Harco Mangga Dua Plaza Blok A2 Lantai 2 No 69, Jakarta",
+
+  // Domain utama situs, TANPA garis miring di akhir. Dipakai buat bikin
+  // link share produk yang lengkap (mis. tombol "Bagikan" di kartu produk).
+  siteUrl: "https://stevendarmawan.com"
 };
 /* ==================================================================== */
 

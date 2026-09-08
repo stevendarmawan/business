@@ -159,7 +159,10 @@
     cart: "M2 3h2l.4 2M7 13h9l3-8H5.4M7 13 5.4 5M7 13l-1.6 3.2A1 1 0 0 0 6.3 17H17M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
     trash: "M9 3h6a1 1 0 0 1 1 1v1h4v2H4V5h4V4a1 1 0 0 1 1-1zM6 8h12l-.9 11.1a2 2 0 0 1-2 1.9H8.9a2 2 0 0 1-2-1.9L6 8zm4 3v6h1.6v-6H10zm4.4 0v6H16v-6h-1.6z",
     plus: "M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z",
-    close: "M6.4 5 5 6.4 10.6 12 5 17.6 6.4 19l5.6-5.6L17.6 19l1.4-1.4L13.4 12 19 6.4 17.6 5 12 10.6z"
+    close: "M6.4 5 5 6.4 10.6 12 5 17.6 6.4 19l5.6-5.6L17.6 19l1.4-1.4L13.4 12 19 6.4 17.6 5 12 10.6z",
+    share: "M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L7.04 9.81C6.5 9.31 5.79 9 5 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z",
+    link: "M10.6 13.4a1 1 0 0 1 0-1.4l3-3a3.5 3.5 0 0 1 5 5l-1.6 1.6a1 1 0 1 1-1.4-1.4l1.6-1.6a1.5 1.5 0 0 0-2.2-2.2l-3 3a1 1 0 0 1-1.4 0zm2.8-2.8a1 1 0 0 1 0 1.4l-3 3a3.5 3.5 0 0 1-5-5l1.6-1.6a1 1 0 1 1 1.4 1.4l-1.6 1.6a1.5 1.5 0 0 0 2.2 2.2l3-3a1 1 0 0 1 1.4 0z",
+    wa: "M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.09c-.24.68-1.4 1.33-1.93 1.4-.5.07-1.11.1-1.79-.11-.41-.13-.94-.3-1.62-.6-2.84-1.23-4.7-4.1-4.84-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.08.99-2.36c.26-.28.56-.35.75-.35h.53c.17 0 .4-.03.62.48.24.56.8 1.94.87 2.08.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.28.71 1.18 1.53 1.92 1.05.95 1.94 1.24 2.21 1.38.28.14.44.12.6-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.63-.14.26.09 1.63.77 1.91.91.28.14.47.21.53.33.07.12.07.68-.17 1.36z"
   };
 
   function iconSvg(name, size) {
@@ -167,6 +170,131 @@
     return '<svg viewBox="0 0 24 24" width="' + size + '" height="' + size +
       '" fill="currentColor" aria-hidden="true" focusable="false"><path d="' + d + '"/></svg>';
   }
+
+  /* ---------------- bagikan produk (tombol share di kartu) ---------------- */
+
+  function buildProductUrl(product) {
+    var base = (typeof CONFIG !== "undefined" && CONFIG.siteUrl) ? CONFIG.siteUrl.replace(/\/+$/, "") : "";
+    return base + "/produk/" + product.id + ".html";
+  }
+
+  function showToast(msg) {
+    var existing = document.getElementById("dopToast");
+    if (existing) existing.remove();
+    var toast = document.createElement("div");
+    toast.id = "dopToast";
+    toast.className = "dop-toast";
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    // reflow biar transisi masuknya kepakai, bukan langsung full opacity
+    void toast.offsetWidth;
+    toast.classList.add("is-visible");
+    window.setTimeout(function () {
+      toast.classList.remove("is-visible");
+      window.setTimeout(function () { toast.remove(); }, 260);
+    }, 2200);
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    showToast(ok ? "Link produk disalin" : "Gagal menyalin link");
+  }
+
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        showToast("Link produk disalin");
+      }).catch(function () { fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function closeShareMenu() {
+    var m = document.getElementById("dopShareMenu");
+    if (m) m.remove();
+    document.removeEventListener("click", closeShareMenuOnOutside, true);
+    window.removeEventListener("resize", closeShareMenu);
+    window.removeEventListener("scroll", closeShareMenu, true);
+  }
+  function closeShareMenuOnOutside(e) {
+    var m = document.getElementById("dopShareMenu");
+    if (m && !m.contains(e.target)) closeShareMenu();
+  }
+
+  // menu kecil buat desktop/browser yang belum dukung Web Share API asli --
+  // dua pilihan yang paling sering dipakai: salin link, atau langsung ke WA
+  function openShareMenu(anchorBtn, url, text) {
+    closeShareMenu();
+    var menu = document.createElement("div");
+    menu.id = "dopShareMenu";
+    menu.className = "dop-share-menu";
+    menu.innerHTML =
+      '<button type="button" data-act="copy">' + iconSvg("link", 16) + '<span>Salin Link</span></button>' +
+      '<a data-act="wa" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(text + " " + url) + '">' +
+        iconSvg("wa", 16) + '<span>Bagikan via WhatsApp</span></a>';
+    document.body.appendChild(menu);
+
+    var rect = anchorBtn.getBoundingClientRect();
+    var menuW = menu.offsetWidth;
+    var left = Math.min(rect.right - menuW, window.innerWidth - menuW - 10);
+    left = Math.max(10, left);
+    var top = rect.bottom + 8;
+    if (top + menu.offsetHeight > window.innerHeight - 10) {
+      top = rect.top - menu.offsetHeight - 8;
+    }
+    menu.style.left = left + "px";
+    menu.style.top = top + "px";
+
+    menu.querySelector('[data-act="copy"]').addEventListener("click", function () {
+      copyToClipboard(url);
+      closeShareMenu();
+    });
+    menu.querySelector('[data-act="wa"]').addEventListener("click", function () {
+      closeShareMenu();
+    });
+
+    window.setTimeout(function () {
+      document.addEventListener("click", closeShareMenuOnOutside, true);
+      window.addEventListener("resize", closeShareMenu);
+      window.addEventListener("scroll", closeShareMenu, true);
+    }, 0);
+  }
+
+  // di HP yang dukung Web Share API: langsung buka share sheet asli OS
+  // (bisa pilih WA, Instagram, Copy Link, dsb -- sepenuhnya bawaan HP).
+  // Kalau tidak didukung (kebanyakan desktop): jatuh ke menu kecil di atas.
+  function shareProduct(id, anchorBtn) {
+    if (typeof PRODUCTS === "undefined") return;
+    var product = null;
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      if (PRODUCTS[i].id === id) { product = PRODUCTS[i]; break; }
+    }
+    if (!product) return;
+
+    var url = buildProductUrl(product);
+    var priceText = typeof product.price === "number" ? " — " + formatRupiah(product.price) : "";
+    var text = product.name + priceText;
+
+    if (navigator.share) {
+      navigator.share({ title: product.name, text: text, url: url }).catch(function () {
+        // pengunjung batal / share gagal -- diamkan saja, tidak perlu pesan error
+      });
+    } else {
+      openShareMenu(anchorBtn, url, text);
+    }
+  }
+
+  window.dopShareProduct = shareProduct;
 
   /* ---------------- render katalog produk dari PRODUCTS ---------------- */
 
@@ -184,9 +312,11 @@
       var priceNote = p.priceIsEstimate
         ? '<span class="shop-price-note">Estimasi &middot; final dikonfirmasi via WA</span>'
         : "";
+      var shareBtn = '<button type="button" class="shop-card-share" data-action="share" data-id="' + p.id + '" aria-label="Bagikan ' + p.name + '">' + iconSvg("share", 15) + '</button>';
+
       var thumb = p.image
-        ? '<div class="shop-card-thumb-wrap"><img class="shop-card-thumb" src="' + p.image + '" alt="' + p.name + '" loading="lazy"></div>'
-        : '<div class="shop-card-thumb-wrap shop-card-thumb-fallback">' + iconSvg(p.icon, 30) + '</div>';
+        ? '<div class="shop-card-thumb-wrap">' + shareBtn + '<img class="shop-card-thumb" src="' + p.image + '" alt="' + p.name + '" loading="lazy"></div>'
+        : '<div class="shop-card-thumb-wrap shop-card-thumb-fallback">' + shareBtn + iconSvg(p.icon, 30) + '</div>';
 
       var pricingHtml = hasPrice
         ? '<div class="shop-card-price">' + formatRupiah(p.price) + '</div>' + priceNote
@@ -213,7 +343,7 @@
           })();
 
       return (
-        '<div class="shop-card reveal">' +
+        '<div class="shop-card reveal" id="produk-' + p.id + '" data-product-id="' + p.id + '">' +
           '<div class="shop-card-top">' +
             thumb +
             '<div class="shop-card-body">' +
@@ -400,6 +530,8 @@
           var qty = qtyEl ? parseInt(qtyEl.textContent, 10) : 1;
           addToCart(id, qty);
           openCart();
+        } else if (action === "share") {
+          shareProduct(id, btn);
         }
       });
     }

@@ -29,7 +29,7 @@
     categories.sort(function (a, b) { return a.localeCompare(b); });
     brands.sort(function (a, b) { return a.localeCompare(b); });
 
-    [document.getElementById("categoryPills"), document.getElementById("categoryPillsCompact")].forEach(function (categoryPills) {
+    [document.getElementById("categoryPills")].forEach(function (categoryPills) {
       if (!categoryPills) return;
       categories.forEach(function (cat) {
         var btn = document.createElement("button");
@@ -38,6 +38,16 @@
         btn.setAttribute("data-category", cat);
         btn.textContent = cat;
         categoryPills.appendChild(btn);
+      });
+    });
+
+    [document.getElementById("categorySelect")].forEach(function (categorySelect) {
+      if (!categorySelect) return;
+      categories.forEach(function (cat) {
+        var opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = cat;
+        categorySelect.appendChild(opt);
       });
     });
 
@@ -65,12 +75,14 @@
      ringkas (nempel pas scroll) baca/tulis STATE yang sama, fungsi di
      bawah ini yang jaga tampilan keduanya tetap kompak */
   function syncCategoryPillsUI(activeCategory) {
-    [document.getElementById("categoryPills"), document.getElementById("categoryPillsCompact")].forEach(function (group) {
-      if (!group) return;
-      group.querySelectorAll(".filter-pill").forEach(function (b) {
+    var categoryPills = document.getElementById("categoryPills");
+    if (categoryPills) {
+      categoryPills.querySelectorAll(".filter-pill").forEach(function (b) {
         b.classList.toggle("is-active", b.dataset.category === activeCategory);
       });
-    });
+    }
+    var categorySelect = document.getElementById("categorySelect");
+    if (categorySelect) categorySelect.value = activeCategory;
   }
   function syncPricePillsUI(min, max) {
     [document.getElementById("pricePills"), document.getElementById("pricePillsCompact")].forEach(function (group) {
@@ -291,14 +303,13 @@
       });
     }
 
-    var categoryPillsCompact = document.getElementById("categoryPillsCompact");
-    if (categoryPillsCompact) {
-      categoryPillsCompact.addEventListener("click", function (e) {
-        var btn = e.target.closest(".filter-pill");
-        if (!btn) return;
-        state.category = btn.dataset.category;
+    var categorySelect = document.getElementById("categorySelect");
+    if (categorySelect) {
+      categorySelect.addEventListener("change", function () {
+        state.category = categorySelect.value;
         syncCategoryPillsUI(state.category);
         render();
+        scrollToGridTop();
       });
     }
 

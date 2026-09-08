@@ -1,0 +1,167 @@
+/* ====================================================================
+   HALAMAN DETAIL PRODUK (produk/<id>.html)
+   Dipakai BERSAMA css/style.css utama (link keduanya). File ini cuma
+   berisi kelas yang khusus dipakai di halaman detail produk -- semua
+   variabel warna (--bg-void, --beam, --line-soft, dst) sudah didapat
+   dari style.css.
+   ==================================================================== */
+
+.pdp-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 20px;
+  gap:12px;
+}
+.pdp-back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--text-muted);
+  text-decoration:none;
+  font-size:13.5px;
+  font-weight:600;
+}
+@media (hover:hover){
+  .pdp-back:hover{color:var(--text);}
+}
+
+.pdp-wrap{
+  max-width:1000px;
+  margin:0 auto;
+  padding:0 20px;
+}
+.pdp-hero{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:32px;
+  padding:36px 0 52px;
+}
+@media(min-width:800px){
+  .pdp-hero{grid-template-columns:460px 1fr;align-items:start;}
+}
+
+.pdp-photo{position:relative;}
+.pdp-photo-frame{
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 26px 55px -22px rgba(0,0,0,0.92);
+}
+.pdp-photo-frame img{width:100%;display:block;border-radius:inherit;}
+.pdp-photo-frame .beam{--beam-w:2.4px;--beam-dur:9s;}
+
+.pdp-brand{
+  color:var(--beam);
+  font-weight:700;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.pdp-name{
+  font-size:clamp(22px,3.4vw,32px);
+  font-weight:800;
+  color:var(--text);
+  margin:6px 0 10px;
+  line-height:1.15;
+}
+.pdp-cat{
+  display:inline-block;
+  background:var(--bg-surface);
+  border:1px solid var(--line-soft);
+  color:var(--text-muted);
+  font-size:12px;
+  font-weight:600;
+  padding:4px 10px;
+  border-radius:999px;
+  margin-bottom:16px;
+}
+.pdp-price{
+  font-size:clamp(24px,3vw,30px);
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:4px;
+}
+.pdp-price-note{
+  font-size:12.5px;
+  color:var(--text-muted);
+  margin-bottom:22px;
+  display:block;
+}
+.pdp-specs{
+  list-style:none;
+  padding:0;
+  margin:0 0 26px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.pdp-specs li{
+  display:flex;
+  gap:10px;
+  font-size:14px;
+  color:var(--text);
+  align-items:flex-start;
+}
+.pdp-specs li svg{flex:none;color:var(--beam);margin-top:2px;}
+
+.pdp-ctas{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+}
+.pdp-btn-wa{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  height:46px;
+  padding:0 22px;
+  border-radius:11px;
+  background:var(--beam);
+  color:#201c14;
+  font-weight:700;
+  font-size:14.5px;
+  text-decoration:none;
+}
+.pdp-btn-catalog{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  height:46px;
+  padding:0 20px;
+  border-radius:11px;
+  border:1px solid var(--line-soft);
+  color:var(--text);
+  font-weight:600;
+  font-size:14px;
+  text-decoration:none;
+}
+.pdp-btn-share{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:46px;
+  height:46px;
+  border-radius:11px;
+  border:1px solid rgba(245,169,76,0.55);
+  background:transparent;
+  color:var(--beam);
+  cursor:pointer;
+  transition:background .2s var(--ease), color .2s var(--ease);
+}
+@media (hover:hover){
+  .pdp-btn-share:hover{background:var(--beam);color:#201c14;}
+}
+
+.pdp-note{
+  margin-top:36px;
+  padding:14px 16px;
+  border-radius:12px;
+  background:var(--bg-surface);
+  border:1px solid var(--line-soft);
+  font-size:12.5px;
+  color:var(--text-muted);
+}
+.pdp-note code{color:var(--text);}

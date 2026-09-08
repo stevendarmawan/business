@@ -1058,6 +1058,7 @@
     gap:8px;
   }
   .shop-card-thumb-wrap{
+    position:relative;
     flex:none;
     width:100%;
     aspect-ratio:1/1;
@@ -2770,3 +2771,99 @@
     .btn-rainbow::before,
     .btn-wa-lg-ringed.btn-rainbow{animation:none;}
   }
+
+/* ---------- tombol "Bagikan" kecil di kartu produk ---------- */
+.shop-card-share{
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:2;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:rgba(16,18,26,0.7);
+  border:1px solid rgba(245,169,76,0.55);
+  color:var(--beam);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  -webkit-backdrop-filter:blur(3px);
+  backdrop-filter:blur(3px);
+  transition:background .2s var(--ease), transform .15s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.shop-card-share svg{width:15px;height:15px;}
+.shop-card-share:active{transform:scale(0.9);}
+@media (hover:hover){
+  .shop-card-share:hover{background:var(--beam);border-color:var(--beam);color:#201c14;}
+}
+
+/* menu kecil "Salin Link / Bagikan via WhatsApp" -- fallback untuk
+   browser yang belum dukung Web Share API asli (kebanyakan desktop) */
+.dop-share-menu{
+  position:fixed;
+  z-index:9999;
+  min-width:198px;
+  background:var(--bg-surface);
+  border:1px solid var(--line-soft);
+  border-radius:12px;
+  box-shadow:0 18px 40px -14px rgba(0,0,0,0.85);
+  padding:6px;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  animation:dop-menu-in .16s var(--ease);
+}
+@keyframes dop-menu-in{
+  from{opacity:0; transform:translateY(-4px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.dop-share-menu button,
+.dop-share-menu a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 11px;
+  border-radius:8px;
+  background:transparent;
+  border:0;
+  color:var(--text);
+  font-family:inherit;
+  font-size:13.5px;
+  font-weight:600;
+  text-decoration:none;
+  cursor:pointer;
+  text-align:left;
+}
+.dop-share-menu svg{flex:none;color:var(--beam);}
+@media (hover:hover){
+  .dop-share-menu button:hover,
+  .dop-share-menu a:hover{background:var(--bg-void);}
+}
+
+/* notifikasi kecil "Link produk disalin" di bagian bawah layar */
+.dop-toast{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translate(-50%, 10px);
+  background:#1b1f2c;
+  border:1px solid var(--line-soft);
+  color:var(--text);
+  padding:11px 20px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  box-shadow:0 16px 34px -14px rgba(0,0,0,0.9);
+  opacity:0;
+  z-index:10000;
+  transition:opacity .25s var(--ease), transform .25s var(--ease);
+  pointer-events:none;
+  white-space:nowrap;
+}
+.dop-toast.is-visible{opacity:1; transform:translate(-50%, 0);}
+
+@media (prefers-reduced-motion: reduce){
+  .dop-share-menu{animation:none;}
+  .dop-toast{transition:none;}
+}

@@ -3030,7 +3030,7 @@ const PRODUCTS = [
      BU70QGGT, BU60RG (laser). Kategori "Proyektor" (brand LG sudah ada).
      ==================================================================== */
   {
-    image: "assets/img/produk-lg-ph30n.jpg",
+    image: "assets/img/lg-ph30n-projektor.jpg",
     id: "lg-ph30n",
     brand: "LG",
     name: "LG PH30N",
@@ -3042,7 +3042,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
-    image: "assets/img/produk-lg-bu50rg.jpg",
+    image: "assets/img/lg-bu50rg-projektor.jpg",
     id: "lg-bu50rg",
     brand: "LG",
     name: "LG BU50RG",
@@ -3054,7 +3054,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
-    image: "assets/img/produk-lg-hu715qw.jpg",
+    image: "assets/img/lg-hu715qw-projektor.jpg",
     id: "lg-hu715qw",
     brand: "LG",
     name: "LG HU715QW",
@@ -3066,7 +3066,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
-    image: "assets/img/produk-lg-bu70qggt.jpg",
+    image: "assets/img/lg-bu70qggt-projektor.jpg",
     id: "lg-bu70qggt",
     brand: "LG",
     name: "LG BU70QGGT",
@@ -3078,7 +3078,7 @@ const PRODUCTS = [
     icon: "projector"
   },
   {
-    image: "assets/img/produk-lg-bu60rg.jpg",
+    image: "assets/img/lg-bu60rg-projektor.jpg",
     id: "lg-bu60rg",
     brand: "LG",
     name: "LG BU60RG",

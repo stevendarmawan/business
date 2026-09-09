@@ -537,3 +537,52 @@ const CONFIG = {
 
   update();
 })();
+
+/* ====================================================================
+   FOOTER KATEGORI & BADGE JUMLAH PRODUK — OTOMATIS
+   Supaya daftar kategori di footer dan badge "X00+ Produk Siap Kirim"
+   di homepage SELALU sinkron dengan katalog terbaru di products.js,
+   tanpa perlu diupdate manual tiap kali nambah produk/kategori baru.
+   (Meta tag og:description untuk WA/social share TETAP harus di-update
+   manual di <head>, karena crawler share link tidak menjalankan JS.)
+   ==================================================================== */
+/* ====================================================================
+   FOOTER KATEGORI & BADGE JUMLAH PRODUK — OTOMATIS
+   Supaya daftar kategori di footer dan badge "X00+ Produk Siap Kirim"
+   di homepage SELALU sinkron dengan katalog terbaru di products.js,
+   tanpa perlu diupdate manual tiap kali nambah produk/kategori baru.
+   (Meta tag og:description untuk WA/social share TETAP harus di-update
+   manual di <head>, karena crawler share link tidak menjalankan JS.)
+
+   Ditaruh di listener DOMContentLoaded (bukan langsung dieksekusi)
+   karena urutan tag <script defer> di HTML adalah script.js lebih
+   dulu dari products.js -- PRODUCTS belum ada kalau kode ini jalan
+   duluan. DOMContentLoaded baru terpicu SETELAH semua script defer
+   (termasuk products.js) selesai jalan, jadi PRODUCTS sudah pasti ada.
+   ==================================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof PRODUCTS === "undefined" || !PRODUCTS.length) return;
+
+  // -- footer: daftar kategori, urut abjad, otomatis dari data produk --
+  // tiap kategori jadi link yang langsung ke halaman produk dengan
+  // filter kategori itu aktif (?kategori=...)
+  var cats = [];
+  PRODUCTS.forEach(function (p) {
+    if (p.category && cats.indexOf(p.category) === -1) cats.push(p.category);
+  });
+  cats.sort(function (a, b) { return a.localeCompare(b, "id"); });
+  var escapeHtml = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
+  var catsHtml = cats.map(function (c) {
+    return '<a href="/products.html?kategori=' + encodeURIComponent(c) + '">' + escapeHtml(c) + "</a>";
+  }).join(" | ");
+  document.querySelectorAll(".foot-cats").forEach(function (el) {
+    el.innerHTML = catsHtml;
+  });
+
+  // -- badge "X00+ Produk Siap Kirim" di homepage --
+  var badge = document.getElementById("productCountBadge");
+  if (badge) {
+    var rounded = Math.floor(PRODUCTS.length / 100) * 100;
+    badge.textContent = rounded + "+ Produk Siap Kirim";
+  }
+});

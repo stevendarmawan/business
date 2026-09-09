@@ -125,14 +125,30 @@
     sort: "default"
   };
 
+  // buang tanda hubung/titik/underscore + rapatkan spasi, biar orang gak
+  // perlu ketik tanda baca persis sama kayak di nama produk (mis. "eb l690u",
+  // "eb.l690u", "ebl690u" semua ketemu "EB-L690U")
+  function normalizeSearchText(s) {
+    return s.toLowerCase().replace(/[-_.]/g, "");
+  }
+
   function applyFilters() {
-    var q = state.search;
+    var qRaw = state.search;
+    var tokens = qRaw ? qRaw.split(/\s+/).filter(Boolean) : [];
     var list = PRODUCTS.filter(function (p) {
-      var matchSearch = !q ||
-        p.name.toLowerCase().indexOf(q) !== -1 ||
-        p.brand.toLowerCase().indexOf(q) !== -1 ||
-        p.specLine.toLowerCase().indexOf(q) !== -1 ||
-        p.ports.toLowerCase().indexOf(q) !== -1;
+      var matchSearch = true;
+      if (tokens.length) {
+        var haystack = (p.name + " " + p.brand + " " + p.category + " " +
+          p.specLine + " " + p.ports + " " + p.id).toLowerCase();
+        var haystackNorm = normalizeSearchText(haystack);
+        // tiap kata yang diketik harus ketemu di suatu tempat (gak harus
+        // berurutan) -- jadi cari "epson l690u" ketemu "Epson EB-L690U"
+        // walau "EB-" nyempil di tengah
+        matchSearch = tokens.every(function (t) {
+          var tNorm = normalizeSearchText(t);
+          return haystack.indexOf(t.toLowerCase()) !== -1 || haystackNorm.indexOf(tNorm) !== -1;
+        });
+      }
       var matchCategory = state.category === "all" || p.category === state.category;
       var matchBrand = state.brand === "all" || p.brand === state.brand;
       // produk tanpa harga pasti (price: null, tampil "Hubungi kami") selalu
@@ -206,6 +222,7 @@
     syncCategoryPillsUI("all");
     syncPricePillsUI(0, 999999999999);
     syncBrandSelectUI("all");
+    syncUrlState();
 
     var sortSelect = document.getElementById("productSort");
     if (sortSelect) sortSelect.value = "default";
@@ -253,14 +270,77 @@
     scrollDebounceTimer = setTimeout(scrollToGridTop, 450);
   }
 
+  /* ------------------------------------------------------------------
+     URL selalu mengikuti filter kategori & merek yang lagi aktif
+     (?kategori=...&brand=...) -- pakai replaceState (bukan pushState)
+     supaya tombol "back" browser tetap wajar (gak nyangkut di tiap klik
+     filter) dan pengunjung bisa COPY LANGSUNG dari address bar buat
+     dibagikan (mis. via WA) ke orang lain yang nyari kategori/merek itu.
+     Halaman yang dibuka dari link itu otomatis kefilter sendiri --
+     lihat pembacaan urlCategory/urlBrand di DOMContentLoaded di bawah.
+     ------------------------------------------------------------------ */
+  function syncUrlState() {
+    if (!window.history || !window.history.replaceState) return;
+    var params = new URLSearchParams(window.location.search);
+    if (state.category && state.category !== "all") {
+      params.set("kategori", state.category);
+    } else {
+      params.delete("kategori");
+    }
+    if (state.brand && state.brand !== "all") {
+      params.set("brand", state.brand);
+    } else {
+      params.delete("brand");
+    }
+    var qs = params.toString();
+    var newUrl = window.location.pathname + (qs ? "?" + qs : "");
+    try {
+      window.history.replaceState(null, "", newUrl);
+    } catch (err) {
+      /* beberapa preview/iframe sandbox memblokir history API -- diamkan
+         saja, fitur filter tetap jalan normal, cuma address bar-nya yang
+         gak ikut berubah di situasi khusus itu */
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     if (typeof PRODUCTS === "undefined") return;
 
     buildDynamicFilters();
+
+    // kalau datang dari link kategori/merek yang dibagikan (mis. dari
+    // footer atau link yang di-copy dari address bar), langsung terapkan
+    // filter itu sebelum render pertama kali
+    var urlParams = new URLSearchParams(window.location.search);
+    var urlCategory = urlParams.get("kategori");
+    var urlBrand = urlParams.get("brand");
+    var appliedFromUrl = false;
+
+    if (urlCategory) {
+      var categoryExists = PRODUCTS.some(function (p) { return p.category === urlCategory; });
+      if (categoryExists) {
+        state.category = urlCategory;
+        syncCategoryPillsUI(state.category);
+        appliedFromUrl = true;
+      }
+    }
+    if (urlBrand) {
+      var brandExists = PRODUCTS.some(function (p) { return p.brand === urlBrand; });
+      if (brandExists) {
+        state.brand = urlBrand;
+        syncBrandSelectUI(state.brand);
+        appliedFromUrl = true;
+      }
+    }
+
     render();
     setHeaderHeightVar();
     window.addEventListener("resize", setHeaderHeightVar);
     window.addEventListener("load", setHeaderHeightVar);
+
+    if (appliedFromUrl) {
+      window.setTimeout(scrollToGridTop, 150);
+    }
 
     var searchInput = document.getElementById("productSearch");
     var searchClear = document.getElementById("productSearchClear");
@@ -298,6 +378,7 @@
         if (!btn) return;
         state.category = btn.dataset.category;
         syncCategoryPillsUI(state.category);
+        syncUrlState();
         render();
         scrollToGridTop();
       });
@@ -308,6 +389,7 @@
       categorySelect.addEventListener("change", function () {
         state.category = categorySelect.value;
         syncCategoryPillsUI(state.category);
+        syncUrlState();
         render();
         scrollToGridTop();
       });
@@ -318,6 +400,7 @@
       brandSelect.addEventListener("change", function () {
         state.brand = brandSelect.value;
         syncBrandSelectUI(state.brand);
+        syncUrlState();
         render();
         scrollToGridTop();
       });
@@ -328,6 +411,7 @@
       brandSelectCompact.addEventListener("change", function () {
         state.brand = brandSelectCompact.value;
         syncBrandSelectUI(state.brand);
+        syncUrlState();
         render();
       });
     }

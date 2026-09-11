@@ -564,8 +564,13 @@ document.addEventListener("DOMContentLoaded", function () {
   if (typeof PRODUCTS === "undefined" || !PRODUCTS.length) return;
 
   // -- footer: daftar kategori, urut abjad, otomatis dari data produk --
-  // tiap kategori jadi link yang langsung ke halaman produk dengan
-  // filter kategori itu aktif (?kategori=...)
+  // tiap kategori jadi link ke halaman bridge /kategori/<slug>.html --
+  // halaman itu punya thumbnail WA khusus kategori itu, terus auto-redirect
+  // ke /products.html?kategori=... (lihat gen_share_bridge_pages.py)
+  var slugify = function (s) {
+    return s.toLowerCase().replace(/&/g, "dan")
+      .replace(/[^a-z0-9]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+  };
   var cats = [];
   PRODUCTS.forEach(function (p) {
     if (p.category && cats.indexOf(p.category) === -1) cats.push(p.category);
@@ -573,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function () {
   cats.sort(function (a, b) { return a.localeCompare(b, "id"); });
   var escapeHtml = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
   var catsHtml = cats.map(function (c) {
-    return '<a href="/products.html?kategori=' + encodeURIComponent(c) + '">' + escapeHtml(c) + "</a>";
+    return '<a href="/kategori/' + slugify(c) + '.html">' + escapeHtml(c) + "</a>";
   }).join(" | ");
   document.querySelectorAll(".foot-cats").forEach(function (el) {
     el.innerHTML = catsHtml;
@@ -584,5 +589,17 @@ document.addEventListener("DOMContentLoaded", function () {
   if (badge) {
     var rounded = Math.floor(PRODUCTS.length / 100) * 100;
     badge.textContent = rounded + "+ Produk Siap Kirim";
+  }
+
+  // -- badge "X0+ Merek Terpercaya" di homepage --
+  // "Non-Brand" dikecualikan karena bukan merek sungguhan
+  var brandBadge = document.getElementById("brandCountBadge");
+  if (brandBadge) {
+    var brands = [];
+    PRODUCTS.forEach(function (p) {
+      if (p.brand && p.brand !== "Non-Brand" && brands.indexOf(p.brand) === -1) brands.push(p.brand);
+    });
+    var brandRounded = Math.floor(brands.length / 5) * 5;
+    brandBadge.textContent = brandRounded + "+ Merek Terpercaya";
   }
 });

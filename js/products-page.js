@@ -279,21 +279,37 @@
      Halaman yang dibuka dari link itu otomatis kefilter sendiri --
      lihat pembacaan urlCategory/urlBrand di DOMContentLoaded di bawah.
      ------------------------------------------------------------------ */
+  function slugify(s) {
+    return s.toLowerCase().replace(/&/g, "dan")
+      .replace(/[^a-z0-9]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+  }
+
   function syncUrlState() {
     if (!window.history || !window.history.replaceState) return;
-    var params = new URLSearchParams(window.location.search);
-    if (state.category && state.category !== "all") {
-      params.set("kategori", state.category);
+    var hasCategory = state.category && state.category !== "all";
+    var hasBrand = state.brand && state.brand !== "all";
+    var newUrl;
+
+    if (hasCategory && !hasBrand) {
+      // cuma kategori aktif -- pakai link bridge /kategori/<slug>.html biar
+      // kalau di-copy & di-share ke WA, thumbnail-nya otomatis sesuai
+      // kategori itu (bukan gambar generic). Lihat gen_share_bridge_pages.py
+      newUrl = "/kategori/" + slugify(state.category) + ".html";
+    } else if (hasBrand && !hasCategory) {
+      // sama, versi merek
+      newUrl = "/brand/" + slugify(state.brand) + ".html";
     } else {
-      params.delete("kategori");
+      // kombinasi kategori+merek sekaligus, atau gak ada filter --
+      // gak ada halaman bridge khusus buat kombinasi (kekgak kebayang
+      // banyaknya), jadi balik ke pola lama (fungsional, cuma
+      // thumbnail-nya generic kalau di-share)
+      var params = new URLSearchParams();
+      if (hasCategory) params.set("kategori", state.category);
+      if (hasBrand) params.set("brand", state.brand);
+      var qs = params.toString();
+      newUrl = "/products.html" + (qs ? "?" + qs : "");
     }
-    if (state.brand && state.brand !== "all") {
-      params.set("brand", state.brand);
-    } else {
-      params.delete("brand");
-    }
-    var qs = params.toString();
-    var newUrl = window.location.pathname + (qs ? "?" + qs : "");
+
     try {
       window.history.replaceState(null, "", newUrl);
     } catch (err) {
@@ -332,6 +348,11 @@
         appliedFromUrl = true;
       }
     }
+
+    // begitu landing (baik dari redirect halaman bridge atau dari link lama
+    // ?kategori=/&brand= yang masih beredar), rapikan address bar ke bentuk
+    // paling enak buat di-copy-share lagi
+    if (appliedFromUrl) syncUrlState();
 
     render();
     setHeaderHeightVar();

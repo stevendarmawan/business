@@ -314,8 +314,15 @@
         : "";
       var shareBtn = '<button type="button" class="shop-card-share" data-action="share" data-id="' + p.id + '" aria-label="Bagikan ' + p.name + '">' + iconSvg("share", 15) + '</button>';
 
-      var thumb = p.image
-        ? '<div class="shop-card-thumb-wrap">' + shareBtn + '<img class="shop-card-thumb" src="' + p.image + '" alt="' + p.name + '" loading="lazy"></div>'
+      // path gambar di data produk itu relatif ("assets/img/...", tanpa
+      // "/" di depan). Biasanya itu gak masalah -- tapi sejak address bar
+      // bisa diubah ke /kategori/X.html atau /brand/Y.html (replaceState,
+      // demi link share WA yang rapi), path relatif jadi salah resolve
+      // (browser nyari di /kategori/assets/img/... padahal harusnya
+      // /assets/img/...). Makanya di sini dipaksa jadi absolut dulu.
+      var imgSrc = p.image && p.image.indexOf("/") !== 0 ? "/" + p.image : p.image;
+      var thumb = imgSrc
+        ? '<div class="shop-card-thumb-wrap">' + shareBtn + '<img class="shop-card-thumb" src="' + imgSrc + '" alt="' + p.name + '" loading="lazy"></div>'
         : '<div class="shop-card-thumb-wrap shop-card-thumb-fallback">' + shareBtn + iconSvg(p.icon, 30) + '</div>';
 
       var pricingHtml = hasPrice

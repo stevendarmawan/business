@@ -320,7 +320,13 @@
       // demi link share WA yang rapi), path relatif jadi salah resolve
       // (browser nyari di /kategori/assets/img/... padahal harusnya
       // /assets/img/...). Makanya di sini dipaksa jadi absolut dulu.
-      var imgSrc = p.image && p.image.indexOf("/") !== 0 ? "/" + p.image : p.image;
+      // cuma tambahin "/" di depan kalau path-nya emang relatif polos
+      // (assets/img/...). Data URI (dipakai preview base64) atau URL
+      // absolut (http://, https://, //) dibiarin apa adanya -- kalau
+      // ikut ditambahin "/" malah rusak jadi "/data:image/..." yang gak
+      // valid sama sekali.
+      var isAlreadyAbsolute = p.image && /^([a-z][a-z0-9+.-]*:|\/)/i.test(p.image);
+      var imgSrc = p.image && !isAlreadyAbsolute ? "/" + p.image : p.image;
       var thumb = imgSrc
         ? '<div class="shop-card-thumb-wrap">' + shareBtn + '<img class="shop-card-thumb" src="' + imgSrc + '" alt="' + p.name + '" loading="lazy"></div>'
         : '<div class="shop-card-thumb-wrap shop-card-thumb-fallback">' + shareBtn + iconSvg(p.icon, 30) + '</div>';

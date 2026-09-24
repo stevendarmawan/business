@@ -348,7 +348,7 @@
           )
         : (function () {
             var waNumber = (typeof CONFIG !== "undefined" && CONFIG.waNumber) ? CONFIG.waNumber : "";
-            var waText = encodeURIComponent("Halo, saya mau tanya harga " + p.name);
+            var waText = encodeURIComponent("Halo Agen Projektor Jakarta, saya mau tanya harga " + p.name);
             return '<a class="btn-add-cart btn-ask-price" target="_blank" rel="noopener" ' +
               'href="https://wa.me/' + waNumber + '?text=' + waText + '">' +
               iconSvg("cart", 16) + '<span>Tanya via WA</span>' +
@@ -357,7 +357,7 @@
 
       return (
         '<div class="shop-card reveal" id="produk-' + p.id + '" data-product-id="' + p.id + '">' +
-          '<div class="shop-card-top">' +
+          '<a class="shop-card-top" href="/produk/' + p.id + '.html" aria-label="Lihat detail ' + p.name + '">' +
             thumb +
             '<div class="shop-card-body">' +
               '<span class="shop-card-brand">' + p.brand + '</span>' +
@@ -365,7 +365,7 @@
               '<p class="shop-card-spec">' + p.specLine + '</p>' +
               '<p class="shop-card-ports">' + p.ports + '</p>' +
             '</div>' +
-          '</div>' +
+          '</a>' +
           '<div class="shop-card-pricing">' +
             pricingHtml +
           '</div>' +
@@ -530,6 +530,10 @@
       shopGrid.addEventListener("click", function (e) {
         var btn = e.target.closest("[data-action]");
         if (!btn) return;
+        // tombol share ada DI DALAM link ".shop-card-top" (biar seluruh
+        // area foto+nama bisa diklik ke halaman produk) -- klik tombol
+        // ini harus dicegah dari ikut nge-trigger navigasi link-nya
+        e.preventDefault();
         var id = btn.getAttribute("data-id");
         var qtyEl = shopGrid.querySelector('[data-qty-for="' + id + '"]');
         var action = btn.getAttribute("data-action");

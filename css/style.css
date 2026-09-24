@@ -1057,6 +1057,13 @@
     text-align:center;
     gap:8px;
   }
+  .shop-card-top .shop-card-thumb{
+    transition:transform .2s var(--ease, ease);
+  }
+  @media (hover:hover){
+    .shop-card-top:hover .shop-card-thumb{transform:scale(1.035);}
+    .shop-card-top:hover h3{color:var(--beam);}
+  }
   .shop-card-thumb-wrap{
     position:relative;
     flex:none;

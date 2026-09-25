@@ -1,38 +1,38 @@
-UPDATE REDESIGN "SINAR INDIGO" — stevendarmawan.com
-====================================================
-
-ISI ZIP INI: hanya file yang berubah / baru (bukan seluruh website).
+UPDATE REDESIGN "SINAR INDIGO" + AURORA PENUH — stevendarmawan.com
+==================================================================
+ZIP ini MENGGANTIKAN ZIP update sebelumnya (sudah termasuk semuanya).
+Isinya hanya file yang berubah / baru, bukan seluruh website.
 
 CARA PASANG
 1. Ekstrak ZIP ini ke DALAM folder website Anda (folder yang berisi
    index.html, products.html, folder css, js, assets, dll).
-2. Kalau muncul pertanyaan "ganti file yang sudah ada?", pilih
-   "Ganti semua" / "Replace all".
-3. Upload seperti biasa (GitHub -> Vercel otomatis update, atau
-   drag & drop seluruh folder ke Vercel).
-4. Setelah online, buka website di HP & laptop, tekan refresh.
-   Kalau tampilan masih lama: tutup tab lalu buka lagi (cache browser).
+2. Kalau ditanya "ganti file yang sudah ada?", pilih "Ganti semua".
+3. Upload ke GitHub. Jumlah filenya sedikit (±40 file), jadi aman
+   lewat upload di website GitHub; GitHub Desktop tetap lebih andal.
+   Vercel akan update otomatis.
+4. Buka website di HP & laptop. Kalau tampilan masih lama: tutup tab
+   lalu buka lagi (cache browser).
 
 FILE YANG DIGANTI
-- index.html ............ beranda (hero Aurora Indigo, galeri brosur baru)
-- products.html ......... halaman katalog (cuma bersih-bersih font lama)
+- index.html ............ beranda (hero Aurora Indigo, galeri brosur,
+                          latar aurora satu halaman)
+- products.html ......... katalog (latar aurora satu halaman)
 - css/style.css ......... seluruh tampilan baru (blok "REDESIGN 2026"
-                          di bagian bawah file)
-- js/script.js .......... galeri brosur + efek sorotan kursor
-- js/product-detail.js .. memuat penghitung klik WhatsApp
+                          dan seterusnya di bagian bawah file)
+- js/script.js .......... galeri brosur, efek sorotan kursor, lapisan aurora
+- js/product-detail.js .. latar aurora + penghitung klik WhatsApp di
+                          1.543 halaman produk (halaman produknya sendiri
+                          TIDAK perlu diupload ulang)
 
 FILE BARU
 - js/tracking.js ........ penghitung klik WhatsApp (Google Analytics)
-- assets/fonts/ ......... font Geist (disimpan di server sendiri)
-- assets/img/brosur-*.jpg  15 brosur baru (gambar kecil + ukuran penuh)
+- assets/fonts/ ......... font Geist
+- assets/img/brosur-*.jpg  15 brosur baru
 
-MENGAKTIFKAN PENGHITUNG KLIK WHATSAPP
-Buka js/tracking.js, cari baris:   gaId: ""
-Isi dengan Measurement ID dari Google Analytics, contoh:
-                                   gaId: "G-AB12CD34EF"
-Selama masih kosong, penghitung diam dan website tetap normal.
-
-MAU KEMBALI KE DESAIN LAMA?
-Pakai lagi file dari ZIP backup lama Anda (index.html, products.html,
-css/style.css, js/script.js, js/product-detail.js). File baru boleh
-dibiarkan, tidak mengganggu.
+CATATAN
+- Latar aurora bergerak di laptop/desktop/tablet, DIAM di HP (hemat
+  baterai & scroll tetap lancar).
+- Penghitung klik WhatsApp baru aktif setelah js/tracking.js diisi:
+      gaId: ""   ->   gaId: "G-XXXXXXXXXX"
+- Mau kembali ke desain lama? Upload lagi index.html, products.html,
+  css/style.css, js/script.js, js/product-detail.js dari backup lama.

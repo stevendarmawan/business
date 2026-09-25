@@ -786,3 +786,16 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.key === "Escape" && current && !(lb && lb.classList.contains("is-open"))) close();
   }, true);
 })();
+
+/* ====================================================================
+   LAPISAN AURORA SATU HALAMAN (aktif kalau <html class="bg-page-aurora">)
+   Hanya menambah elemen hiasan; tidak menyentuh fungsi apa pun.
+   ==================================================================== */
+(function(){
+  if (document.querySelector(".page-aurora")) return;
+  var d = document.createElement("div");
+  d.className = "page-aurora";
+  d.setAttribute("aria-hidden", "true");
+  d.innerHTML = '<span class="pa-blob pa-1"></span><span class="pa-blob pa-2"></span><span class="pa-blob pa-3"></span>';
+  document.body.insertBefore(d, document.body.firstChild);
+})();

@@ -104,3 +104,14 @@
   s.setAttribute("data-dop-tracking", "");
   document.head.appendChild(s);
 })();
+
+/* latar aurora satu halaman (sama seperti beranda & katalog) */
+(function(){
+  document.documentElement.classList.add("bg-page-aurora");
+  if (document.querySelector(".page-aurora")) return;
+  var d = document.createElement("div");
+  d.className = "page-aurora";
+  d.setAttribute("aria-hidden", "true");
+  d.innerHTML = '<span class="pa-blob pa-1"></span><span class="pa-blob pa-2"></span><span class="pa-blob pa-3"></span>';
+  document.body.insertBefore(d, document.body.firstChild);
+})();

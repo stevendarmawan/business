@@ -4230,3 +4230,95 @@ html.js .bx:not(.is-open) .bx-hint{display:none;}
   .kt-ico{width:36px !important;height:36px !important;}
 }
 .bx-cat{height:clamp(360px, 44vw, 440px);}
+
+
+/* ####################################################################
+   AURORA INDIGO SATU HALAMAN PENUH — aktif dengan
+   <html class="bg-page-aurora">. Satu lapisan cahaya "diam di layar"
+   (position:fixed) di belakang semua section; konten bergulir di
+   atasnya. Lebih redup dari hero supaya teks tetap mudah dibaca.
+   Lapisan dibuat oleh js/script.js (tidak perlu ubah HTML).
+   #################################################################### */
+.page-aurora{display:none;}
+html.bg-page-aurora .page-aurora{
+  display:block;
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  overflow:hidden;
+  isolation:isolate;
+  contain:strict;
+  opacity:.62;
+}
+.pa-blob{
+  position:absolute;
+  mix-blend-mode:screen;
+  will-change:transform;
+}
+.pa-1{
+  width:70vmax;height:70vmax;
+  top:-30vmax;left:-28vmax;
+  background:radial-gradient(closest-side, rgba(129,140,248,0.42) 0%, rgba(129,140,248,0.12) 50%, rgba(129,140,248,0) 100%);
+  animation:pa-drift-1 24s ease-in-out infinite alternate;
+}
+.pa-2{
+  width:75vmax;height:75vmax;
+  bottom:-34vmax;right:-30vmax;
+  background:radial-gradient(closest-side, rgba(79,70,229,0.48) 0%, rgba(79,70,229,0.14) 50%, rgba(79,70,229,0) 100%);
+  animation:pa-drift-2 30s ease-in-out infinite alternate;
+}
+.pa-3{
+  width:55vmax;height:55vmax;
+  top:22%;left:24%;
+  background:radial-gradient(closest-side, rgba(55,48,163,0.5) 0%, rgba(55,48,163,0.14) 55%, rgba(55,48,163,0) 100%);
+  animation:pa-drift-3 36s ease-in-out infinite alternate;
+}
+@keyframes pa-drift-1{
+  0%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(18vw,12vh) scale(1.15);}
+  100%{transform:translate(6vw,26vh) scale(.95);}
+}
+@keyframes pa-drift-2{
+  0%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(-20vw,-14vh) scale(1.2);}
+  100%{transform:translate(-8vw,-28vh) scale(1.05);}
+}
+@keyframes pa-drift-3{
+  0%{transform:translate(-10vw,4vh) scale(.9);}
+  50%{transform:translate(12vw,-10vh) scale(1.15);}
+  100%{transform:translate(0,10vh) scale(1);}
+}
+/* hero menyatu dengan lapisan halaman: latar hero jadi tembus */
+html.bg-page-aurora.bg-aurora2 .aurora{background:transparent;}
+html.bg-page-aurora.bg-aurora2 .aurora::after{display:none;}
+/* footer & bilah filter katalog ikut tembus sebagian */
+html.bg-page-aurora footer{
+  background:radial-gradient(ellipse 50% 60% at 50% 100%, rgba(79,70,229,0.22), transparent 70%), rgba(4,5,13,0.55) !important;
+}
+@media (prefers-reduced-motion: reduce){
+  .pa-blob{animation:none;}
+}
+/* ################# AKHIR AURORA SATU HALAMAN PENUH ################ */
+
+/* ---------- teks berjalan: lebih besar & terang di laptop/desktop ---------- */
+@media (min-width:1024px){
+  .running-text{padding:10px 0;}
+  .running-text-item{font-size:14px;color:#b4b9e0;}
+  .running-text-sep{font-size:13px;margin:0 18px;}
+}
+/* body harus tembus, kalau tidak lapisan aurora tertutup warna body */
+html.bg-page-aurora body{background:transparent;}
+html.bg-page-aurora .page-aurora{opacity:.75;}
+.pa-3{background:radial-gradient(closest-side, rgba(79,70,229,0.4) 0%, rgba(79,70,229,0.12) 55%, rgba(79,70,229,0) 100%);}
+
+/* ---------- aurora satu halaman: muncul halus & DIAM di HP ---------- */
+html.bg-page-aurora .page-aurora{animation:pa-in 1.2s ease-out both;}
+@keyframes pa-in{from{opacity:0;}to{opacity:.75;}}
+@media (max-width:767px){
+  /* HP: cahaya tetap ada, tapi tidak bergerak -> scroll tetap ringan */
+  .pa-blob{animation:none !important;will-change:auto;}
+  .pa-1{transform:translate(8vw,10vh) scale(1.05);}
+  .pa-2{transform:translate(-10vw,-12vh) scale(1.1);}
+  .pa-3{transform:translate(0,0) scale(1);}
+}

@@ -1,0 +1,38 @@
+UPDATE REDESIGN "SINAR INDIGO" — stevendarmawan.com
+====================================================
+
+ISI ZIP INI: hanya file yang berubah / baru (bukan seluruh website).
+
+CARA PASANG
+1. Ekstrak ZIP ini ke DALAM folder website Anda (folder yang berisi
+   index.html, products.html, folder css, js, assets, dll).
+2. Kalau muncul pertanyaan "ganti file yang sudah ada?", pilih
+   "Ganti semua" / "Replace all".
+3. Upload seperti biasa (GitHub -> Vercel otomatis update, atau
+   drag & drop seluruh folder ke Vercel).
+4. Setelah online, buka website di HP & laptop, tekan refresh.
+   Kalau tampilan masih lama: tutup tab lalu buka lagi (cache browser).
+
+FILE YANG DIGANTI
+- index.html ............ beranda (hero Aurora Indigo, galeri brosur baru)
+- products.html ......... halaman katalog (cuma bersih-bersih font lama)
+- css/style.css ......... seluruh tampilan baru (blok "REDESIGN 2026"
+                          di bagian bawah file)
+- js/script.js .......... galeri brosur + efek sorotan kursor
+- js/product-detail.js .. memuat penghitung klik WhatsApp
+
+FILE BARU
+- js/tracking.js ........ penghitung klik WhatsApp (Google Analytics)
+- assets/fonts/ ......... font Geist (disimpan di server sendiri)
+- assets/img/brosur-*.jpg  15 brosur baru (gambar kecil + ukuran penuh)
+
+MENGAKTIFKAN PENGHITUNG KLIK WHATSAPP
+Buka js/tracking.js, cari baris:   gaId: ""
+Isi dengan Measurement ID dari Google Analytics, contoh:
+                                   gaId: "G-AB12CD34EF"
+Selama masih kosong, penghitung diam dan website tetap normal.
+
+MAU KEMBALI KE DESAIN LAMA?
+Pakai lagi file dari ZIP backup lama Anda (index.html, products.html,
+css/style.css, js/script.js, js/product-detail.js). File baru boleh
+dibiarkan, tidak mengganggu.

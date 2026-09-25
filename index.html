@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="bg-aurora2">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +33,7 @@
 <meta name="twitter:title" content="Agen Projektor Jakarta | Supplier Resmi Proyektor, Printer &amp; Alat Kantor">
 <meta name="twitter:description" content="Authorized master dealer sejak 2017. Proyektor, layar, monitor, printer &amp; alat kantor dengan harga bersaing. Melayani reseller, hotel, kantor &amp; sekolah se-Jabodetabek.">
 <meta name="twitter:image" content="https://stevendarmawan.com/assets/img/og-agen-projektor-jakarta.jpg">
-<meta name="theme-color" content="#10121a">
+<meta name="theme-color" content="#04050d">
 
 
 <!--
@@ -52,10 +52,6 @@
      (misal Hostinger, Niagahoster, dll).
   ====================================================================
 -->
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -124,6 +120,13 @@
        tambah/ubah baris .hm-card DI KEDUA SET (set 1 dan set 2 harus
        isinya sama persis, itu yang bikin gesernya nyambung mulus). -->
   <section class="hero">
+    <!-- latar hero "Aurora Indigo" (aktif karena <html class="bg-aurora2">) -->
+    <div class="aurora" aria-hidden="true">
+      <span class="au-pulse"></span>
+      <span class="au-blob au-1"></span>
+      <span class="au-blob au-2"></span>
+      <span class="au-blob au-3"></span>
+    </div>
     <span class="beam-glow" aria-hidden="true"></span>
 
     <div class="hm-stage" aria-hidden="true">
@@ -462,84 +465,195 @@
         <h2 class="section-title">Brosur Produk Best Seller</h2>
       </div>
 
-      <div class="fan">
-        <div class="fan-deck">
-          <div class="fan-card" role="button" tabindex="0" data-brosur-open
+      <!--
+        GALERI BROSUR PER KATEGORI
+        ------------------------------------------------------------
+        MENAMBAH BROSUR: salin satu blok <div class="bx-item" ...>
+        di bawah, ganti gambar/teks, dan isi data-cat dengan nama
+        kategorinya (misal data-cat="proyektor").
+        MENAMBAH KATEGORI BARU: salin satu <button class="bx-cat">,
+        ganti data-bx-cat (misal "printer") dan namanya. Tumpukan
+        gambar & jumlah brosur terisi otomatis dari brosur yang
+        data-cat-nya sama.
+        TUMPUKAN DI KARTU KATEGORI: brosur yang diberi data-stack="1"
+        (kiri), "2" (tengah, paling depan), "3" (kanan) yang dipakai.
+        Kalau tidak ada, otomatis diambil 3 brosur pertama.
+      -->
+      <div class="bx" id="brosurGallery">
+        <div class="bx-bar">
+          <button type="button" class="bx-back" data-bx-back><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Semua kategori</button>
+          <div class="bx-tabs" role="tablist" aria-label="Kategori brosur"></div>
+        </div>
+
+        <div class="bx-cats">
+          <button type="button" class="bx-cat reveal" data-bx-cat="proyektor">
+            <span class="bx-stack" aria-hidden="true"></span>
+            <span class="bx-glass">
+              <span class="bx-cat-name">Proyektor</span>
+              <span class="bx-cat-meta"><span data-bx-count>3</span> brosur · Epson, BenQ, Acer &amp; lainnya</span>
+              <span class="bx-cat-go"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </button>
+          <button type="button" class="bx-cat reveal" data-bx-cat="screen-breket">
+            <span class="bx-stack" aria-hidden="true"></span>
+            <span class="bx-glass">
+              <span class="bx-cat-name">Screen &amp; Breket Proyektor</span>
+              <span class="bx-cat-meta"><span data-bx-count>3</span> brosur · Screen, breket &amp; meja tripod</span>
+              <span class="bx-cat-go"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </button>
+        </div>
+
+        <div class="bx-grid">
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
                aria-label="Lihat brosur BenQ MX560C, MW560C, Acer X1, Acer BS-322">
-            <img class="fan-thumb" src="assets/img/brosur-benq-mx560c-mw560c-acer-x1-bs-322.jpg"
+            <span class="bx-thumb"><img src="assets/img/brosur-benq-mx560c-mw560c-acer-x1-bs-322.jpg"
                  data-full="assets/img/brosur-benq-mx560c-mw560c-acer-x1-bs-322-full.jpg"
-                 alt="Brosur BenQ MX560C, MW560C, Acer X1, Acer BS-322" loading="lazy" decoding="async">
-            <div class="fan-cap">
-              <h3>BenQ MX560C &amp; MW560C, Acer X1 &amp; BS-322</h3>
-              <span>XGA &amp; WXGA, 4.000–4.800 Lumens</span>
-            </div>
+                 alt="Brosur BenQ MX560C, MW560C, Acer X1, Acer BS-322" width="900" height="1272" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>BenQ MX560C &amp; MW560C, Acer X1 &amp; BS-322</h3><span>XGA &amp; WXGA, 4.000–4.800 Lumens</span></span>
           </div>
-          <div class="fan-card" role="button" tabindex="0" data-brosur-open
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
                aria-label="Lihat brosur Epson Best Seller — EB-E600, EB-X600, EB-W55, EB-X52">
-            <img class="fan-thumb" src="assets/img/brosur-epson-best-seller-eb-e600-eb-x600-eb-w55-eb-x52.jpg"
+            <span class="bx-thumb"><img src="assets/img/brosur-epson-best-seller-eb-e600-eb-x600-eb-w55-eb-x52.jpg"
                  data-full="assets/img/brosur-epson-best-seller-eb-e600-eb-x600-eb-w55-eb-x52-full.jpg"
-                 alt="Brosur Epson Best Seller — EB-E600, EB-X600, EB-W55, EB-X52" loading="lazy" decoding="async">
-            <div class="fan-cap">
-              <h3>Epson Best Seller — EB-E600, EB-X600, EB-W55, EB-X52</h3>
-              <span>XGA &amp; WXGA, 3.400–4.000 Lumens</span>
-            </div>
+                 alt="Brosur Epson Best Seller — EB-E600, EB-X600, EB-W55, EB-X52" width="900" height="1272" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Epson Best Seller — EB-E600, EB-X600, EB-W55, EB-X52</h3><span>XGA &amp; WXGA, 3.400–4.000 Lumens</span></span>
           </div>
-          <div class="fan-card" role="button" tabindex="0" data-brosur-open
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
                aria-label="Lihat brosur Epson Best Seller — EB-2065, EB-2155W, EB-2265U, EB-972">
-            <img class="fan-thumb" src="assets/img/brosur-epson-best-seller-eb-2065-eb-2155w-eb-2265u-eb-972.jpg"
+            <span class="bx-thumb"><img src="assets/img/brosur-epson-best-seller-eb-2065-eb-2155w-eb-2265u-eb-972.jpg"
                  data-full="assets/img/brosur-epson-best-seller-eb-2065-eb-2155w-eb-2265u-eb-972-full.jpg"
-                 alt="Brosur Epson Best Seller — EB-2065, EB-2155W, EB-2265U, EB-972" loading="lazy" decoding="async">
-            <div class="fan-cap">
-              <h3>Epson Best Seller — EB-2065, EB-2155W, EB-2265U, EB-972</h3>
-              <span>XGA, WXGA &amp; WUXGA, 4.100–5.500 Lumens</span>
-            </div>
+                 alt="Brosur Epson Best Seller — EB-2065, EB-2155W, EB-2265U, EB-972" width="900" height="1272" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Epson Best Seller — EB-2065, EB-2155W, EB-2265U, EB-972</h3><span>XGA, WXGA &amp; WUXGA, 4.100–5.500 Lumens</span></span>
           </div>
-          <div class="fan-card" role="button" tabindex="0" data-brosur-open
+          <div class="bx-item" data-cat="proyektor" data-stack="2" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Epson EB-L260F">
+            <span class="bx-thumb"><img src="assets/img/brosur-epson-eb-l260f.jpg"
+                 data-full="assets/img/brosur-epson-eb-l260f-full.jpg"
+                 alt="Brosur Epson EB-L260F" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Epson EB-L260F</h3><span>Laser · Full HD · 4.600 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Epson EB-L790U">
+            <span class="bx-thumb"><img src="assets/img/brosur-epson-eb-l790u.jpg"
+                 data-full="assets/img/brosur-epson-eb-l790u-full.jpg"
+                 alt="Brosur Epson EB-L790U" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Epson EB-L790U</h3><span>Laser · WUXGA · 7.500 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Epson EB-685W &amp; EB-685Wi">
+            <span class="bx-thumb"><img src="assets/img/brosur-epson-eb-685w-eb-685wi.jpg"
+                 data-full="assets/img/brosur-epson-eb-685w-eb-685wi-full.jpg"
+                 alt="Brosur Epson EB-685W &amp; EB-685Wi" width="560" height="792" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Epson EB-685W &amp; EB-685Wi</h3><span>Ultra Short Throw · WXGA · 3.500 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Epson EB-FH54">
+            <span class="bx-thumb"><img src="assets/img/brosur-epson-eb-fh54.jpg"
+                 data-full="assets/img/brosur-epson-eb-fh54-full.jpg"
+                 alt="Brosur Epson EB-FH54" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Epson EB-FH54</h3><span>Full HD · 4.100 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Epson EB-W53">
+            <span class="bx-thumb"><img src="assets/img/brosur-epson-eb-w53.jpg"
+                 data-full="assets/img/brosur-epson-eb-w53-full.jpg"
+                 alt="Brosur Epson EB-W53" width="560" height="792" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Epson EB-W53</h3><span>WXGA · 4.000 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" data-stack="1" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur BenQ W4000i">
+            <span class="bx-thumb"><img src="assets/img/brosur-benq-w4000i.jpg"
+                 data-full="assets/img/brosur-benq-w4000i-full.jpg"
+                 alt="Brosur BenQ W4000i" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>BenQ W4000i</h3><span>Home Theater 4K UHD · 3.200 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur BenQ MX560C">
+            <span class="bx-thumb"><img src="assets/img/brosur-benq-mx560c.jpg"
+                 data-full="assets/img/brosur-benq-mx560c-full.jpg"
+                 alt="Brosur BenQ MX560C" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>BenQ MX560C</h3><span>Business Projector · XGA · 4.000 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" data-stack="3" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Acer BS-322">
+            <span class="bx-thumb"><img src="assets/img/brosur-acer-bs-322-single.jpg"
+                 data-full="assets/img/brosur-acer-bs-322-single-full.jpg"
+                 alt="Brosur Acer BS-322" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Acer BS-322</h3><span>WXGA · 4.800 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur NEC NP-ME403UG">
+            <span class="bx-thumb"><img src="assets/img/brosur-nec-np-me403ug.jpg"
+                 data-full="assets/img/brosur-nec-np-me403ug-full.jpg"
+                 alt="Brosur NEC NP-ME403UG" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>NEC NP-ME403UG</h3><span>WUXGA · 4.100 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Hisense M2 Pro">
+            <span class="bx-thumb"><img src="assets/img/brosur-hisense-m2-pro.jpg"
+                 data-full="assets/img/brosur-hisense-m2-pro-full.jpg"
+                 alt="Brosur Hisense M2 Pro" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Hisense M2 Pro</h3><span>Smart Mini Projector · 4K · Laser 1.300 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="proyektor" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Xiaomi Smart Projector L1 Pro">
+            <span class="bx-thumb"><img src="assets/img/brosur-xiaomi-smart-projector-l1-pro.jpg"
+                 data-full="assets/img/brosur-xiaomi-smart-projector-l1-pro-full.jpg"
+                 alt="Brosur Xiaomi Smart Projector L1 Pro" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Xiaomi Smart Projector L1 Pro</h3><span>Smart Projector · Full HD · 400 Lumens</span></span>
+          </div>
+          <div class="bx-item" data-cat="screen-breket" data-stack="2" role="button" tabindex="0" data-brosur-open
                aria-label="Lihat brosur Optima Screen Projector — Manual, Tripod &amp; Motorized">
-            <img class="fan-thumb" src="assets/img/brosur-optima-screen-projector-manual-tripod-amp-m.jpg"
+            <span class="bx-thumb"><img src="assets/img/brosur-optima-screen-projector-manual-tripod-amp-m.jpg"
                  data-full="assets/img/brosur-optima-screen-projector-manual-tripod-amp-m-2.jpg"
-                 alt="Brosur Optima Screen Projector — Manual, Tripod &amp; Motorized" loading="lazy" decoding="async">
-            <div class="fan-cap">
-              <h3>Optima Screen Projector — Manual, Tripod &amp; Motorized</h3>
-              <span>Layar proyektor 70" sampai 200"</span>
-            </div>
+                 alt="Brosur Optima Screen Projector — Manual, Tripod &amp; Motorized" width="900" height="1272" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Optima Screen Projector — Manual, Tripod &amp; Motorized</h3><span>Layar proyektor 70" sampai 200"</span></span>
           </div>
-          <div class="fan-card" role="button" tabindex="0" data-brosur-open
+          <div class="bx-item" data-cat="screen-breket" role="button" tabindex="0" data-brosur-open
                aria-label="Lihat brosur Optima Screen Projector — Tripod Wide, Fast Fold &amp; Fixed Frame">
-            <img class="fan-thumb" src="assets/img/brosur-optima-screen-projector-tripod-wide-fast-fo.jpg"
+            <span class="bx-thumb"><img src="assets/img/brosur-optima-screen-projector-tripod-wide-fast-fo.jpg"
                  data-full="assets/img/brosur-optima-screen-projector-tripod-wide-fast-fo-2.jpg"
-                 alt="Brosur Optima Screen Projector — Tripod Wide, Fast Fold &amp; Fixed Frame" loading="lazy" decoding="async">
-            <div class="fan-cap">
-              <h3>Optima Screen Projector — Tripod Wide, Fast Fold &amp; Fixed Frame</h3>
-              <span>Layar proyektor 100" sampai 300"</span>
-            </div>
+                 alt="Brosur Optima Screen Projector — Tripod Wide, Fast Fold &amp; Fixed Frame" width="900" height="1272" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Optima Screen Projector — Tripod Wide, Fast Fold &amp; Fixed Frame</h3><span>Layar proyektor 100" sampai 300"</span></span>
           </div>
-          <div class="fan-card" role="button" tabindex="0" data-brosur-open
+          <div class="bx-item" data-cat="screen-breket" role="button" tabindex="0" data-brosur-open
                aria-label="Lihat brosur Optima Screen Projector — Motorized Floor Up &amp; Wide">
-            <img class="fan-thumb" src="assets/img/brosur-optima-screen-projector-motorized-floor-up-.jpg"
+            <span class="bx-thumb"><img src="assets/img/brosur-optima-screen-projector-motorized-floor-up-.jpg"
                  data-full="assets/img/brosur-optima-screen-projector-motorized-floor-up--2.jpg"
-                 alt="Brosur Optima Screen Projector — Motorized Floor Up &amp; Wide" loading="lazy" decoding="async">
-            <div class="fan-cap">
-              <h3>Optima Screen Projector — Motorized Floor Up &amp; Wide</h3>
-              <span>Layar proyektor 100" sampai 150"</span>
-            </div>
+                 alt="Brosur Optima Screen Projector — Motorized Floor Up &amp; Wide" width="900" height="1272" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Optima Screen Projector — Motorized Floor Up &amp; Wide</h3><span>Layar proyektor 100" sampai 150"</span></span>
+          </div>
+          <div class="bx-item" data-cat="screen-breket" data-stack="1" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Optima Meja Tripod Proyektor">
+            <span class="bx-thumb"><img src="assets/img/brosur-optima-meja-tripod-proyektor.jpg"
+                 data-full="assets/img/brosur-optima-meja-tripod-proyektor-full.jpg"
+                 alt="Brosur Optima Meja Tripod Proyektor" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Optima Meja Tripod Proyektor</h3><span>Tinggi bisa diatur · ringan · mudah dilipat</span></span>
+          </div>
+          <div class="bx-item" data-cat="screen-breket" data-stack="3" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Optima Breket Universal Kotak">
+            <span class="bx-thumb"><img src="assets/img/brosur-optima-breket-universal-kotak.jpg"
+                 data-full="assets/img/brosur-optima-breket-universal-kotak-full.jpg"
+                 alt="Brosur Optima Breket Universal Kotak" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Optima Breket Universal Kotak</h3><span>Plafon &amp; dinding · beban hingga 5 kg</span></span>
+          </div>
+          <div class="bx-item" data-cat="screen-breket" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Optima Breket Motorized Kotak">
+            <span class="bx-thumb"><img src="assets/img/brosur-optima-breket-motorized-kotak.jpg"
+                 data-full="assets/img/brosur-optima-breket-motorized-kotak-full.jpg"
+                 alt="Brosur Optima Breket Motorized Kotak" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Optima Breket Motorized Kotak</h3><span>Beban hingga 7 kg · panjang hingga 150 cm</span></span>
+          </div>
+          <div class="bx-item" data-cat="screen-breket" role="button" tabindex="0" data-brosur-open
+               aria-label="Lihat brosur Breket Universal Bulat">
+            <span class="bx-thumb"><img src="assets/img/brosur-breket-universal-bulat.jpg"
+                 data-full="assets/img/brosur-breket-universal-bulat-full.jpg"
+                 alt="Brosur Breket Universal Bulat" width="560" height="700" loading="lazy" decoding="async"></span>
+            <span class="bx-cap"><h3>Breket Universal Bulat</h3><span>Beban hingga 5 kg · panjang hingga 80 cm</span></span>
           </div>
         </div>
-
-        <div class="fan-caption" aria-live="polite">
-          <h3></h3>
-          <span></span>
-        </div>
-
-        <div class="fan-nav">
-          <button type="button" class="fan-arrow" data-fan-prev aria-label="Brosur sebelumnya">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <div class="fan-dots"></div>
-          <button type="button" class="fan-arrow" data-fan-next aria-label="Brosur berikutnya">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
+        <p class="bx-hint">Ketuk brosur untuk melihat ukuran penuh.</p>
       </div>
     </div>
   </section>

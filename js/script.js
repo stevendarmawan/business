@@ -603,3 +603,186 @@ document.addEventListener("DOMContentLoaded", function () {
     brandBadge.textContent = brandRounded + "+ Merek Terpercaya";
   }
 });
+
+/* ====================================================================
+   REDESIGN 2026 — sorotan cahaya mengikuti kursor di kartu
+   Cuma jalan di perangkat dengan mouse (HP tidak kena, hemat baterai).
+   Tidak mengubah fungsi apa pun: hanya mengisi variabel --mx/--my.
+   ==================================================================== */
+(function(){
+  if (!window.matchMedia || !window.matchMedia("(hover:hover) and (pointer:fine)").matches) return;
+  var SEL = ".feat, .shop-card";
+  var raf = 0, lastEl = null, lastX = 0, lastY = 0;
+  document.addEventListener("pointermove", function(e){
+    var el = e.target && e.target.closest ? e.target.closest(SEL) : null;
+    if (!el) return;
+    lastEl = el; lastX = e.clientX; lastY = e.clientY;
+    if (raf) return;
+    raf = requestAnimationFrame(function(){
+      raf = 0;
+      var r = lastEl.getBoundingClientRect();
+      lastEl.style.setProperty("--mx", (lastX - r.left) + "px");
+      lastEl.style.setProperty("--my", (lastY - r.top) + "px");
+    });
+  }, { passive:true });
+})();
+
+/* muat penghitung klik WhatsApp (js/tracking.js) -- satu file untuk semua halaman */
+(function(){
+  if (document.querySelector("script[data-dop-tracking]")) return;
+  var s = document.createElement("script");
+  s.src = "/js/tracking.js";
+  s.defer = true;
+  s.setAttribute("data-dop-tracking", "");
+  document.head.appendChild(s);
+})();
+
+/* ====================================================================
+   GALERI BROSUR PER KATEGORI (#brosurGallery)
+   - kartu kategori diisi otomatis: 3 brosur pertama jadi tumpukan,
+     jumlah brosur dihitung sendiri
+   - ketuk kategori -> brosur di tumpukan "terbang" ke tempatnya di
+     kisi (teknik FLIP), brosur lainnya menyusul
+   - "Semua kategori" -> kembali ke tampilan kartu
+   - ketuk brosur -> lightbox yang sudah ada (tidak diubah)
+   Tanpa JS: semua brosur tampil langsung dalam kisi.
+   ==================================================================== */
+(function(){
+  var root = document.getElementById("brosurGallery");
+  if (!root) return;
+
+  var cats  = Array.prototype.slice.call(root.querySelectorAll("[data-bx-cat]"));
+  var items = Array.prototype.slice.call(root.querySelectorAll(".bx-item"));
+  var tabs  = root.querySelector(".bx-tabs");
+  var back  = root.querySelector("[data-bx-back]");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var EASE = "cubic-bezier(.34,1.25,.5,1)";
+  var ROT = [-11, -1, 10];
+  var current = null;
+  var stackOf = {};
+
+  function itemsOf(cat){
+    return items.filter(function(it){ return it.getAttribute("data-cat") === cat; });
+  }
+  function nameOf(cat){
+    var c = root.querySelector('[data-bx-cat="' + cat + '"] .bx-cat-name');
+    return c ? c.textContent.trim() : cat;
+  }
+
+  // isi tumpukan, jumlah, dan tab
+  cats.forEach(function(card){
+    var cat = card.getAttribute("data-bx-cat");
+    var list = itemsOf(cat);
+    var stack = card.querySelector(".bx-stack");
+    // tumpukan: pakai brosur ber-data-stack (1 kiri, 2 tengah, 3 kanan),
+    // sisanya diisi dari urutan brosur
+    var picked = list.filter(function(it){ return it.hasAttribute("data-stack"); })
+      .sort(function(a, b){ return (+a.getAttribute("data-stack")) - (+b.getAttribute("data-stack")); });
+    list.forEach(function(it){ if (picked.length < 3 && picked.indexOf(it) === -1) picked.push(it); });
+    stackOf[cat] = picked.slice(0, 3);
+    picked.slice(0, 3).forEach(function(it){
+      var src = it.querySelector("img");
+      var im = document.createElement("img");
+      im.src = src.getAttribute("src");
+      im.alt = "";
+      im.loading = "lazy";
+      im.decoding = "async";
+      stack.appendChild(im);
+    });
+    var count = card.querySelector("[data-bx-count]");
+    if (count) count.textContent = list.length;
+    card.setAttribute("aria-label", "Lihat " + list.length + " brosur " + nameOf(cat));
+    card.addEventListener("click", function(){ open(cat, true); });
+
+    var t = document.createElement("button");
+    t.type = "button";
+    t.className = "bx-tab";
+    t.setAttribute("role", "tab");
+    t.setAttribute("data-bx-tab", cat);
+    t.innerHTML = nameOf(cat) + " <small>" + list.length + "</small>";
+    t.addEventListener("click", function(){ if (cat !== current) open(cat, false); });
+    tabs.appendChild(t);
+  });
+
+  function geo(el, rotDeg){
+    // posisi tengah + ukuran asli (sebelum diputar) sebuah elemen
+    var r = el.getBoundingClientRect();
+    return { cx: r.left + r.width / 2, cy: r.top + r.height / 2,
+             w: el.offsetWidth, h: el.offsetHeight, rot: rotDeg || 0 };
+  }
+  function flip(el, from, to, delay){
+    if (reduce || !el.animate) return;
+    var dx = from.cx - to.cx, dy = from.cy - to.cy;
+    var sx = from.w / to.w, sy = from.h / to.h;
+    el.animate([
+      { transform: "translate(" + dx + "px," + dy + "px) scale(" + sx + "," + sy + ") rotate(" + from.rot + "deg)" },
+      { transform: "none" }
+    ], { duration: 720, delay: delay || 0, easing: EASE, fill: "backwards" });
+  }
+  function rise(el, delay){
+    if (reduce || !el.animate) return;
+    el.animate([
+      { opacity: 0, transform: "translateY(18px) scale(.94)" },
+      { opacity: 1, transform: "none" }
+    ], { duration: 560, delay: delay, easing: "cubic-bezier(.16,1,.3,1)", fill: "backwards" });
+  }
+
+  function open(cat, fromCard){
+    var card = root.querySelector('[data-bx-cat="' + cat + '"]');
+    var stackImgs = fromCard && card ? Array.prototype.slice.call(card.querySelectorAll(".bx-stack img")) : [];
+    var starts = stackImgs.map(function(im, i){ return geo(im, ROT[i] || 0); });
+
+    current = cat;
+    root.classList.add("is-open");
+    items.forEach(function(it){ it.hidden = it.getAttribute("data-cat") !== cat; });
+    tabs.querySelectorAll("[data-bx-tab]").forEach(function(t){
+      t.setAttribute("aria-selected", t.getAttribute("data-bx-tab") === cat ? "true" : "false");
+    });
+
+    var list = itemsOf(cat);
+    var n = 0;
+    list.forEach(function(it, i){
+      var thumb = it.querySelector(".bx-thumb");
+      var cap = it.querySelector(".bx-cap");
+      var k = stackOf[cat] ? stackOf[cat].indexOf(it) : -1;
+      var inView = thumb.getBoundingClientRect().top < window.innerHeight + 40;
+      if (k > -1 && starts[k] && inView){
+        flip(thumb, starts[k], geo(thumb), k * 40);
+        rise(cap, 260 + k * 40);
+      } else {
+        rise(it, (fromCard ? 200 : 0) + Math.min(n++, 8) * 55);
+      }
+    });
+
+    // bawa awal galeri ke layar kalau posisinya terlewat
+    var top = root.getBoundingClientRect().top;
+    if (top < 70) window.scrollBy({ top: top - 90, behavior: reduce ? "auto" : "smooth" });
+    if (fromCard && back) back.focus({ preventScroll: true });
+  }
+
+  function close(){
+    if (!current) return;
+    var was = current;
+    current = null;
+    root.classList.remove("is-open");
+
+    var card = root.querySelector('[data-bx-cat="' + was + '"]');
+    cats.forEach(function(c, i){ if (c !== card) rise(c, 80 + i * 60); });
+    if (card){
+      Array.prototype.slice.call(card.querySelectorAll(".bx-stack img")).forEach(function(im, i){
+        if (!reduce && im.animate) im.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 420, delay: i * 70, easing: "ease-out", fill: "backwards" });
+      });
+      rise(card.querySelector(".bx-glass"), 240);
+      card.focus({ preventScroll: true });
+    }
+    var top = root.getBoundingClientRect().top;
+    if (top < 70) window.scrollBy({ top: top - 90, behavior: reduce ? "auto" : "smooth" });
+  }
+
+  if (back) back.addEventListener("click", close);
+  document.addEventListener("keydown", function(e){
+    // Esc menutup galeri, kecuali lightbox brosur sedang terbuka
+    var lb = document.getElementById("certLightbox");
+    if (e.key === "Escape" && current && !(lb && lb.classList.contains("is-open"))) close();
+  }, true);
+})();

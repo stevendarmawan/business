@@ -94,3 +94,13 @@
     }
   });
 })();
+
+/* muat penghitung klik WhatsApp (js/tracking.js) -- satu file untuk semua halaman */
+(function(){
+  if (document.querySelector("script[data-dop-tracking]")) return;
+  var s = document.createElement("script");
+  s.src = "/js/tracking.js";
+  s.defer = true;
+  s.setAttribute("data-dop-tracking", "");
+  document.head.appendChild(s);
+})();

@@ -18666,5 +18666,101 @@ const PRODUCTS = [
     price: 27000000,
     priceIsEstimate: true,
     icon: "projector"
+  },
+  {
+    image: "assets/img/yamaha-mg10xu.jpg",
+    id: "yamaha-mg10xu",
+    brand: "Yamaha",
+    name: "Yamaha MG10XU",
+    category: "Mixer Audio",
+    specLine: "Konsol Mixing 10-Channel, Maks. 4 Mic / 10 Line (4 mono + 3 stereo), 1 Bus Stereo, 1 AUX (termasuk FX)",
+    ports: "Preamp mikrofon D-PRE, kompresor 1-knob, efek SPX 24 program · Fungsi Audio USB 2in/2out 24-bit/192kHz, kompatibel iPad · +48V phantom power, output XLR balanced, sasis logam · Dimensi (PxLxT): 244 x 71 x 294 mm — Berat: 2,1 kg",
+    price: 4400000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/yamaha-mg12xu.jpg",
+    id: "yamaha-mg12xu",
+    brand: "Yamaha",
+    name: "Yamaha MG12XU",
+    category: "Mixer Audio",
+    specLine: "Konsol Mixing 12-Channel, Maks. 6 Mic / 12 Line (4 mono + 4 stereo), 2 Group Bus + 1 Stereo Bus, 2 AUX (termasuk FX)",
+    ports: "Preamp mikrofon D-PRE, kompresor 1-knob, efek SPX 24 program · Fungsi Audio USB 2in/2out 24-bit/192kHz, kompatibel iPad · PAD switch input mono, +48V phantom power, power supply universal · Rack Mount Kit RK-MG12 (opsional), sasis logam · Dimensi (WxHxD): 308 x 118 x 422 mm — Berat: 4,2 kg",
+    price: 6900000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/yamaha-mg16xu.jpg",
+    id: "yamaha-mg16xu",
+    brand: "Yamaha",
+    name: "Yamaha MG16XU",
+    category: "Mixer Audio",
+    specLine: "Konsol Mixing 16-Channel, Maks. 10 Mic / 16 Line (8 mono + 4 stereo), 4 Group Bus + 1 Stereo Bus, 4 AUX (termasuk FX)",
+    ports: "Preamp mikrofon D-PRE, kompresor 1-knob, efek SPX 24 program · Fungsi Audio USB 2in/2out 24-bit/192kHz, kompatibel iPad · +48V phantom power, Rack Mount Kit termasuk, sasis logam · Dimensi (WxHxD): 444 x 130 x 500 mm",
+    price: 8800000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/yamaha-dbr10.jpg",
+    id: "yamaha-dbr10",
+    brand: "Yamaha",
+    name: "Yamaha DBR10",
+    category: "Speaker & PA System",
+    specLine: "Speaker Aktif 2-way 10\" — model paling kompak di kelasnya",
+    ports: "Mampu menghasilkan SPL maksimum 129dB dari bodi yang ringkas · Cocok digunakan sebagai speaker serbaguna di berbagai kebutuhan",
+    price: 7200000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/yamaha-dbr12.jpg",
+    id: "yamaha-dbr12",
+    brand: "Yamaha",
+    name: "Yamaha DBR12",
+    category: "Speaker & PA System",
+    specLine: "Speaker Aktif 2-way 12\" — keseimbangan ukuran dan performa",
+    ports: "Daya 1000W dengan resolusi suara tinggi di semua level output · Ideal untuk front-of-house, floor monitor, maupun stage side fill",
+    price: 8800000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/yamaha-dbr15.jpg",
+    id: "yamaha-dbr15",
+    brand: "Yamaha",
+    name: "Yamaha DBR15",
+    category: "Speaker & PA System",
+    specLine: "Speaker Aktif 2-way 15\" — SPL terbaik di kelasnya",
+    ports: "SPL hingga 132dB dan respon frekuensi terendah di line-up-nya · Cocok untuk FOH acara live atau DJ yang butuh low-end kuat dan tenaga besar",
+    price: 10200000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/yamaha-stagepas-1k-mkii.jpg",
+    id: "yamaha-stagepas-1k-mkii",
+    brand: "Yamaha",
+    name: "Yamaha STAGEPAS 1K MKII",
+    category: "Speaker & PA System",
+    specLine: "Sistem PA Portabel 1000W dengan mixer digital 5-channel",
+    ports: "Subwoofer 12\" + speaker line array slim 1,5\"x10 · Input Bluetooth, reverb digital SPX, kompresor multi-band \"MODE\", EQ 1-knob/channel · Priority Ducker channel stereo, 4-band PEQ via app STAGEPAS Controller · 2x input Hi-Z, Link Out & Monitor Out, termasuk cover unit · Reverb foot switch & dolly tersedia opsional",
+    price: 23900000,
+    priceIsEstimate: true,
+    icon: "projector"
+  },
+  {
+    image: "assets/img/yamaha-stagepas-200btr.jpg",
+    id: "yamaha-stagepas-200btr",
+    brand: "Yamaha",
+    name: "Yamaha STAGEPAS 200BTR",
+    category: "Speaker & PA System",
+    specLine: "Sistem PA Portabel dengan power amp Class-D 180W (HF 30W + LF 150W)",
+    ports: "Coaxial compression driver 1,4\" HF + 8\" LF, mixer digital 5-channel · Kompresor multi-band \"MODE\", reverb/delay/chorus digital SPX, input Hi-Z · Baterai lithium-ion kapasitas tinggi termasuk, streaming Bluetooth · Kontrol jarak jauh via app STAGEPAS Controller (iOS/Android) · Dudukan tilt 30°/60°, baterai BTR-STP200 & tas CASE-STP200 opsional",
+    price: 10430000,
+    priceIsEstimate: true,
+    icon: "projector"
   }
 ];

@@ -1,38 +1,25 @@
-UPDATE REDESIGN "SINAR INDIGO" + AURORA PENUH — stevendarmawan.com
-==================================================================
-ZIP ini MENGGANTIKAN ZIP update sebelumnya (sudah termasuk semuanya).
-Isinya hanya file yang berubah / baru, bukan seluruh website.
+UPDATE WEBSITE — 25 Sep 2026
+Redesign "Sinar Indigo" + Aurora penuh + 8 produk Yamaha + logo Yamaha & ZSA
+==========================================================================
+ZIP ini MENGGANTIKAN semua ZIP update sebelumnya (sudah termasuk semuanya).
 
-CARA PASANG
-1. Ekstrak ZIP ini ke DALAM folder website Anda (folder yang berisi
-   index.html, products.html, folder css, js, assets, dll).
+CARA PASANG (WAJIB PAKAI GITHUB DESKTOP — isinya ±1.600 file)
+1. Ekstrak ZIP ini ke DALAM folder repo website Anda
+   (folder berisi index.html, products.html, css, js, assets, produk, dll).
 2. Kalau ditanya "ganti file yang sudah ada?", pilih "Ganti semua".
-3. Upload ke GitHub. Jumlah filenya sedikit (±40 file), jadi aman
-   lewat upload di website GitHub; GitHub Desktop tetap lebih andal.
-   Vercel akan update otomatis.
-4. Buka website di HP & laptop. Kalau tampilan masih lama: tutup tab
-   lalu buka lagi (cache browser).
+3. Buka GitHub Desktop -> Commit -> Push. Vercel update otomatis.
+   JANGAN upload lewat website GitHub: untuk ±1.600 file, upload lewat
+   browser pernah gagal diam-diam (sebagian file tidak ikut terupload).
+4. Buka website di HP & laptop. Kalau tampilan masih lama: tutup tab lalu
+   buka lagi.
 
-FILE YANG DIGANTI
-- index.html ............ beranda (hero Aurora Indigo, galeri brosur,
-                          latar aurora satu halaman)
-- products.html ......... katalog (latar aurora satu halaman)
-- css/style.css ......... seluruh tampilan baru (blok "REDESIGN 2026"
-                          dan seterusnya di bagian bawah file)
-- js/script.js .......... galeri brosur, efek sorotan kursor, lapisan aurora
-- js/product-detail.js .. latar aurora + penghitung klik WhatsApp di
-                          1.543 halaman produk (halaman produknya sendiri
-                          TIDAK perlu diupload ulang)
+YANG BERUBAH
+- Tampilan baru (css/style.css, index.html, products.html, js/script.js,
+  js/product-detail.js, font Geist, 15 brosur baru)
+- 8 produk Yamaha (js/products.js, 8 halaman produk, foto, thumbnail WA)
+- Kategori baru "Mixer Audio" & "Speaker & PA System" + halaman merek Yamaha
+- Footer daftar kategori diperbarui di 1.543 halaman produk lama
+- Logo Yamaha & ZSA di bagian "Merek-Merek yang Kami Sediakan"
 
-FILE BARU
-- js/tracking.js ........ penghitung klik WhatsApp (Google Analytics)
-- assets/fonts/ ......... font Geist
-- assets/img/brosur-*.jpg  15 brosur baru
-
-CATATAN
-- Latar aurora bergerak di laptop/desktop/tablet, DIAM di HP (hemat
-  baterai & scroll tetap lancar).
-- Penghitung klik WhatsApp baru aktif setelah js/tracking.js diisi:
-      gaId: ""   ->   gaId: "G-XXXXXXXXXX"
-- Mau kembali ke desain lama? Upload lagi index.html, products.html,
-  css/style.css, js/script.js, js/product-detail.js dari backup lama.
+PENGHITUNG KLIK WHATSAPP
+Aktif setelah js/tracking.js diisi:  gaId: ""  ->  gaId: "G-XXXXXXXXXX"
